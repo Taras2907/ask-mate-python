@@ -4,8 +4,12 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
+def main():
+    pass
+
+@app.route('/list')
+def list():
+    pass
 
 
 if __name__ == '__main__':
