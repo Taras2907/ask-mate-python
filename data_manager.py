@@ -2,6 +2,7 @@ import csv
 from datetime import datetime
 
 FIELDNAMES = ['id', 'submission_time', 'vote_number', 'question_id', 'message,image']
+
 LAST_ELEMENT = -1
 
 
@@ -21,84 +22,27 @@ def import_data(filename):
         return [{k:v for k, v in row.items()} for row in reader]
 
 
-
-def get_dictionary_key(id=LAST_ELEMENT, key='id'):
-    all_stories = import_data()
-    return 0 if all_stories == [] else all_stories[id][key]
-
-print(import_data())
+def add_data(filename, new_question):
+    with open(filename, 'a') as f:
+        add = csv.writer(f)
+        add.writerow(new_question)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
 def get_dictionary_key(id_=LAST_ELEMENT, key='id'):
     all_stories = import_data(file)
     return 0 if all_stories == [] else all_stories[id_][key]
->>>>>>> 961f817bb53dddd5fe70922d3b027da1a1519995
 
 
+def convert_time_from_csv(timestamp):
+    return datetime.fromtimestamp(timestamp)
 
 
-<<<<<<< HEAD
-
-
-
-
-
-#
-#
-# def convert_time_from_csv(timestamp):
-#     return datetime.fromtimestamp(timestamp)
-#
-#
-# def get_real_time():
-#     now = datetime.now()
-#     return datetime.timestamp(now)
-#
-#
-# def add_view_count(question_id):
-#     key = 'view_number'
-#     view_count = get_dictionary_key(key, question_id)
-#     view_count += 1
-#     questions_data = import_data(file)
-#     questions_data[question_id][key] = view_count
-#     export_data(file, questions_data)
-#
-#
-# add_view_count(1)
-=======
 def get_real_time():
     now = datetime.now()
     return datetime.timestamp(now)
 
 
-def add_view_count(question_id):
+def add_view_count(question_id, file):
     fields = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
     key = 'view_number'
     view_count = int(get_dictionary_key(question_id, key))
@@ -107,4 +51,4 @@ def add_view_count(question_id):
     questions_data[question_id][key] = view_count
     export_data(file, questions_data, fields)
 
->>>>>>> 961f817bb53dddd5fe70922d3b027da1a1519995
+
