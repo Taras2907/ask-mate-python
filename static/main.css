@@ -1,0 +1,6 @@
+table{
+    table-layout: fixed;
+    width: 90%;
+    border: 1px solid powderblue;
+    border-collapse: collapse;
+}

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+<link rel="stylesheet", type="text/css", href="{{ url_for('static', filename='main.css') }}">
 <title>Ask Away!</title>
 
 <form name="ask" action="/add-question" method="POST">
     <h3>Title:</h3>
-    <input type="text" name="title" placeholder="Put title of your question here" >
+    <input type="text" name="title" placeholder="Put title of your question here" required>
     <h3>Message:</h3>
-    <textarea name="message"></textarea>
+    <textarea name="message" required></textarea>
     <br>
     <input type="submit" value="send" formmethod="post">
 

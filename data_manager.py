@@ -1,5 +1,6 @@
 import csv
 from datetime import datetime
+import math
 
 FIELDNAMES = ['id', 'submission_time', 'vote_number', 'question_id', 'message,image']
 
@@ -39,8 +40,8 @@ def convert_time_from_csv(timestamp):
 
 def get_real_time():
     now = datetime.now()
-    return datetime.timestamp(now)
-
+    timestamp = datetime.timestamp(now)
+    return round(timestamp)
 
 def add_view_count(question_id, file):
     fields = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']

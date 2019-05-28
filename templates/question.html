@@ -1,0 +1,24 @@
+<!doctype html>
+<style>
+    li{display:inline-block;margin: 10px}
+</style>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>display question</title>
+    </head>
+    <body>
+        <h1>Question details</h1>
+        <p>Message:<br>{{ question_data['message']}}</p>
+
+        <ul>
+            <li>View number:<br>{{ question_data['view_number']}}</li>
+            <li>Vote number:<br>{{ question_data['vote_number']}}</li>
+            <li>Title:<br>{{ question_data['title']}}</li>
+            <li>Time:<br>{{ time }}</li>
+        </ul>
+        <p>{{ answers }}:</p>
+
+        </table>
+    </body>
+</html>
