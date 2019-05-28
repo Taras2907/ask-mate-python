@@ -1,6 +1,35 @@
-table{
-    table-layout: fixed;
+table {
+    table-layout: inherit;
+    border-radius: 10px;
     width: 90%;
-    border: 1px solid powderblue;
-    border-collapse: collapse;
+    border: 3px solid powderblue;
+    margin: 5%;
+}
+th{
+    border-radius: 10px;
+    background-color: powderblue;
+    font-size: 20px;
+}
+td{
+    border-radius: 10px;
+    background-color: #E8E8E8;
+    font-size: 15px;
+}
+li{
+    display:inline-block;
+    margin: 10px
+}
+
+button{
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+    background-color: powderblue;
+}
+button:hover{
+    background-color: lightgray;
+}
+
+a{
+    text-decoration: none;
 }

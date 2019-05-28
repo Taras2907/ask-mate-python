@@ -10,7 +10,7 @@ FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message,imag
 
 @app.route('/')
 def main():
-    return render_template("list.html", questions_list=import_data(file))
+    return render_template("list.html", questions_list=import_data(file_q))
 
 
 @app.route('/list')
@@ -20,6 +20,7 @@ def list():
 
 @app.route('/question/<int:question_id>', methods=['GET', 'POST'])
 def display_question(question_id):
+    add_view_count(question_id, file_q)
     question_data = import_data(file_q)[question_id]
     time = convert_time_from_csv(int(get_dictionary_key(question_id, 'submission_time')))
     answers_data =[(dict['message'],dict['submission_time'])for dict in import_data(file_a) if dict['question_id'] == str(question_id)]
