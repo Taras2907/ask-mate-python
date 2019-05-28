@@ -37,7 +37,7 @@ def get_dictionary_key(id_=LAST_ELEMENT, key='id'):
 def convert_time_from_csv(timestamp):
     return datetime.fromtimestamp(timestamp)
 
-
+print(str(convert_time_from_csv(1493368154)))
 def get_real_time():
     now = datetime.now()
     timestamp = datetime.timestamp(now)

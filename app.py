@@ -22,8 +22,9 @@ def list():
 def display_question(question_id):
     question_data = import_data(file_q)[question_id]
     time = convert_time_from_csv(int(get_dictionary_key(question_id, 'submission_time')))
-    answers_data =[(dict['message'],dict['submission_time'])for dict in import_data(file_a) if dict['question_id'] == str(question_id)]
-    answers_data = [convert_time_from_csv(int(time_)) for message, time_ in answers_data ]
+    answers_data =[dict for dict in import_data(file_a) if dict['question_id'] == str(question_id)]
+    for dict in answers_data:
+        dict['submission_time'] = str(convert_time_from_csv(int(dict['submission_time'])))
     return render_template('question.html', question_data=question_data, time=time, answers=answers_data)
 
 
