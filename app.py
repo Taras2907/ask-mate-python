@@ -1,12 +1,12 @@
-from flask import Flask
+from flask import Flask, render_template
+from data_manager import import_data
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def main():
-
-    pass
+    return render_template("list.html", questions_list=import_data())
 
 @app.route('/list')
 def list():
@@ -16,7 +16,7 @@ def list():
 def ask_question(question_id):
     pass
 
-@app.route('question/<question_id>/new-answer')
+@app.route('/question/<question_id>/new-answer')
 def answer_question(question_id):
     pass
 

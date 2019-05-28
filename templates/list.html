@@ -1,0 +1,23 @@
+<!doctype html>
+<link rel="stylesheet", type="text/css", href="layout.css">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>AskMate</title>
+    </head>
+    <body>
+    <h1>AskMate</h1>
+    <table>
+        <tr>
+            <th>Question</th>
+            <th>More</th>
+        </tr>
+        {% for question in questions_list|reverse%}
+        <tr>
+            <td>{{question["message"]}}</td>
+            <td><button type="button"><a href="/question/{{ question['id'] }}">Show more</a></button></td>
+        </tr>
+        {% endfor %}
+    </table>
+    </body>
+</html>
