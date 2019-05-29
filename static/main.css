@@ -62,6 +62,7 @@ ul{
 li{
     list-style: none;
 }
+
 #left-side{
     width: 90%;
     float: left;
@@ -118,5 +119,8 @@ li{
     display: flex;
     justify-content: center;
 
+}
+.text-input{
+    width: 100%;
 }
 

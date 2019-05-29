@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2>Enter your answer:</h2>
-    <form name="answer" action="/question/{{question_id}}/new-answer", method="POST">
-        <textarea name="answer" minlength="10"></textarea>
-        <br>
-        <input type="submit" value="Submit">
-    </form>
+    <div class="form-center">
 
+        <br>
+        <form name="answer" action="/question/{{question_id}}/new-answer" method="POST">
+            <h4>Enter your answer:</h4>
+            <br>
+            <textarea name="answer" minlength="10" class="text-input"></textarea>
+            <br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
 
 {% endblock %}
