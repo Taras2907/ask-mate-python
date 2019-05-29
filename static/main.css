@@ -1,3 +1,6 @@
+body{
+    background-color: whitesmoke;
+}
 table {
     table-layout: inherit;
     border-radius: 10px;
@@ -32,4 +35,31 @@ button:hover{
 
 a{
     text-decoration: none;
+}
+header{
+    border-radius: 10px;
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    height: 80px;
+    background: lightgray;
+}
+#left-side{
+    width: 90%;
+    float: left;
+}
+#side-bar{
+    top: 0;
+    right: 0;
+    position: fixed;
+    float: right;
+    width: 10%;
+    height: 100%;
+    background: lightgray;
+}
+#content-box{
+    display: flex;
+    flex-flow: row wrap;
+    margin-top: 80px;
 }
