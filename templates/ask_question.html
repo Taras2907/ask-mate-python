@@ -1,13 +1,20 @@
-<!DOCTYPE html>
-<link rel="stylesheet" type="text/css" href="static/main.css">
-<title>Ask Away!</title>
+{% extends "base.html" %}
+{% block content %}
 
-<form name="ask" action="/add-question" method="POST">
-    <h3>Title:</h3>
-    <input type="text" name="title" placeholder="Put title of your question here" required>
-    <h3>Message:</h3>
-    <textarea name="message" required></textarea>
-    <br>
-    <input type="submit" value="send" formmethod="post">
+<div class="form-center">
+    <form name="ask" action="/add-question" method="POST">
+    <div class="input-center">
+        <h4>Title:</h4>
+        <input type="text" name="title" placeholder="Put title of your question here" required>
+    </div>
+        <div class="input-center">
+        <h4>Message:</h4>
+        <textarea name="message" required></textarea>
+        <br>
 
-</form>
+    </div>
+        <input type="submit" value="send" formmethod="post">
+    </form>
+</div>
+
+{% endblock %}

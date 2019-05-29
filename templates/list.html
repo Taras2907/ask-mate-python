@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!doctype html>
 <link rel="stylesheet", type="text/css", href="{{ url_for('static', filename='main.css') }}">
 <html>
@@ -52,3 +53,21 @@
     </div>
     </body>
 </html>
+=======
+{% extends "base.html" %}
+{% block content %}
+            <table>
+            <tr>
+                <th>Question</th>
+                <th>More</th>
+            </tr>
+            {% for question in questions_list|reverse%}
+            <tr>
+                <td>{{question["title"]}}</td>
+                <td><button type="button"><a href="/question/{{ question['id'] }}">Show more</a></button></td>
+            </tr>
+            {% endfor %}
+            </table>
+            <button type="button"><a href="/add-question">Add question</a></button></td>
+{% endblock %}s
+>>>>>>> 711f29384107ed1ee5cda23eed2bd9457a748eb0

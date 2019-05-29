@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>AskMate - Answer Question</title>
-</head>
-<body>
-    <h1>AskMate</h1>
+{% extends "base.html" %}
+{% block content %}
     <h2>Enter your answer:</h2>
     <form name="answer" action="/question/{{question_id}}/new-answer", method="POST">
         <textarea name="answer" minlength="10"></textarea>
         <br>
         <input type="submit" value="Submit">
     </form>
-</body>
-</html>
+
+
+{% endblock %}
