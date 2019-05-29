@@ -1,27 +1,42 @@
 {% extends "base.html" %}
 {% block content %}
-        <h4>{{ question_data['title']}}</h4>
-        <p>Message: <br>{{ question_data['message']}}</p>
-        <button type="button"><a href="/question/{{question_id}}/new-answer">Add answer</a></button>
-        <p>Message:<br>{{ question_data['message']}}</p>
+       <div>
+           <h4>{{ question_data['title']}}</h4><br>
+       </div>
+    <div id="message-block">
+            Message: <br>{{ question_data['message']}}
+    </div>
 
+    <div id="data-block">
         <ul>
-            <li>View number: {{ question_data['view_number']}}</li>
-            <li>Vote number: {{ question_data['vote_number']}}</li>
-            <form  name='vote' action = '/question/{{ question_id }}' method = "POST">
-                <p><input type ='submit' name="send" value = '+'/></p>
-                <p><input type = 'submit' name="send" value = '-'/></p>
-            </form>
             <li>Time: <br>{{ time }}</li>
+            <li>Views: {{ question_data['view_number']}}</li>
+            <li>Votes: {{ question_data['vote_number']}}</li>
+            <form  name='vote' action = '/question/{{ question_id }}' method = "POST">
+                <p>
+                    <input type = 'submit' name="send" value = '-'/>
+                    <input type ='submit' name="send" value = '+'/>
+                </p>
+            </form>
+
         </ul>
-        <h4>Answers:</h4>
+    </div>
+            <button type="button"><a href="/question/{{question_id}}/new-answer">Add answer</a></button>
+    <div>
+    <h4>Answers:</h4>
         <ul>
         {% if answers ==[] %}
             <p>There are no answers yet.</p>
         {% else %}
             {% for dict in answers %}
-                <li>{{ dict['message'] }}<br> {{ dict['submission_time'] }}</li>
+                <div id="ansewr-block">
+                <li>{{ dict['message'] }}
+                    <br>
+                    {{ dict['submission_time'] }}</li>
+                <br>
+                </div>
             {% endfor %}
         {% endif %}
         </ul>
+    </div>
 {% endblock %}
