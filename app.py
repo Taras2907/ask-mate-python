@@ -8,9 +8,11 @@ FIELDS_Q = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'mes
 FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message,image']
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def main():
-    return render_template("list.html", questions_list=import_data(file_q))
+    questions_list = sort_by_item()
+
+    return render_template("list.html", questions_list=questions_list, select=request.form['key_to_sort'])
 
 
 @app.route('/list')
@@ -40,6 +42,10 @@ def display_question(question_id):
             question_data = import_data(file_q)[question_id]
     return render_template('question.html', question_data=question_data, time=time,
                            answers=answers_data, question_id=question_id)
+
+@app.route('/question/<question_id>/edit', methods=["GET", "POST"])
+def edit_question():
+    pass
 
 
 @app.route('/question/<int:question_id>/new-answer', methods=["GET", "POST"])
