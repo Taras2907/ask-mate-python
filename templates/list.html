@@ -6,6 +6,8 @@
         <title>AskMate</title>
     </head>
     <body>
+
+    </form>
     <div id="side-bar"></div>
 
     <div id="left-side">
@@ -13,6 +15,26 @@
 
 
         <div id="content-box">
+        <div>
+            <form action='/' method="POST">
+            <select name="key_to_sort">
+                {% for key in questions_list[0].keys() %}
+                    {% if key ==select %}
+                        <option selected>{{ key }}</option>
+                    {% else %}
+                        <option>{{ key }}</option>
+                    {% endif %}
+                {% endfor %}
+        </select>
+            <input type="submit"><br>
+            <p>From biggest
+                <input type="checkbox" name="asc_order">
+                To biggest
+                <input type="checkbox" name="desc_order">
+             </p>
+
+            </form>
+        </div>
         <table>
         <tr>
             <th>Question</th>
