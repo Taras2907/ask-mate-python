@@ -1,13 +1,9 @@
-<!doctype html>
-<link rel="stylesheet" type="text/css" href="static/main.css">
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Display question</title>
-    </head>
-    <body>
+{% extends "base.html" %}
+{% block content %}
         <h4>{{ question_data['title']}}</h4>
         <p>Message: <br>{{ question_data['message']}}</p>
+        <button type="button"><a href="/question/{{question_id}}/new-answer">Add answer</a></button>
+        <p>Message:<br>{{ question_data['message']}}</p>
 
         <ul>
             <li>View number: {{ question_data['view_number']}}</li>
@@ -28,6 +24,4 @@
             {% endfor %}
         {% endif %}
         </ul>
-
-    </body>
-</html>
+{% endblock %}
