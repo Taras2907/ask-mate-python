@@ -2,7 +2,6 @@ import csv
 from datetime import datetime
 import math
 
-FIELDNAMES = ['id', 'submission_time', 'vote_number', 'question_id', 'message,image']
 
 LAST_ELEMENT = -1
 
@@ -37,7 +36,7 @@ def get_dictionary_key(id_=LAST_ELEMENT, key='id'):
 def convert_time_from_csv(timestamp):
     return datetime.fromtimestamp(timestamp)
 
-print(str(convert_time_from_csv(1493368154)))
+
 def get_real_time():
     now = datetime.now()
     timestamp = datetime.timestamp(now)
@@ -51,5 +50,4 @@ def add_view_count(question_id, file):
     questions_data = import_data(file)
     questions_data[question_id][key] = view_count
     export_data(file, questions_data, fields)
-
 

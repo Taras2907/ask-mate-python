@@ -6,20 +6,27 @@
         <title>display question</title>
     </head>
     <body>
-        <h4>Question details</h4>
-        <p>Message:<br>{{ question_data['message']}}</p>
+        <h4>{{ question_data['title']}}</h4>
+        <p>Message: <br>{{ question_data['message']}}</p>
 
         <ul>
-            <li>View number:<br>{{ question_data['view_number']}}</li>
-            <li>Vote number:<br>{{ question_data['vote_number']}}</li>
-            <li>Title:<br>{{ question_data['title']}}</li>
-            <li>Time:<br>{{ time }}</li>
+            <li>View number: {{ question_data['view_number']}}</li>
+            <li>Vote number: {{ question_data['vote_number']}}</li>
+            <form  name='vote' action = '/question/{{ question_id }}' method = "POST">
+                <p><input type = 'submit', name="send" value = '+'/></p>
+                <p><input type = 'submit', name="send" value = '-'/></p>
+            </form>
+            <li>Time: <br>{{ time }}</li>
         </ul>
         <h4>Answers:</h4>
         <ul>
+        {% if answers ==[] %}
+            <p>There are no answers yet.</p>
+        {% else %}
             {% for dict in answers %}
                 <li>{{ dict['message'] }}<br> {{ dict['submission_time'] }}</li>
             {% endfor %}
+        {% endif %}
         </ul>
 
     </body>

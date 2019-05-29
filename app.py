@@ -26,12 +26,24 @@ def display_question(question_id):
     answers_data =[dict for dict in import_data(file_a) if dict['question_id'] == str(question_id)]
     for dict in answers_data:
         dict['submission_time'] = str(convert_time_from_csv(int(dict['submission_time'])))
-    return render_template('question.html', question_data=question_data, time=time, answers=answers_data)
+
+    if request.method == "POST":
+        if request.form['send'] == '+':
+            data_to_export = import_data(file_q)
+            data_to_export[question_id]['vote_number'] = int(data_to_export[question_id]['vote_number']) + 1
+            export_data(file_q, data_to_export, FIELDS_Q)
+        else:
+            data_to_export = import_data(file_q)
+            data_to_export[question_id]['vote_number'] = int(data_to_export[question_id]['vote_number']) - 1
+            export_data(file_q, data_to_export, FIELDS_Q)
+
+    return render_template('question.html', question_data=question_data, time=time,
+                           answers=answers_data, question_id=question_id)
 
 
 @app.route('/question/<question_id>/new-answer')
 def answer_question(question_id):
-    pass
+    return render_template('question.html')
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
