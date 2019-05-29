@@ -41,9 +41,20 @@ def display_question(question_id):
                            answers=answers_data, question_id=question_id)
 
 
-@app.route('/question/<question_id>/new-answer')
+@app.route('/question/<int:question_id>/new-answer', methods=["GET", "POST"])
 def answer_question(question_id):
-    return render_template('question.html')
+    if request.method == "POST":
+        time = get_real_time()
+        answer_list = [question_id,
+                       time,
+                       "0",
+                       question_id,
+                       request.form["answer"],
+                       ""]
+        add_data(file_a, answer_list)
+        return redirect(url_for('.display_question', question_id = question_id))
+    return render_template('answer.html', question_id = question_id)
+
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
