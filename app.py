@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from data_manager import *
 
 app = Flask(__name__)
@@ -26,12 +26,23 @@ def display_question(question_id):
     answers_data =[dict for dict in import_data(file_a) if dict['question_id'] == str(question_id)]
     for dict in answers_data:
         dict['submission_time'] = str(convert_time_from_csv(int(dict['submission_time'])))
-    return render_template('question.html', question_data=question_data, time=time, answers=answers_data)
+    return render_template('question.html', question_data=question_data, time=time, answers=answers_data, question_id = question_id)
 
 
-@app.route('/question/<question_id>/new-answer')
+@app.route('/question/<int:question_id>/new-answer', methods=["GET", "POST"])
 def answer_question(question_id):
-    pass
+    if request.method == "POST":
+        time = get_real_time()
+        answer_list = [question_id,
+                       time,
+                       "0",
+                       question_id,
+                       request.form["answer"],
+                       ""]
+        add_data(file_a, answer_list)
+        return redirect(url_for('.display_question', question_id = question_id))
+    return render_template('answer.html', question_id = question_id)
+
 
 
 @app.route('/add-question', methods=['GET', 'POST'])

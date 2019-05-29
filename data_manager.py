@@ -3,7 +3,6 @@ from datetime import datetime
 import math
 
 FIELDNAMES = ['id', 'submission_time', 'vote_number', 'question_id', 'message,image']
-
 LAST_ELEMENT = -1
 
 
