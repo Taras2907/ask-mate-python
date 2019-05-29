@@ -13,8 +13,8 @@
             <li>View number: {{ question_data['view_number']}}</li>
             <li>Vote number: {{ question_data['vote_number']}}</li>
             <form  name='vote' action = '/question/{{ question_id }}' method = "POST">
-                <p><input type = 'submit', name="send" value = '+'/></p>
-                <p><input type = 'submit', name="send" value = '-'/></p>
+                <p><input type ='submit' name="send" value = '+'/></p>
+                <p><input type = 'submit' name="send" value = '-'/></p>
             </form>
             <li>Time: <br>{{ time }}</li>
         </ul>

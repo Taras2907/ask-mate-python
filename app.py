@@ -32,11 +32,12 @@ def display_question(question_id):
             data_to_export = import_data(file_q)
             data_to_export[question_id]['vote_number'] = int(data_to_export[question_id]['vote_number']) + 1
             export_data(file_q, data_to_export, FIELDS_Q)
+            question_data = import_data(file_q)[question_id]
         else:
             data_to_export = import_data(file_q)
             data_to_export[question_id]['vote_number'] = int(data_to_export[question_id]['vote_number']) - 1
             export_data(file_q, data_to_export, FIELDS_Q)
-
+            question_data = import_data(file_q)[question_id]
     return render_template('question.html', question_data=question_data, time=time,
                            answers=answers_data, question_id=question_id)
 
