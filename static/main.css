@@ -45,6 +45,15 @@ header{
     height: 80px;
     background: lightgray;
 }
+h1{
+    text-align: center;
+}
+ul{
+    list-style: none;
+}
+li{
+    list: none;
+}
 #left-side{
     width: 90%;
     float: left;
