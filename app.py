@@ -11,7 +11,8 @@ FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message,imag
 @app.route('/', methods=['GET', 'POST'])
 def main():
     questions_list = sort_by_item()
-
+    if request.method == "POST":
+        questions_list =sort_by_item(request.form['key_to_sort'], 'asc_order')
     return render_template("list.html", questions_list=questions_list, select=request.form['key_to_sort'])
 
 
