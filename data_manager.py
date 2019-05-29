@@ -51,4 +51,10 @@ def add_view_count(question_id, file):
     questions_data[question_id][key] = view_count
     export_data(file, questions_data, fields)
 
+def sort_by_item(item='id', order='desc_order'):
+    lis = import_data(file)
+    return sorted(lis, key=lambda i: i[item]) if order=='asc_order' else sorted(lis, key=lambda i: i[item], reverse=True)
+
+
+
 
