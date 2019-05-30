@@ -49,6 +49,7 @@ header{
     width: 100%;
     height: 80px;
     background: lightgray;
+    z-index: 10;
 }
 h1{
     text-align: center;
@@ -62,7 +63,9 @@ ul{
 li{
     list-style: none;
 }
-
+select{
+    border: none;
+}
 #left-side{
     width: 90%;
     float: left;
@@ -75,8 +78,10 @@ li{
     width: 10%;
     height: 100%;
     background: lightgray;
+    z-index: 10;
 }
 #content-box{
+    position: absolute;
     display: flex;
     flex-flow: row wrap;
     margin-top: 80px;
@@ -107,6 +112,16 @@ li{
     border-color: white;
 }
 #sorter{
+    width: 20%;
+    position: relative;
+    float: right;
+    right: 0;
+
+}
+#table-div{
+    position: relative;
+    z-index: 1;
+    width: 90%;
 
 }
 .form-center{

@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
+    <div id="table-div">
     <div id="sorter">
         <form action="/" method="POST" name="sorting">
+            <span>sort by:</span>
             <select>
                 {% for sort_title in sort_titles %}
                     <option>{{ sort_title }}</option>
                 {% endfor %}
             </select>
-        <input type="submit" name="selected">
+            <br>
+        <input type="submit" name="selected" value="sort">
         </form>
-    </div>
+        </div>
             <table>
             <tr>
                 <th>Question</th>
@@ -22,5 +25,9 @@
             </tr>
             {% endfor %}
             </table>
-            <button type="button"><a href="/add-question">Add question</a></button></td>
+
+            <button type="button"><a href="/add-question">Add question</a></button>
+    </div>
+
+
 {% endblock %}
