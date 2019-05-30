@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <div>
+    <div id="sorter">
         <form>
             <select>
                 {% for sort_title in sort_titles %}
@@ -15,7 +15,6 @@
                 <th>More</th>
             </tr>
             {% for question in questions_list|reverse%}
-
             <tr>
                 <td>{{question["title"]}}</td>
                 <td><button type="button"><a href="/question/{{ question['id'] }}">Show more</a></button></td>
@@ -23,5 +22,4 @@
             {% endfor %}
             </table>
             <button type="button"><a href="/add-question">Add question</a></button></td>
-{% endblock %}s
-
+{% endblock %}

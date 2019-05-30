@@ -25,6 +25,13 @@ def add_data(filename, new_question):
         add.writerow(new_question)
 
 
+
+def del_data(filename, data_id, fields):
+    input = import_data(filename)
+    output = [record for record in input if record["id"] != str(data_id)]
+    export_data(filename, output, fields)
+
+
 def get_dictionary_key(id_, key='id'):
     all_stories = import_data(file)
     if id_ == -1:
@@ -45,14 +52,19 @@ def get_real_time():
     timestamp = datetime.timestamp(now)
     return round(timestamp)
 
-def add_view_count(question_id, file):
+
+def change_view_count(question_id, filename, change):
     fields = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
     key = 'view_number'
     view_count = int(get_dictionary_key(question_id, key))
-    view_count += 1
-    questions_data = import_data(file)
+    if change == 'up':
+        view_count += 1
+    elif change == 'down':
+        view_count -= 1
+    questions_data = import_data(filename)
     questions_data[question_id][key] = view_count
-    export_data(file, questions_data, fields)
+    export_data(filename, questions_data, fields)
+
 
 def sort_by_item(item='id', order='desc_order'):
     lis = import_data(file)
