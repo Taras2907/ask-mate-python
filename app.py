@@ -28,25 +28,22 @@ def list():
 def display_question(question_id):
     change_view_count(question_id, file_q, "up")
     question_data = [question for question in import_data(file_q) if int(question["id"]) == int(question_id)][0]
-
     time = convert_time_from_csv(int(get_dictionary_key(question_id, 'submission_time')))
-    answers_data = [dict for dict in import_data(file_a) if dict['question_id'] == str(question_id)]
+    answers_data =[dict for dict in import_data(file_a) if dict['question_id'] == str(question_id)]
     for dict in answers_data:
         dict['submission_time'] = str(convert_time_from_csv(int(dict['submission_time'])))
 
     if request.method == "POST":
         if request.form['send'] == '+':
-            change_view_count(question_id, file_q, 'down')
-            data_to_export = import_data(file_q)
-            data_to_export[question_id]['vote_number'] = int(data_to_export[question_id]['vote_number']) + 1
-            export_data(file_q, data_to_export, FIELDS_Q)
-            question_data = [dic for dic in import_data(file_q) if dic['id'] == question_id]
+            change_view_count(question_id, file, 'down')
+            update_vote(question_id, 'up')
+
         else:
             change_view_count(question_id, file_q, 'down')
-            data_to_export = import_data(file_q)
-            data_to_export[question_id]['vote_number'] = int(data_to_export[question_id]['vote_number']) - 1
-            export_data(file_q, data_to_export, FIELDS_Q)
-            question_data = [dic for dic in import_data(file_q) if dic['id'] == question_id]
+            update_vote(question_id, 'down')
+
+    question_data = [question for question in import_data(file_q) if int(question["id"]) == int(question_id)][0]
+
     return render_template('question.html', question_data=question_data, time=time,
                            answers=answers_data, question_id=question_id)
 
