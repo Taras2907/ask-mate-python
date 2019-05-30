@@ -32,7 +32,7 @@ def del_data(filename, data_id, fields, header):
     input = import_data(filename)
     output = [record for record in input if record[header] != str(data_id) ]
     export_data(filename, output, fields)
-    #return output
+
 
 
 def get_dictionary_key(id_, key='id'):
@@ -72,12 +72,12 @@ def sort_by_item(item='id', order='desc_order'):
 
 
 def update_vote(question_id, change):
-    dicts_to_export = import_data(file)
+    dicts_to_export = import_data(file_q)
     for dic in dicts_to_export:
         if dic['id'] == str(question_id):
             if change == "up":
                 dic['vote_number'] = str(int(dic['vote_number']) + 1)
             else:
                 dic['vote_number'] = str(int(dic['vote_number']) - 1)
-    export_data(file, dicts_to_export, FIELDS)
+    export_data(file_q, dicts_to_export, FIELDS)
     return dicts_to_export

@@ -42,7 +42,7 @@ def display_question(question_id):
 
     if request.method == "POST":
         if request.form['send'] == '+':
-            change_view_count(question_id, file, 'down')
+            change_view_count(question_id, file_q, 'down')
             update_vote(question_id, 'up')
 
         else:
