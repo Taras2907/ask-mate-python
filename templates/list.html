@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
     <div id="sorter">
-        <form>
+        <form action="/" method="POST" name="sorting">
             <select>
                 {% for sort_title in sort_titles %}
                     <option>{{ sort_title }}</option>
                 {% endfor %}
             </select>
+        <input type="submit" name="selected">
         </form>
     </div>
             <table>
