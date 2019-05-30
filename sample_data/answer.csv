@@ -1,21 +1,12 @@
 id,submission_time,vote_number,question_id,message,image
-0,1493398154,4,0,"You need to use brackets: my_list = []",
-1,1493088154,35,0,"Look it up in the Python docs",
-3,1559118987,0,3,Raaaaaaaaaaaafał,
-3,1559119690,0,3,"Hej mordo, wszytko spoko",
-4,1559119750,0,4,Na wałbrzyyyych!!!1,
-4,1559123897,0,4,Raaaaaaafał,
-4,1559123956,0,4,Raaaaaaafał,
-4,1559124095,0,4,"RAAAAaaaaaaaaaaaaaa
+1,1559219983,0,1,"TLDR You've built your app on your local PC together with pdb files and these files store your local paths, which are displayed regardless of where the code is being executed.
+
+Error reporting as well as debug info recovers data from so-called pdb files, which are program database. These files store meta information about your program code, including original file names, locations and source code line numbers. The amount of information stored is controllable and usually depends on your build type (Debug, Release). These files are being distributed together with your binaries and whichever system is used as a host, whenever it needs meta information (like call stack), it takes it from them.",
+3,1559220086,0,3,"I dont know how to resolve this. Thanks you.
+
 ",
-4,1559127816,0,4,Asfsafasfasda,
-1,1559130306,0,1,asdadaasdasadasdadasd,
-3,1559134259,0,3,"kurwa kuraw asfioasnfowansfo easfsanmfmsafmsanflsanflsame nfwao 'fjfwosajpvjvdspofejqjwq30e2qrefwasmf 3qkf q
-waefkwas] fsao nepoaj d98ewajf[owasldknmpwao uf9q 83whf;k;owafa2n pihfwa]sofjm;ckjnvp9sahf;ldn pvuhds-d 0eoiuf[f [qa
-foinwa[j[fojsmfpoasjf poakspf a",
-7,1559210568,0,7,fsafasfsanofna ofaoin onf i'fnsaonfanf nianfa ,
-7,1559210577,0,7,afsaonfsao foanfn aflsaknf aoisjfwaj fsoisa fosnf aingfaoi fsndkfo iwansofnasoif noaf ,
-1,1559216915,0,1,Dominik lubi mleko,
-11,1559216978,0,11,adsfsdfsdfsdf,
-11,1559216984,0,11,asdfasdfasdfasdf,
-11,1559216987,0,11,asfdasdfasdfasdfa,
+4,1559220132,0,4,"I think this will work for you. It's a bit hacky though:
+
+",
+5,1559220181,0,5,"NOPE!
+NOPE!",
