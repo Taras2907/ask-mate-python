@@ -30,7 +30,9 @@ def add_data(filename, new_question):
 
 def get_dictionary_key(id_=LAST_ELEMENT, key='id'):
     all_stories = import_data(file)
-    return 0 if all_stories == [] else all_stories[id_][key]
+    dict_by_id = [dict for dict in all_stories if dict['id'] == str(id_)][0]
+    return 0 if dict_by_id ==[] else dict_by_id[key]
+
 
 
 def convert_time_from_csv(timestamp):
