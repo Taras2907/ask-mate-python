@@ -23,8 +23,8 @@ def list():
 
 @app.route('/question/<int:question_id>', methods=['GET', 'POST'])
 def display_question(question_id):
-    change_view_count(question_id, file_q, 'up')
-    question_data = import_data(file_q)[question_id]
+    change_view_count(question_id, file_q, "up")
+    question_data = [question for question in import_data(file_q) if int(question["id"]) == int(question_id)]
     time = convert_time_from_csv(int(get_dictionary_key(question_id, 'submission_time')))
     answers_data =[dict for dict in import_data(file_a) if dict['question_id'] == str(question_id)]
     for dict in answers_data:
@@ -89,6 +89,13 @@ def add_question():
         add_data(file_q, new_question)
         return redirect('/')
     return render_template('ask_question.html')
+
+@app.route("/question/<question_id>/delete")
+def del_question(question_id):
+    del_data("sample_data/question.csv", question_id, FIELDS_Q)
+    return redirect("/")
+
+
 
 if __name__ == '__main__':
     app.run()
