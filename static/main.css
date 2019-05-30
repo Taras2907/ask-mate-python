@@ -1,5 +1,5 @@
 body{
-    background-color: whitesmoke;
+    background-color: #EAE7DC;
 }
 div{
     width: 100%;
@@ -8,17 +8,18 @@ table{
     table-layout: inherit;
     border-radius: 10px;
     width: 90%;
-    border: 3px solid powderblue;
+    border: 3px solid #E85A4F;
     margin: 5%;
 }
 th{
     border-radius: 10px;
-    background-color: powderblue;
+    background-color: #E98074;
     font-size: 20px;
 }
 td{
     border-radius: 10px;
-    background-color: #E8E8E8;
+    background-color: #EAE7DC;
+    border:solid white;
     font-size: 15px;
 }
 li{
@@ -26,15 +27,15 @@ li{
     margin: 10px
 }
 
-button{
+.button{
     align-self: center;
     padding: 5px;
     margin: 5px;
     border-radius: 10px;
-    background-color: powderblue;
+    background-color: #E98074;
 }
 button:hover{
-    background-color: lightgray;
+    background-color: #EAE7DC;
 }
 
 a{
@@ -48,11 +49,12 @@ header{
     position: fixed;
     width: 100%;
     height: 80px;
-    background: lightgray;
+    background: #d8c3a5;
     z-index: 10;
 }
 h1{
     text-align: center;
+    color: #E85A4F;
 }
 h4{
     text-align: center;
@@ -77,14 +79,15 @@ select{
     float: right;
     width: 10%;
     height: 100%;
-    background: lightgray;
+    background: #d8c3a5;
     z-index: 10;
 }
 #content-box{
-    position: absolute;
+    position: relative;
     display: flex;
     flex-flow: row wrap;
     margin-top: 80px;
+
 }
 #data-block{
     text-align: right;
@@ -95,7 +98,7 @@ select{
 
 }
 #message-block{
-    background-color: powderblue;
+    background-color: #E98074;
     border-radius: 10px;
     padding: 20px;
     border-style: solid;
@@ -103,7 +106,7 @@ select{
 }
 #ansewr-block{
     width: 90%;
-    background-color: powderblue;
+    background-color: #E98074;
     border-radius: 10px;
     padding: 20px;
     margin: auto;
@@ -118,7 +121,7 @@ select{
     right: 0;
 
 }
-#table-div{
+.table-div{
     position: relative;
     z-index: 1;
     width: 90%;
@@ -126,7 +129,7 @@ select{
 }
 .form-center{
     width: 100%;
-    background-color: powderblue;
+    background-color: #E98074;
     border-radius: 10px;
     display: flex;
     justify-content: center;
