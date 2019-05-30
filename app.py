@@ -5,7 +5,7 @@ app = Flask(__name__)
 file_q = 'sample_data/question.csv'
 file_a = 'sample_data/answer.csv'
 FIELDS_Q = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message,image']
+FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message','image']
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -100,7 +100,8 @@ def add_question():
 
 @app.route("/question/<question_id>/delete")
 def del_question(question_id):
-    del_data("sample_data/question.csv", question_id, FIELDS_Q)
+    del_data(file_q, question_id, FIELDS_Q, 'id')
+    del_data(file_a,question_id, FIELDS_A, 'question_id' )
     return redirect("/")
 
 

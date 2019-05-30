@@ -2,11 +2,11 @@ import csv
 from datetime import datetime
 import math
 
-
 LAST_ELEMENT = -1
 FIELDS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-
-file = 'sample_data/question.csv'
+FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message','image']
+file_q = 'sample_data/question.csv'
+file_a = 'sample_data/answer.csv'
 
 
 def export_data(filename, data_to_write, fields):
@@ -28,14 +28,15 @@ def add_data(filename, new_question):
         add.writerow(new_question)
 
 
-def del_data(filename, data_id, fields):
+def del_data(filename, data_id, fields, header):
     input = import_data(filename)
-    output = [record for record in input if record["id"] != str(data_id)]
+    output = [record for record in input if record[header] != str(data_id) ]
     export_data(filename, output, fields)
+    #return output
 
 
 def get_dictionary_key(id_, key='id'):
-    all_stories = import_data(file)
+    all_stories = import_data(file_q)
     if id_ == -1:
         return 0 if all_stories ==[] else all_stories[::-1][0]['id']
     else:
@@ -66,7 +67,7 @@ def change_view_count(question_id, file, change):
     export_data(file, questions_data, FIELDS)
 
 def sort_by_item(item='id', order='desc_order'):
-    lis = import_data(file)
+    lis = import_data(file_q)
     return sorted(lis, key=lambda dic: int(dic[item])) if order=='desc_order' else sorted(lis, key=lambda dic: int(dic[item]), reverse=True)
 
 
