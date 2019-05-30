@@ -14,15 +14,15 @@
             <li>Votes: {{ question_data['vote_number']}}</li>
             <form  name='vote' action = '/question/{{ question_id }}' method = "POST">
                 <p>
-                    <input type = 'submit' name="send" value = '-'/>
-                    <input type ='submit' name="send" value = '+'/>
+                    <input type = 'submit' name="send" value = '-' class="button"/>
+                    <input type ='submit' name="send" value = '+' class="button"/>
                 </p>
             </form>
 
         </ul>
     </div>
-            <button type="button" ><a href="/question/{{question_id}}/new-answer">Add answer</a></button>
-            <button type="button"><a href="/question/{{ question_id }}/delete">Delete question</a></button>
+            <button type="button" class="button"><a href="/question/{{question_id}}/new-answer">Add answer</a></button>
+            <button type="button" class="button"><a href="/question/{{ question_id }}/delete">Delete question</a></button>
     <div>
     <h4>Answers:</h4>
         <ul>

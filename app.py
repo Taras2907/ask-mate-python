@@ -10,6 +10,7 @@ FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message,imag
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
+    key_sort = 0
     questions_list = sort_by_item()
     up = '\u21A5'
     down = '\u21A7'
