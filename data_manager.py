@@ -36,7 +36,7 @@ def del_data(filename, data_id, fields):
 
 def get_dictionary_key(id_=LAST_ELEMENT, key='id'):
     all_stories = import_data(file)
-    dict_by_id = [dict for dict in all_stories if dict['id'] == str(id_)][0]
+    dict_by_id = [dicts for dicts in all_stories if dicts['id'] == str(id_)][0]
     return 0 if dict_by_id ==[] else dict_by_id[key]
 
 

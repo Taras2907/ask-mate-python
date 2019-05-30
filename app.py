@@ -26,7 +26,7 @@ def display_question(question_id):
     change_view_count(question_id, file_q, "up")
     question_data = [question for question in import_data(file_q) if int(question["id"]) == int(question_id)]
     time = convert_time_from_csv(int(get_dictionary_key(question_id, 'submission_time')))
-    answers_data =[dict for dict in import_data(file_a) if dict['question_id'] == str(question_id)]
+    answers_data = [dict for dict in import_data(file_a) if dict['question_id'] == str(question_id)]
     for dict in answers_data:
         dict['submission_time'] = str(convert_time_from_csv(int(dict['submission_time'])))
 

@@ -4,7 +4,7 @@ body{
 div{
     width: 100%;
 }
-table {
+table{
     table-layout: inherit;
     border-radius: 10px;
     width: 90%;
@@ -106,8 +106,11 @@ li{
     border-style: solid;
     border-color: white;
 }
+#sorter{
+
+}
 .form-center{
-    width: 90%;
+    width: 100%;
     background-color: powderblue;
     border-radius: 10px;
     display: flex;
