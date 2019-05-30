@@ -23,7 +23,7 @@ def list():
 
 @app.route('/question/<int:question_id>', methods=['GET', 'POST'])
 def display_question(question_id):
-    add_view_count(question_id, file_q)
+    change_view_count(question_id, file_q, 'up')
     question_data = import_data(file_q)[question_id]
     time = convert_time_from_csv(int(get_dictionary_key(question_id, 'submission_time')))
     answers_data =[dict for dict in import_data(file_a) if dict['question_id'] == str(question_id)]
@@ -32,11 +32,13 @@ def display_question(question_id):
 
     if request.method == "POST":
         if request.form['send'] == '+':
+            change_view_count(question_id, file_q, 'down')
             data_to_export = import_data(file_q)
             data_to_export[question_id]['vote_number'] = int(data_to_export[question_id]['vote_number']) + 1
             export_data(file_q, data_to_export, FIELDS_Q)
             question_data = import_data(file_q)[question_id]
         else:
+            change_view_count(question_id, file_q, 'down')
             data_to_export = import_data(file_q)
             data_to_export[question_id]['vote_number'] = int(data_to_export[question_id]['vote_number']) - 1
             export_data(file_q, data_to_export, FIELDS_Q)
