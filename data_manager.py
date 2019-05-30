@@ -3,6 +3,9 @@ from datetime import datetime
 import math
 
 
+LAST_ELEMENT = -1
+
+
 file = 'sample_data/question.csv'
 
 
@@ -52,19 +55,17 @@ def get_real_time():
     timestamp = datetime.timestamp(now)
     return round(timestamp)
 
-
-def change_view_count(question_id, filename, change):
+def change_view_count(question_id, file, change):
     fields = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
     key = 'view_number'
-    view_count = int(get_dictionary_key(question_id, key))
-    if change == 'up':
-        view_count += 1
-    elif change == 'down':
-        view_count -= 1
-    questions_data = import_data(filename)
-    questions_data[question_id][key] = view_count
-    export_data(filename, questions_data, fields)
-
+    questions_data = import_data(file)
+    for dic in questions_data:
+        if dic['id'] == str(question_id):
+            if change == 'up':
+                dic[key] = str(int(dic[key]) + 1)
+            else:
+                dic[key] = str(int(dic[key]) - 1)
+    export_data(file, questions_data, fields)
 
 def sort_by_item(item='id', order='desc_order'):
     lis = import_data(file)
