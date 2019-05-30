@@ -12,8 +12,8 @@ FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message,imag
 def main():
     questions_list = sort_by_item()
     sort_title = ['id', 'vote number', 'time', 'viev number' ]
-    '''if request.method == "POST":
-        questions_list =sort_by_item(request.form['key_to_sort'], 'asc_order')'''
+    if request.method == "POST":
+        questions_list =sort_by_item(request.form['key_to_sort'], 'asc_order')
     return render_template("list.html", questions_list=questions_list, sort_titles = sort_title)
 
 
@@ -22,10 +22,13 @@ def list():
     pass
 
 
+
+
 @app.route('/question/<int:question_id>', methods=['GET', 'POST'])
 def display_question(question_id):
     change_view_count(question_id, file_q, "up")
-    question_data = [question for question in import_data(file_q) if int(question["id"]) == int(question_id)]
+    question_data = [question for question in import_data(file_q) if int(question["id"]) == int(question_id)][0]
+
     time = convert_time_from_csv(int(get_dictionary_key(question_id, 'submission_time')))
     answers_data = [dict for dict in import_data(file_a) if dict['question_id'] == str(question_id)]
     for dict in answers_data:
@@ -37,13 +40,13 @@ def display_question(question_id):
             data_to_export = import_data(file_q)
             data_to_export[question_id]['vote_number'] = int(data_to_export[question_id]['vote_number']) + 1
             export_data(file_q, data_to_export, FIELDS_Q)
-            question_data = import_data(file_q)[question_id]
+            question_data = [dic for dic in import_data(file_q) if dict['id'] == question_id]
         else:
             change_view_count(question_id, file_q, 'down')
             data_to_export = import_data(file_q)
             data_to_export[question_id]['vote_number'] = int(data_to_export[question_id]['vote_number']) - 1
             export_data(file_q, data_to_export, FIELDS_Q)
-            question_data = import_data(file_q)[question_id]
+            question_data = [dic for dic in import_data(file_q) if dict['id'] == question_id]
     return render_template('question.html', question_data=question_data, time=time,
                            answers=answers_data, question_id=question_id)
 
