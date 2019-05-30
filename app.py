@@ -11,10 +11,17 @@ FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message,imag
 @app.route('/', methods=['GET', 'POST'])
 def main():
     questions_list = sort_by_item()
-    sort_title = ['id', 'vote number', 'time', 'viev number' ]
+    up = '\u21A5'
+    down = '\u21A7'
+    sort_title = ['id' + up, 'id' + down, 'vote_number' + up, 'vote_number' + down,  'view_number'+ up, 'view_number' + down ]
     if request.method == "POST":
-        questions_list =sort_by_item(request.form['key_to_sort'], 'asc_order')
-    return render_template("list.html", questions_list=questions_list, sort_titles = sort_title)
+        key_sort = [item for item in sort_title if request.form['sort'] == item][0]
+        if key_sort[-1] == up:
+            sor = 'asc_order'
+        else:
+            sor= 'desc_order'
+        questions_list= sort_by_item(key_sort[:-1],sor )
+    return render_template("list.html", questions_list=questions_list, sort_titles = sort_title, sorto = key_sort)
 
 
 @app.route('/list')
@@ -27,7 +34,6 @@ def list():
 @app.route('/question/<int:question_id>', methods=['GET', 'POST'])
 def display_question(question_id):
     change_view_count(question_id, file_q, "up")
-    question_data = [question for question in import_data(file_q) if int(question["id"]) == int(question_id)][0]
     time = convert_time_from_csv(int(get_dictionary_key(question_id, 'submission_time')))
     answers_data =[dict for dict in import_data(file_a) if dict['question_id'] == str(question_id)]
     for dict in answers_data:

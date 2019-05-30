@@ -2,12 +2,16 @@
 {% block content %}
     <div id="sorter">
         <form action="/" method="POST" name="sorting">
-            <select>
+            <select name="sort">
                 {% for sort_title in sort_titles %}
-                    <option>{{ sort_title }}</option>
+                    {% if sorto == sort_title %}
+                        <option selected="selected">{{ sort_title }}</option>
+                    {% else %}
+                        <option>{{ sort_title }}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
-        <input type="submit" name="selected">
+        <p><input  type="submit" name="select" value="sort"></p>
         </form>
     </div>
             <table>
@@ -15,7 +19,7 @@
                 <th>Question</th>
                 <th>More</th>
             </tr>
-            {% for question in questions_list|reverse%}
+            {% for question in questions_list%}
             <tr>
                 <td>{{question["title"]}}</td>
                 <td><button type="button"><a href="/question/{{ question['id'] }}">Show more</a></button></td>

@@ -28,7 +28,6 @@ def add_data(filename, new_question):
         add.writerow(new_question)
 
 
-
 def del_data(filename, data_id, fields):
     input = import_data(filename)
     output = [record for record in input if record["id"] != str(data_id)]
@@ -68,7 +67,7 @@ def change_view_count(question_id, file, change):
 
 def sort_by_item(item='id', order='desc_order'):
     lis = import_data(file)
-    return sorted(lis, key=lambda i: i[item]) if order=='desc_order' else sorted(lis, key=lambda i: i[item], reverse=True)
+    return sorted(lis, key=lambda dic: int(dic[item])) if order=='desc_order' else sorted(lis, key=lambda dic: int(dic[item]), reverse=True)
 
 
 def update_vote(question_id, change):
@@ -81,5 +80,3 @@ def update_vote(question_id, change):
                 dic['vote_number'] = str(int(dic['vote_number']) - 1)
     export_data(file, dicts_to_export, FIELDS)
     return dicts_to_export
-
-print(update_vote(0,'up'))
