@@ -11,9 +11,10 @@ FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message,imag
 @app.route('/', methods=['GET', 'POST'])
 def main():
     questions_list = sort_by_item()
+    sort_title = ['id', 'vote number', 'time', 'viev number' ]
     '''if request.method == "POST":
         questions_list =sort_by_item(request.form['key_to_sort'], 'asc_order')'''
-    return render_template("list.html", questions_list=questions_list)
+    return render_template("list.html", questions_list=questions_list, sort_titles = sort_title)
 
 
 @app.route('/list')
@@ -68,7 +69,7 @@ def answer_question(question_id):
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        new_id = int(get_dictionary_key()) + 1
+        new_id = int(get_dictionary_key(-1,'id')) + 1
         time = get_real_time()
         view = 0
         vote = 0

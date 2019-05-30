@@ -3,9 +3,6 @@ from datetime import datetime
 import math
 
 
-LAST_ELEMENT = -1
-
-
 file = 'sample_data/question.csv'
 
 
@@ -28,10 +25,14 @@ def add_data(filename, new_question):
         add.writerow(new_question)
 
 
-def get_dictionary_key(id_=LAST_ELEMENT, key='id'):
+def get_dictionary_key(id_, key='id'):
     all_stories = import_data(file)
-    dict_by_id = [dict for dict in all_stories if dict['id'] == str(id_)][0]
-    return 0 if dict_by_id ==[] else dict_by_id[key]
+    if id_ == -1:
+        dict_by_id = all_stories[::-1][0]['id']
+        return dict_by_id
+    else:
+        dict_by_id = [dict for dict in all_stories if dict['id'] == str(id_)][0]
+        return 0 if dict_by_id ==[] else dict_by_id[key]
 
 
 
