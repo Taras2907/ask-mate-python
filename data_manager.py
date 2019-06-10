@@ -1,6 +1,6 @@
 import csv
 from datetime import datetime
-import math
+import psycopg2
 
 LAST_ELEMENT = -1
 FIELDS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -81,3 +81,30 @@ def update_vote(question_id, change):
                 dic['vote_number'] = str(int(dic['vote_number']) - 1)
     export_data(file_q, dicts_to_export, FIELDS)
     return dicts_to_export
+
+
+def search_db(key):
+    user_name = "dmk"
+    password = "7230"
+    host = "localhost"
+    database_name = "localhost"
+
+    connect_str = "postgresql://{user_name}:{password}@{host}/{database_name}".format(
+        user_name=user_name,
+        password=password,
+        host=host,
+        database_name=database_name
+    )
+
+    con = psycopg2.connect(connect_str)
+    con.autocommit = True
+    cur = con.cursor()
+
+    cur.execute("SELECT id, message FROM answer WHERE message LIKE %s", [f"%{key}%"])
+    rows = cur.fetchall()
+    cur.execute("SELECT id, title FROM question WHERE message LIKE %s or title LIKE %s", [f"%{key}%", f"%{key}%"])
+    rows2 = cur.fetchall()
+
+    cur.close()
+    con.close()
+    return rows + rows2
