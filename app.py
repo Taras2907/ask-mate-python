@@ -96,16 +96,17 @@ def add_question():
 
 @app.route("/question/<question_id>/delete")
 def del_question(question_id):
+    del_data('comment', "question_id", question_id)
     del_data('answer', 'question_id', question_id)
     del_data('question_tag', "question_id", question_id)
-    del_data('comment', "question_id", question_id)
     del_data('question', "id", question_id)
     return redirect("/")
 
 
-@app.route("/question/<question_id>/delete_comment/<comment_id>")
-def del_comment(comment_id, question_id):
-    del_data('answer', 'id', comment_id)
+@app.route("/question/<question_id>/delete_comment/<answer_id>")
+def del_comment(answer_id, question_id):
+    del_data('comment', "answer_id", answer_id)
+    del_data('answer', 'id', answer_id)
     return redirect(url_for('display_question', question_id=question_id))
 
 

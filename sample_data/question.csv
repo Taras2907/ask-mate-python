@@ -1,5 +1,5 @@
 id,submission_time,view_number,vote_number,title,message,image
-1,1559219969,52,5,Call stack from Docker shows my local paths. Is it nomal?,"I created a .NET Core controller returning pdf file which works fine on my local machine. When I wrap it into a Linux image I receive an error:
+1,1559219969,54,5,Call stack from Docker shows my local paths. Is it nomal?,"I created a .NET Core controller returning pdf file which works fine on my local machine. When I wrap it into a Linux image I receive an error:
 The type initializer for 'Gdip' threw an exception. 
 So I created a logging tool which gave me that call stack:",
 2,1559220032,39,9,am getting error while i give the npm start command,am getting the below error when i give the command npm start. node module package.json everything is being created but localhost:3000 is not being created. Please help me with this issue,

@@ -22,21 +22,17 @@ def get_real_time():
 
 
 def change_view_count(question_id, file, change):
-
+    pass
     key = 'view_number'
-    questions_data = import_data(file)
-    for question in questions_data:
-        if question['id'] == str(question_id):
-            if change == 'up':
-                question['view_number'] = str(int(question['view_number']) + 1)
-            else:
-                question['view_number'] = str(int(question['view_number']) - 1)
-    export_data(file, questions_data, FIELDS)
+    # questions_data = import_data(file)
+    # for question in questions_data:
+    #     if question['id'] == str(question_id):
+    #         if change == 'up':
+    #             question['view_number'] = str(int(question['view_number']) + 1)
+    #         else:
+    #             question['view_number'] = str(int(question['view_number']) - 1)
+    # export_data(file, questions_data, FIELDS)
 
-
-def sort_by_item(item='id', order='desc_order'):
-    lis = import_data(file_q)
-    return sorted(lis, key=lambda dic: int(dic[item])) if order=='desc_order' else sorted(lis, key=lambda dic: int(dic[item]), reverse=True)
 
 
 @database_common.connection_handler
@@ -65,7 +61,7 @@ def get_columns_with_condition(cursor, column, table, condition_column, conditio
 
 @database_common.connection_handler
 def update_vote(cursor, table, change, condition):
-    current_vote = get_columns_with_condition('vote_number', 'question', 'id', condition)['vote_number'] + change
+    current_vote = get_columns_with_condition('vote_number', 'question', 'id', condition) + change
     sql_query_to_update = sql.SQL("update {} set {} =%s where {} =%s").format(
         sql.Identifier(table),
         sql.Identifier('vote_number'),
