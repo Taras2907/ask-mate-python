@@ -29,13 +29,11 @@ def list():
     pass
 
 
-
-
 @app.route('/question/<int:question_id>', methods=['GET', 'POST'])
 def display_question(question_id):
     change_view_count(question_id, file_q, "up")
     answers_data = get_all(question_id)
-    time = get_columns_with_condition('submission_time','question', 'id', question_id)
+    time = get_columns_with_condition('submission_time', 'question', 'id', question_id)
     if request.method == "POST":
         change = 1 if request.form['send'] == '+' else -1
         change_view_count(question_id, file_q, 'down')
@@ -44,7 +42,6 @@ def display_question(question_id):
     question_data = get_all_columns_with_condition('question', 'id', question_id)
     return render_template('question.html', question_data=question_data, time=time,
                            answers=answers_data, question_id=question_id)
-
 
 
 @app.route('/question/<int:question_id>/new-answer', methods=["GET", "POST"])
@@ -61,6 +58,7 @@ def answer_question(question_id):
         return redirect(url_for('.display_question', question_id = question_id))
     return render_template('answer.html', question_id = question_id)
 
+
 @app.route("/search", methods=["POST", "GET"])
 def search():
     data = []
@@ -69,6 +67,7 @@ def search():
         print(search_word)
         data = search_db(search_word)
     return render_template("../db-connection-example-python/templates/cwiczenia/search.html", data=data)
+
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
@@ -93,12 +92,12 @@ def add_question():
         return redirect('/')
     return render_template('ask_question.html')
 
+
 @app.route("/question/<question_id>/delete")
 def del_question(question_id):
     del_data(file_q, question_id, FIELDS_Q, 'id')
     del_data(file_a,question_id, FIELDS_A, 'question_id' )
     return redirect("/")
-
 
 
 if __name__ == '__main__':

@@ -24,14 +24,10 @@ def import_data(filename):
         return [{k:v for k, v in row.items()} for row in reader]
 
 
-
 def del_data(filename, data_id, fields, header):
     input = import_data(filename)
     output = [record for record in input if record[header] != str(data_id) ]
     export_data(filename, output, fields)
-
-
-
 
 
 def convert_time_from_csv(timestamp):
@@ -42,6 +38,7 @@ def get_real_time():
     now = datetime.now()
     timestamp = datetime.timestamp(now)
     return round(timestamp)
+
 
 def change_view_count(question_id, file, change):
 
@@ -55,14 +52,10 @@ def change_view_count(question_id, file, change):
                 question['view_number'] = str(int(question['view_number']) - 1)
     export_data(file, questions_data, FIELDS)
 
+
 def sort_by_item(item='id', order='desc_order'):
     lis = import_data(file_q)
     return sorted(lis, key=lambda dic: int(dic[item])) if order=='desc_order' else sorted(lis, key=lambda dic: int(dic[item]), reverse=True)
-
-
-
-
-
 
 
 @database_common.connection_handler
@@ -84,7 +77,9 @@ def get_columns_with_condition(cursor,column, table, condition_column, condition
     )
     cursor.execute(sql_all_quuery, [condition_value])
     all_columns = cursor.fetchall()
-    return [] if all_columns ==[] else all_columns[0] # return a list with one dict
+
+    result = [] if all_columns ==[] else all_columns[0][column]
+    return result
 
 
 @database_common.connection_handler
