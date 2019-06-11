@@ -64,7 +64,14 @@ def answer_question(question_id):
         return redirect(url_for('.display_question', question_id = question_id))
     return render_template('answer.html', question_id = question_id)
 
-
+@app.route("/search", methods=["POST", "GET"])
+def search():
+    data = []
+    if request.method == "POST":
+        search_word = request.form["search"]
+        print(search_word)
+        data = search_db(search_word)
+    return render_template("../db-connection-example-python/templates/cwiczenia/search.html", data=data)
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
