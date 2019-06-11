@@ -84,7 +84,7 @@ def get_columns_with_condition(cursor,column, table, condition_column, condition
 
 @database_common.connection_handler
 def update_vote(cursor, table, change, condition):
-    current_vote = get_columns_with_condition('vote_number', 'question', 'id', condition)['vote_number'] + change
+    current_vote = get_columns_with_condition('vote_number', 'question', 'id', condition)+ change
     sql_query_to_update = sql.SQL("update {} set {} =%s where {} =%s").format(
         sql.Identifier(table),
         sql.Identifier('vote_number'),
@@ -140,6 +140,7 @@ def get_all(cursor,id_):
     all_columns = cursor.fetchall()
     return all_columns
 
+
 @database_common.connection_handler
 def get_last_id(cursor, table):
     sql_all_quuery = sql.SQL("select MAX({}) from {}").format(
@@ -160,7 +161,6 @@ def add_data(cursor, table, column_headers, list_of_values):
     )
     cursor.execute(sql_insert_query, list_of_values)
 
-
 @database_common.connection_handler
 def sort_by_column(cursor, table, column,desc_or_asc_order):
     if desc_or_asc_order == 'desc':
@@ -176,3 +176,27 @@ def sort_by_column(cursor, table, column,desc_or_asc_order):
     cursor.execute(sql_sort_query)
     sorte_coll = cursor.fetchall()
     return  sorte_coll
+
+@database_common.connection_handler
+def edit_comments(cursor, message, condition):
+    sql_update_title = sql.SQL("update comment set "
+                               "submission_time = %s,"
+                               "message = %s, "
+                               "edited_count = %s"
+                               " where id =%s").format(
+    )
+    edited_count = get_columns_with_condition('edited_count', 'comment', 'answer_id', 1)
+    edited_count = 0 if edited_count == None else edited_count + 1
+    time = convert_time_from_csv(get_real_time())
+    cursor.execute(sql_update_title, [time, message, edited_count, condition])
+
+
+
+@database_common.connection_handler
+def edit_answer(cursor, message, condition):
+    sql_update_title = sql.SQL("update answer set submission_time = %s,"
+                               "message = %s where id =%s").format(
+    )
+    time = convert_time_from_csv(get_real_time())
+    cursor.execute(sql_update_title, [time, message, condition ])
+
