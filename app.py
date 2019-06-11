@@ -17,12 +17,9 @@ def main():
     sort_title = ['id' + up, 'id' + down, 'vote_number' + up, 'vote_number' + down,  'view_number'+ up, 'view_number' + down ]
     if request.method == "POST":
         key_sort = [item for item in sort_title if request.form['sort'] == item][0]
-        if key_sort[-1] == up:
-            sor = 'asc_order'
-        else:
-            sor= 'desc_order'
-        #questions_list= sort_by_item(key_sort[:-1],sor )
-    return render_template("list.html", questions_list=questions_list,
+        sorting_order = 'asc' if key_sort[-1] == up else 'desc'
+        questions_list = sort_by_column('question', key_sort[:-1], sorting_order) # get all columns sorted by column(key_sort returns
+    return render_template("list.html", questions_list=questions_list, # for exapmple id and arrow up or donw
                            sort_titles = sort_title,
                            sorto = key_sort)
 
