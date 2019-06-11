@@ -19,7 +19,7 @@ def main():
         key_sort = [item for item in sort_title if request.form['sort'] == item][0]
         sorting_order = 'asc' if key_sort[-1] == up else 'desc'
         questions_list = sort_by_column('question', key_sort[:-1], sorting_order) # get all columns sorted by column(key_sort returns
-    return render_template("list.html", questions_list=questions_list, # for exapmple id and arrow up or donw
+    return render_template("list.html", questions_list=questions_list, # for exapmple id and arrow up or down
                            sort_titles = sort_title,
                            sorto = key_sort)
 
@@ -64,7 +64,6 @@ def search():
     data = []
     if request.method == "POST":
         search_word = request.form["search"]
-        print(search_word)
         data = search_db(search_word)
     return render_template("../db-connection-example-python/templates/cwiczenia/search.html", data=data)
 
