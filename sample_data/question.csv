@@ -1,8 +1,8 @@
 id,submission_time,view_number,vote_number,title,message,image
-1,1559219969,2,8,Call stack from Docker shows my local paths. Is it nomal?,"I created a .NET Core controller returning pdf file which works fine on my local machine. When I wrap it into a Linux image I receive an error:
+1,1559219969,47,5,Call stack from Docker shows my local paths. Is it nomal?,"I created a .NET Core controller returning pdf file which works fine on my local machine. When I wrap it into a Linux image I receive an error:
 The type initializer for 'Gdip' threw an exception. 
 So I created a logging tool which gave me that call stack:",
-2,1559220032,1,0,am getting error while i give the npm start command,am getting the below error when i give the command npm start. node module package.json everything is being created but localhost:3000 is not being created. Please help me with this issue,
-3,1559220066,2,-7,UpdateView with formset DJANGO,I want to update multiple objects (formset). I have a model and i can to create multiple objects with this:,
-4,1559220118,2,0,QueryDsl SQL - Left Join a subquery,I am using QueryDsl SQL and I want to left join a subquery. Here is the query in plain SQL,
-5,1559220169,2,0,HALLO! HALLO! HALLO!,Czy jest tu moderator?,
+2,1559220032,38,9,am getting error while i give the npm start command,am getting the below error when i give the command npm start. node module package.json everything is being created but localhost:3000 is not being created. Please help me with this issue,
+3,1559220066,17,8,UpdateView with formset DJANGO,I want to update multiple objects (formset). I have a model and i can to create multiple objects with this:,
+4,1559220118,5,7,QueryDsl SQL - Left Join a subquery,I am using QueryDsl SQL and I want to left join a subquery. Here is the query in plain SQL,
+5,1559290694,11,-1,How are you?,Please tell me,

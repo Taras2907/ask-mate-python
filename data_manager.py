@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime
-import math
+import database_common
+from psycopg2 import sql
 
 LAST_ELEMENT = -1
 FIELDS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -22,11 +23,6 @@ def import_data(filename):
         return [{k:v for k, v in row.items()} for row in reader]
 
 
-def add_data(filename, new_question):
-    with open(filename, 'a') as f:
-        add = csv.writer(f)
-        add.writerow(new_question)
-
 
 def del_data(filename, data_id, fields, header):
     input = import_data(filename)
@@ -34,14 +30,6 @@ def del_data(filename, data_id, fields, header):
     export_data(filename, output, fields)
 
 
-
-def get_dictionary_key(id_, key='id'):
-    all_stories = import_data(file_q)
-    if id_ == -1:
-        return 0 if all_stories ==[] else all_stories[::-1][0]['id']
-    else:
-        dict_by_id = [dict for dict in all_stories if dict['id'] == str(id_)][0]
-        return 0 if dict_by_id ==[] else dict_by_id[key]
 
 
 
@@ -58,12 +46,12 @@ def change_view_count(question_id, file, change):
 
     key = 'view_number'
     questions_data = import_data(file)
-    for dic in questions_data:
-        if dic['id'] == str(question_id):
+    for question in questions_data:
+        if question['id'] == str(question_id):
             if change == 'up':
-                dic[key] = str(int(dic[key]) + 1)
+                question['view_number'] = str(int(question['view_number']) + 1)
             else:
-                dic[key] = str(int(dic[key]) - 1)
+                question['view_number'] = str(int(question['view_number']) - 1)
     export_data(file, questions_data, FIELDS)
 
 def sort_by_item(item='id', order='desc_order'):
@@ -71,13 +59,80 @@ def sort_by_item(item='id', order='desc_order'):
     return sorted(lis, key=lambda dic: int(dic[item])) if order=='desc_order' else sorted(lis, key=lambda dic: int(dic[item]), reverse=True)
 
 
-def update_vote(question_id, change):
-    dicts_to_export = import_data(file_q)
-    for dic in dicts_to_export:
-        if dic['id'] == str(question_id):
-            if change == "up":
-                dic['vote_number'] = str(int(dic['vote_number']) + 1)
-            else:
-                dic['vote_number'] = str(int(dic['vote_number']) - 1)
-    export_data(file_q, dicts_to_export, FIELDS)
-    return dicts_to_export
+
+
+
+
+
+@database_common.connection_handler
+def get_columns(cursor, table):
+    sql_all_quuery = sql.SQL("select * from {} ").format(
+        sql.Identifier(table)
+    )
+    cursor.execute(sql_all_quuery)
+    all_columns = cursor.fetchall()
+    return all_columns
+
+
+@database_common.connection_handler
+def get_columns_with_condition(cursor,column, table, condition_column, condition_value):
+    sql_all_quuery = sql.SQL("select {} from {}  where {} = %s").format(
+        sql.Identifier(column),
+        sql.Identifier(table),
+        sql.Identifier(condition_column)
+    )
+    cursor.execute(sql_all_quuery, [condition_value])
+    all_columns = cursor.fetchall()
+    return [] if all_columns ==[] else all_columns[0] # return a list with one dict
+
+
+@database_common.connection_handler
+def update_vote(cursor, table, change, condition):
+    current_vote = get_columns_with_condition('vote_number', 'question', 'id', condition)['vote_number'] + change
+    sql_query_to_update = sql.SQL("update {} set {} =%s where {} =%s").format(
+        sql.Identifier(table),
+        sql.Identifier('vote_number'),
+        sql.Identifier('id'),
+
+    )
+    cursor.execute(sql_query_to_update, [current_vote, condition])
+
+
+
+@database_common.connection_handler
+def get_all_columns_with_condition(cursor, table, condition_column, condition_value):
+    sql_all_quuery = sql.SQL("select * from {}  where {} = %s").format(
+        sql.Identifier(table),
+        sql.Identifier(condition_column)
+    )
+    cursor.execute(sql_all_quuery, [condition_value])
+    all_columns = cursor.fetchall()
+    return [] if all_columns ==[] else all_columns[0] # return a list with one dict
+
+
+
+@database_common.connection_handler
+def get_all(cursor,id_):
+    cursor.execute("select * from answer where question_id = %s", [id_])
+    all_columns = cursor.fetchall()
+    return all_columns
+
+@database_common.connection_handler
+def get_last_id(cursor, table):
+    sql_all_quuery = sql.SQL("select MAX({}) from {}").format(
+        sql.Identifier('id'),
+        sql.Identifier(table)
+    )
+    cursor.execute(sql_all_quuery)
+    all_columns = cursor.fetchall()
+    return all_columns[0]['max'] # return a list with one dict{max:value}
+
+
+@database_common.connection_handler
+def add_data(cursor, table, column_headers, list_of_values):
+    sql_insert_query = sql.SQL("insert into {} ({}) values ({})").format(
+        sql.Identifier(table),
+        sql.SQL(', ').join(map(sql.Identifier, column_headers)),
+        sql.SQL(', ').join(sql.Placeholder() * len(column_headers))
+    )
+    cursor.execute(sql_insert_query, list_of_values)
