@@ -58,6 +58,7 @@
 
                 </li>
                 <br>
+                <button type="button" class="button"><a href="/question/{{ question_id }}/delete_comment/{{ dict['id'] }}">Delete answer</a></button>
                 </div>
                 {% for data in comment_data %}
                         {% if data['answer_id'] == dict['id'] %}
