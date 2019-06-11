@@ -11,46 +11,27 @@ file_q = 'sample_data/question.csv'
 file_a = 'sample_data/answer.csv'
 
 
-def export_data(filename, data_to_write, fields):
-    with open(filename, 'w') as f:
-        writer = csv.DictWriter(f, fieldnames=fields)
-        writer.writeheader()
-        writer.writerows(data_to_write)
-
-
-def import_data(filename):
-    with open(filename, 'r') as f:
-        reader = csv.DictReader(f)
-        return [{k:v for k, v in row.items()} for row in reader]
-
-
-def del_data(filename, data_id, fields, header):
-    input = import_data(filename)
-    output = [record for record in input if record[header] != str(data_id) ]
-    export_data(filename, output, fields)
-
-
 def convert_time_from_csv(timestamp):
     return datetime.fromtimestamp(timestamp)
 
 
 def get_real_time():
     now = datetime.now()
-    timestamp = datetime.timestamp(now)
-    return round(timestamp)
+#    timestamp = datetime.timestamp(now)
+    return now
 
 
 def change_view_count(question_id, file, change):
-
+    pass
     key = 'view_number'
-    questions_data = import_data(file)
-    for question in questions_data:
-        if question['id'] == str(question_id):
-            if change == 'up':
-                question['view_number'] = str(int(question['view_number']) + 1)
-            else:
-                question['view_number'] = str(int(question['view_number']) - 1)
-    export_data(file, questions_data, FIELDS)
+    # questions_data = import_data(file)
+    # for question in questions_data:
+    #     if question['id'] == str(question_id):
+    #         if change == 'up':
+    #             question['view_number'] = str(int(question['view_number']) + 1)
+    #         else:
+    #             question['view_number'] = str(int(question['view_number']) - 1)
+    # export_data(file, questions_data, FIELDS)
 
 
 def sort_by_item(item='id', order='desc_order'):
@@ -84,7 +65,7 @@ def get_columns_with_condition(cursor,column, table, condition_column, condition
 
 @database_common.connection_handler
 def update_vote(cursor, table, change, condition):
-    current_vote = get_columns_with_condition('vote_number', 'question', 'id', condition)+ change
+    current_vote = get_columns_with_condition('vote_number', 'question', 'id', condition) + change
     sql_query_to_update = sql.SQL("update {} set {} =%s where {} =%s").format(
         sql.Identifier(table),
         sql.Identifier('vote_number'),
@@ -92,6 +73,14 @@ def update_vote(cursor, table, change, condition):
 
     )
     cursor.execute(sql_query_to_update, [current_vote, condition])
+
+
+@database_common.connection_handler
+def del_data(cursor, table, condition_column, data_id):
+    sql_query_to_delete = sql.SQL("DELETE FROM {}  WHERE {} = %s;").format(
+        sql.Identifier(table),
+        sql.Identifier(condition_column))
+    cursor.execute(sql_query_to_delete, [data_id])
 
 
 def search_db(key):
@@ -136,7 +125,7 @@ def get_all_columns_with_condition(cursor, table, condition_column, condition_va
 
 
 @database_common.connection_handler
-def get_all(cursor,id_):
+def get_all(cursor, id_):
     cursor.execute("select * from answer where question_id = %s", [id_])
     all_columns = cursor.fetchall()
     return all_columns
