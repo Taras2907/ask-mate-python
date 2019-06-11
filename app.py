@@ -66,7 +66,8 @@ def search():
         search_word = request.form["search"]
         print(search_word)
         data = search_db(search_word)
-    return render_template("../db-connection-example-python/templates/cwiczenia/search.html", data=data)
+    return render_template("/search.html", data=data)
+
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -95,9 +96,17 @@ def add_question():
 
 @app.route("/question/<question_id>/delete")
 def del_question(question_id):
-    del_data(file_q, question_id, FIELDS_Q, 'id')
-    del_data(file_a,question_id, FIELDS_A, 'question_id' )
+    del_data('answer', 'question_id', question_id)
+    del_data('question_tag', "question_id", question_id)
+    del_data('comment', "question_id", question_id)
+    del_data('question', "id", question_id)
     return redirect("/")
+
+
+@app.route("/question/<question_id>/delete_comment/<comment_id>")
+def del_comment(comment_id, question_id):
+    del_data('answer', 'id', comment_id)
+    return redirect(url_for('display_question', question_id=question_id))
 
 
 if __name__ == '__main__':

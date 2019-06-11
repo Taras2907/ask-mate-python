@@ -35,6 +35,7 @@
                     <br>
                     {{ dict['submission_time'] }}</li>
                 <br>
+                <button type="button" class="button"><a href="/question/{{ question_id }}/delete_comment/{{ dict['id'] }}">Delete answer</a></button>
                 </div>
             {% endfor %}
         {% endif %}
