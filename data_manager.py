@@ -164,3 +164,20 @@ def add_data(cursor, table, column_headers, list_of_values):
         sql.SQL(', ').join(sql.Placeholder() * len(column_headers))
     )
     cursor.execute(sql_insert_query, list_of_values)
+
+
+@database_common.connection_handler
+def sort_by_column(cursor, table, column,desc_or_asc_order):
+    if desc_or_asc_order == 'desc':
+        sql_sort_query = sql.SQL("select * from {} order by {} DESC").format(
+        sql.Identifier(table),
+        sql.Identifier(column)
+        )
+    else:
+        sql_sort_query = sql.SQL("select * from {} order by {} ASC").format(
+            sql.Identifier(table),
+            sql.Identifier(column)
+        )
+    cursor.execute(sql_sort_query)
+    sorte_coll = cursor.fetchall()
+    return  sorte_coll
