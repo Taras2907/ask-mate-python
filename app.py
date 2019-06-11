@@ -6,6 +6,8 @@ file_q = 'sample_data/question.csv'
 file_a = 'sample_data/answer.csv'
 FIELDS_Q = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message','image']
+FIELDS_C_Q = ['id', 'question_id', 'message', 'submission_time']
+FIELDS_C_A = ['id', 'answer_id', 'message', 'submission_time']
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -33,6 +35,7 @@ def list():
 def display_question(question_id):
     change_view_count(question_id, file_q, "up")
     answers_data = get_all(question_id)
+    comment_data = get_columns('comment')
     time = get_columns_with_condition('submission_time', 'question', 'id', question_id)
     if request.method == "POST":
         change = 1 if request.form['send'] == '+' else -1
@@ -41,7 +44,7 @@ def display_question(question_id):
 
     question_data = get_all_columns_with_condition('question', 'id', question_id)
     return render_template('question.html', question_data=question_data, time=time,
-                           answers=answers_data, question_id=question_id)
+                           answers=answers_data, question_id=question_id, comment_data=comment_data)
 
 
 @app.route('/question/<int:question_id>/new-answer', methods=["GET", "POST"])
@@ -49,7 +52,7 @@ def answer_question(question_id):
     if request.method == "POST":
         time = get_real_time()
         answer_list = [get_last_id('answer') + 1,   # unique key?
-                       convert_time_from_csv(time),
+                       time,
                        "0",
                        question_id,
                        request.form["answer"],
@@ -65,7 +68,8 @@ def search():
     if request.method == "POST":
         search_word = request.form["search"]
         data = search_db(search_word)
-    return render_template("../db-connection-example-python/templates/cwiczenia/search.html", data=data)
+    return render_template("/search.html", data=data)
+
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -94,9 +98,52 @@ def add_question():
 
 @app.route("/question/<question_id>/delete")
 def del_question(question_id):
-    del_data(file_q, question_id, FIELDS_Q, 'id')
-    del_data(file_a,question_id, FIELDS_A, 'question_id' )
+    del_data('comment', "question_id", question_id)
+    del_data('answer', 'question_id', question_id)
+    del_data('question_tag', "question_id", question_id)
+    del_data('question', "id", question_id)
     return redirect("/")
+
+
+@app.route("/question/<question_id>/delete_comment/<answer_id>")
+def del_comment(answer_id, question_id):
+    del_data('comment', "answer_id", answer_id)
+    del_data('answer', 'id', answer_id)
+    return redirect(url_for('display_question', question_id=question_id))
+
+
+@app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
+def add_comment_to_question(question_id):
+    if request.method == 'POST':
+        time = get_real_time()
+        message = request.form['comment']
+        new_id = get_last_id('comment') + 1
+        values = [
+            new_id,
+            question_id,
+            message,
+            time
+        ]
+        add_data('comment', FIELDS_C_Q, values)
+        return redirect(url_for('.display_question', question_id = question_id))
+    return render_template('comment.html', question_id=question_id)
+
+
+@app.route('/question/<question_id>/new-comment/<answer_id>', methods=['GET', 'POST'])
+def add_comment_to_answer(question_id, answer_id):
+    if request.method == 'POST':
+        time = get_real_time()
+        message = request.form['comment']
+        new_id = get_last_id('comment') + 1
+        values = [
+            new_id,
+            answer_id,
+            message,
+            time
+        ]
+        add_data('comment', FIELDS_C_A, values)
+        return redirect(url_for('.display_question', question_id=question_id))
+    return render_template('comment.html', question_id=question_id, answer_id=answer_id)
 
 
 if __name__ == '__main__':
