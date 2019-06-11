@@ -5,6 +5,7 @@
        </div>
     <div id="message-block">
             Message: <br>{{ question_data['message']}}
+
     </div>
 
     <div id="data-block">
@@ -20,9 +21,26 @@
             </form>
 
         </ul>
+
+
     </div>
+    <div>
             <button type="button" class="button"><a href="/question/{{question_id}}/new-answer">Add answer</a></button>
+            <button type="button" class="button"><a href="/question/{{ question_id }}/new-comment">Add comment</a></button>
             <button type="button" class="button"><a href="/question/{{ question_id }}/delete">Delete question</a></button>
+    </div>
+                {% for dicts in comment_data %}
+            {% if dicts['question_id'] == question_data['id'] %}
+            <div class="comment-block">
+                <br>
+                <li>{{ dicts['message'] }}
+
+                        <br>
+                        {{ dicts['submission_time'] }}
+                    <br>
+            </div>
+            {% endif %}
+    {% endfor %}
     <div>
     <h4>Answers:</h4>
         <ul>
@@ -32,10 +50,27 @@
             {% for dict in answers %}
                 <div id="ansewr-block">
                 <li>{{ dict['message'] }}
+
                     <br>
-                    {{ dict['submission_time'] }}</li>
+                    {{ dict['submission_time'] }}
+                <br>
+                <button type="button" class="button" id="comment_button"><a href="/question/{{ question_id }}/new-comment/{{ dict['id'] }}">Add comment</a></button>
+
+                </li>
                 <br>
                 </div>
+                {% for data in comment_data %}
+                        {% if data['answer_id'] == dict['id'] %}
+                            <div class="comment-block">
+                                <li>
+                                    {{ data['message'] }}
+
+                                        <br>
+                                        {{ data['submission_time'] }}
+                                    <br>
+                            </div>
+                        {% endif %}
+                {% endfor %}
             {% endfor %}
         {% endif %}
         </ul>

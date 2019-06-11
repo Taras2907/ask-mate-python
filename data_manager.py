@@ -36,8 +36,8 @@ def convert_time_from_csv(timestamp):
 
 def get_real_time():
     now = datetime.now()
-    timestamp = datetime.timestamp(now)
-    return round(timestamp)
+#    timestamp = datetime.timestamp(now)
+    return now
 
 
 def change_view_count(question_id, file, change):
@@ -94,6 +94,7 @@ def update_vote(cursor, table, change, condition):
     cursor.execute(sql_query_to_update, [current_vote, condition])
 
 
+@database_common.connection_handler
 def search_db(key):
     user_name = "dmk"
     password = "7230"
@@ -133,12 +134,12 @@ def get_all_columns_with_condition(cursor, table, condition_column, condition_va
     return [] if all_columns ==[] else all_columns[0] # return a list with one dict
 
 
-
 @database_common.connection_handler
-def get_all(cursor,id_):
+def get_all(cursor, id_):
     cursor.execute("select * from answer where question_id = %s", [id_])
     all_columns = cursor.fetchall()
     return all_columns
+
 
 @database_common.connection_handler
 def get_last_id(cursor, table):
@@ -159,3 +160,17 @@ def add_data(cursor, table, column_headers, list_of_values):
         sql.SQL(', ').join(sql.Placeholder() * len(column_headers))
     )
     cursor.execute(sql_insert_query, list_of_values)
+
+
+@database_common.connection_handler
+def get_comments(cursor):
+
+    cursor.execute('''
+                        SELECT * FROM comment 
+                        
+                        ''')
+
+    result = cursor.fetchall()
+    return result
+
+
