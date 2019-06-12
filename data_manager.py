@@ -34,10 +34,6 @@ def change_view_count(question_id, file, change):
     # export_data(file, questions_data, FIELDS)
 
 
-def sort_by_item(item='id', order='desc_order'):
-    lis = import_data(file_q)
-    return sorted(lis, key=lambda dic: int(dic[item])) if order=='desc_order' else sorted(lis, key=lambda dic: int(dic[item]), reverse=True)
-
 
 @database_common.connection_handler
 def get_columns(cursor, table):
