@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+{% block content %}
+
+    <div class="form-center">
+
+    <form action="/question/{{ question_id }}/edit/{{ answer_id }}" name="edit_answer" method="POST">
+        <h4>Edit answer</h4>
+        <br>
+        <textarea class="text-input" name="message">{{ message }}</textarea>
+        <input type="submit" value="save">
+    </form>
+    </div>
+
+{% endblock %}

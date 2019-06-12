@@ -34,10 +34,12 @@
             <div class="comment-block">
                 <br>
                 <li>{{ dicts['message'] }}
+                <button type="button" class="button"><a href="/question/{{ question_id }}/edit_comment/{{ dicts['id'] }}">Edit question</a></button>
 
                         <br>
                         {{ dicts['submission_time'] }}
                     <br>
+
             </div>
             {% endif %}
     {% endfor %}
@@ -55,9 +57,7 @@
                     {{ dict['submission_time'] }}
                 <br>
                 <button type="button" class="button" id="comment_button"><a href="/question/{{ question_id }}/new-comment/{{ dict['id'] }}">Add comment</a></button>
-
-                </li>
-                <br>
+                <button type="button" class="button" id="edit_button"><a href="/question/{{ question_id }}/edit/{{ dict['id'] }}">Edit answer</a></button>
                 <button type="button" class="button"><a href="/question/{{ question_id }}/delete_comment/{{ dict['id'] }}">Delete answer</a></button>
                 </div>
                 {% for data in comment_data %}
