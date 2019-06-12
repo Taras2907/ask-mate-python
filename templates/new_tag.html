@@ -2,20 +2,16 @@
 {% block content %}
 
 <div class="form-center">
-    <form name="ask" action="/add-question" method="POST">
+    <form name="tag" action="/question/{{ question_id }}/new-tag" method="POST">
 
-        <h4>Title:</h4>
-        <input type="text" name="title" placeholder="Put title of your question here" required class="text-input">
-
-
-        <h4>Message:</h4>
-        <textarea name="message" required class="text-input"></textarea>
+        <h4>TAGS:</h4>
         <br>
         {% for i in range(tag_names|length) %}
+
             <label><input type="checkbox" value={{ i + 1 }} name="box">{{ tag_names[i]['name'] }}</label>
-            <br>
         {% endfor %}
         <br>
+        <input type="text" placeholder="your tag" name="new_tag_add" value="">
         <input type="submit" value="send" formmethod="post" class="button">
     </form>
 </div>
