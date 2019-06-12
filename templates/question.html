@@ -23,7 +23,19 @@
                     <input type ='submit' name="send" value = '+' class="button"/>
                 </p>
             </form>
+            <p>
+                {% for qtags in tags_questions %}
+                        {% if qtags['question_id'] == question_data['id'] %}
+                            {% for tags in tags_names %}
+                                {% if tags['id'] == qtags['tag_id'] %}
+                                <button type="button" class="button">{{ tags['name'] }}</button>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
 
+                    {% endfor %}
+                <button type="button" class="button"><a href="/question/{{ question_id }}/new-tag">Add tag</a></button>
+            </p>
         </ul>
 
 
