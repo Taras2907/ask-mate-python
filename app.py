@@ -43,8 +43,13 @@ def display_question(question_id):
         update_vote('question', change, question_id)
 
     question_data = get_all_columns_with_condition('question', 'id', question_id)
+    if question_data['image'] is None:
+        img = '/static/images/default.jpg'
+    else:
+        img = question_data['image']
+
     return render_template('question.html', question_data=question_data, time=time,
-                           answers=answers_data, question_id=question_id, comment_data=comment_data)
+                           answers=answers_data, question_id=question_id, comment_data=comment_data, image=img)
 
 
 @app.route('/question/<int:question_id>/new-answer', methods=["GET", "POST"])

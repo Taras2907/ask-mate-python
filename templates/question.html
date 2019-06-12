@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-       <div>
+
+
+
+    <img src="{{ image }}" alt="profile-pic">
+    <div>
            <h4>{{ question_data['title']}}</h4><br>
        </div>
-
-    <img src="/images/img-profile-default.png" alt="profile-pic">
     <div id="message-block">
             Message: <br>{{ question_data['message']}}
 
