@@ -33,13 +33,13 @@ def list():
 
 @app.route('/question/<int:question_id>', methods=['GET', 'POST'])
 def display_question(question_id):
-    change_view_count(question_id, file_q, "up")
+    change_view_count(question_id, "up")
     answers_data = get_all(question_id)
     comment_data = get_comments()
     time = get_columns_with_condition('submission_time', 'question', 'id', question_id)
     if request.method == "POST":
         change = 1 if request.form['send'] == '+' else -1
-        change_view_count(question_id, file_q, 'down')
+        change_view_count(question_id, 'down')
         update_vote('question', change, question_id)
 
     question_data = get_all_columns_with_condition('question', 'id', question_id)
