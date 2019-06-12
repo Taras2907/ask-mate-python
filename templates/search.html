@@ -1,28 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="table-div">
-    <div id="sorter">
-        <form action="/" method="POST" name="sorting">
-            <span>sort by:</span>
-            <select name="sort">
-                {% for sort_title in sort_titles %}
-                    {% if sorto == sort_title %}
-                        <option selected="selected">{{ sort_title }}</option>
-                    {% else %}
-                        <option>{{ sort_title }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-            <br>
-        <p><input  type="submit" name="select" value="sort" class="button"></p>
-        </form>
         </div>
             <table>
             <tr>
                 <th>Question</th>
                 <th>More</th>
             </tr>
-            {% for question in questions_list%}
+            {% for question in question_list%}
             <tr>
                 <td>{{question["message"]}}</td>
                 <td><button type="button" class="button"><a href="/question/{{ question['id'] }}">Show more</a></button></td>

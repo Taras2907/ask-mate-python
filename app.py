@@ -14,6 +14,7 @@ FIELDS_C_A = ['id', 'answer_id', 'message', 'submission_time']
 def main():
     key_sort = 0
     questions_list = get_columns('question')
+    print(questions_list)
     up = '\u21A5'
     down = '\u21A7'
     sort_title = ['id' + up, 'id' + down, 'vote_number' + up, 'vote_number' + down,  'view_number'+ up, 'view_number' + down ]
@@ -72,8 +73,16 @@ def answer_question(question_id):
 def search():
     if request.method == "POST":
         search_phrase = request.form['search']
-        data = search_db(search_phrase)
-    return render_template("/search.html", questions_list=data)
+        print (search_phrase)
+        return redirect(url_for('search_query', search_phrase = search_phrase))
+
+
+@app.route("/search?q=<search_phrase>")
+def search_query(search_phrase):
+    print(search_phrase)
+    data = search_db(search_phrase)
+    print(data)
+    return render_template('search.html', question_list=data)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])

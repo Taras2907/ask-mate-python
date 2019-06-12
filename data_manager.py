@@ -86,10 +86,12 @@ def del_data(cursor, table, condition_column, data_id):
 
 @database_common.connection_handler
 def search_db(cursor, key):
-
-    cursor.execute("SELECT * FROM answer WHERE message LIKE %s", [f"%{key}%"])
+    key = "%" + key.lower() + "%"
+    search1 = sql.SQL('select * from answer WHERE LOWER(message) LIKE %s')
+    cursor.execute(search1, [key])
     rows = cursor.fetchall()
-    cursor.execute("SELECT * FROM question WHERE message LIKE %s or title LIKE %s", [f"%{key}%", f"%{key}%"])
+    search2 = sql.SQL('SELECT * FROM question WHERE LOWER(message) LIKE %s or LOWER(title) LIKE %s')
+    cursor.execute(search2, [key, key])
     rows2 = cursor.fetchall()
 
     return rows + rows2
