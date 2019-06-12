@@ -70,11 +70,10 @@ def answer_question(question_id):
 
 @app.route("/search", methods=["POST", "GET"])
 def search():
-    data = []
     if request.method == "POST":
-        search_word = request.form["search"]
-        data = search_db(search_word)
-    return render_template("/search.html", data=data)
+        search_phrase = request.form['search']
+        data = search_db(search_phrase)
+    return render_template("/search.html", questions_list=data)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])

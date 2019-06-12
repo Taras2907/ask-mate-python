@@ -16,12 +16,6 @@
             <br>
         <p><input  type="submit" name="select" value="sort" class="button"></p>
         </form>
-        <form action="/search" method="POST" name="search">
-            <select name="search">
-                <input type="text">Search</input>
-                <input  type="submit" name="search" value="search" class="button">
-            </select>
-        </form>
         </div>
             <table>
             <tr>
@@ -30,19 +24,7 @@
             </tr>
             {% for question in questions_list%}
             <tr>
-                <td>{{question["title"]}}
-                    <br>
-                    {% for qtags in tags_questions %}
-                        {% if qtags['question_id'] == question['id'] %}
-                            {% for tags in tags_names %}
-                                {% if tags['id'] == qtags['tag_id'] %}
-                                <button type="button" class="button">{{ tags['name'] }}</button>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-
-                    {% endfor %}
-                </td>
+                <td>{{question["message"]}}</td>
                 <td><button type="button" class="button"><a href="/question/{{ question['id'] }}">Show more</a></button></td>
             </tr>
             {% endfor %}

@@ -84,31 +84,14 @@ def del_data(cursor, table, condition_column, data_id):
         sql.Identifier(condition_column))
     cursor.execute(sql_query_to_delete, [data_id])
 
+@database_common.connection_handler
+def search_db(cursor, key):
 
-def search_db(key):
-    user_name = "dmk"
-    password = "7230"
-    host = "localhost"
-    database_name = "localhost"
+    cursor.execute("SELECT * FROM answer WHERE message LIKE %s", [f"%{key}%"])
+    rows = cursor.fetchall()
+    cursor.execute("SELECT * FROM question WHERE message LIKE %s or title LIKE %s", [f"%{key}%", f"%{key}%"])
+    rows2 = cursor.fetchall()
 
-    connect_str = "postgresql://{user_name}:{password}@{host}/{database_name}".format(
-        user_name=user_name,
-        password=password,
-        host=host,
-        database_name=database_name
-    )
-
-    con = psycopg2.connect(connect_str)
-    con.autocommit = True
-    cur = con.cursor()
-
-    cur.execute("SELECT id, message FROM answer WHERE message LIKE %s", [f"%{key}%"])
-    rows = cur.fetchall()
-    cur.execute("SELECT id, title FROM question WHERE message LIKE %s or title LIKE %s", [f"%{key}%", f"%{key}%"])
-    rows2 = cur.fetchall()
-
-    cur.close()
-    con.close()
     return rows + rows2
 
 
