@@ -35,6 +35,8 @@ def display_question(question_id):
     answers_data = sorted(get_all(question_id), key=lambda z: z['id'])
     comment_data = sorted(get_columns('comment'), key=lambda z: z['id'])
     time = get_columns_with_condition('submission_time', 'question', 'id', question_id)
+    tags_names = get_columns('tag')
+    tags_questions = get_columns('question_tag')
     if request.method == "POST":
         change = 1 if request.form['send'] == '+' else -1
         change_view_count(question_id, 'down')
@@ -47,7 +49,8 @@ def display_question(question_id):
         img = question_data['image']
 
     return render_template('question.html', question_data=question_data, time=time,
-                           answers=answers_data, question_id=question_id, comment_data=comment_data, image=img)
+                           answers=answers_data, question_id=question_id, comment_data=comment_data, image=img,
+                           tags_names=tags_names, tags_questions=tags_questions)
 
 
 @app.route('/question/<int:question_id>/new-answer', methods=["GET", "POST"])
@@ -76,6 +79,7 @@ def search():
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
+    tag_names = get_columns('tag')
     if request.method == 'POST':
         new_id = get_last_id('question') + 1
         time = get_real_time()
@@ -97,7 +101,7 @@ def add_question():
         add_data('question', FIELDS_Q, new_question)
         add_tags(tags, new_id)
         return redirect('/')
-    return render_template('ask_question.html')
+    return render_template('ask_question.html', tag_names=tag_names)
 
 
 @app.route("/question/<question_id>/delete")
@@ -172,6 +176,33 @@ def edit_answers(question_id, answer_id):
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('edit.html', message=message, question_id=question_id,
                            answer_id=answer_id)
+@app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
+def new_tag(question_id):
+    tag_names = get_columns('tag')
+    tag_question = get_columns('question_tag')
+    if request.method == 'POST':
+        tags = request.form.getlist('box')
+
+        temp = request.form['new_tag_add']
+        if temp != '':
+            new_id = get_last_id('tag') + 1
+            headers = [
+
+                'id',
+                'name'
+            ]
+            tags.append(new_id)
+
+            add_data('tag', headers, [new_id, temp])
+            add_tags(tags, question_id)
+            return redirect(url_for('display_question', question_id=question_id))
+        else:
+            add_tags(tags, question_id)
+            return redirect(url_for('display_question', question_id=question_id))
+
+    return render_template('new_tag.html', question_id=question_id, tag_names=tag_names, tag_question=tag_question)
+
+
 
 @app.route('/question/<int:question_id>/answer/<int:answer_id>/edit_comment/<int:comment_id>', methods=['GET', 'POST'])
 def edit_answer_coment(question_id , answer_id, comment_id):
