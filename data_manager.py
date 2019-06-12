@@ -17,22 +17,28 @@ def convert_time_from_csv(timestamp):
 
 def get_real_time():
     now = datetime.now()
-#    timestamp = datetime.timestamp(now)
     return now
 
 
-def change_view_count(question_id, file, change):
-    pass
-    key = 'view_number'
-    # questions_data = import_data(file)
-    # for question in questions_data:
-    #     if question['id'] == str(question_id):
-    #         if change == 'up':
-    #             question['view_number'] = str(int(question['view_number']) + 1)
-    #         else:
-    #             question['view_number'] = str(int(question['view_number']) - 1)
-    # export_data(file, questions_data, FIELDS)
-
+@database_common.connection_handler
+def change_view_count(cursor, question_id, change):
+    cursor.execute('''
+                    SELECT view_number FROM question
+                    WHERE id = %(question_id)s
+                    ''',
+                   {'question_id': question_id})
+    views = cursor.fetchall()
+    temp = views[0]['view_number']
+    if change == 'up':
+        temp += 1
+    else:
+        temp -= 1
+    cursor.execute('''
+                    UPDATE question SET view_number = %(temp)s
+                    WHERE id = %(question_id)s
+                    ''',
+                   {'temp': temp,
+                       'question_id': question_id})
 
 
 @database_common.connection_handler
@@ -183,3 +189,10 @@ def edit_answer(cursor, updated_message, condition):
     )
     time = get_real_time()
     cursor.execute(sql_update_query, [time, updated_message, condition])
+
+
+def add_tags(tags_list, question_id):
+    headers = ['question_id', 'tag_id']
+    for tag in tags_list:
+        values = [question_id, tag]
+        add_data('question_tag', headers, values)
