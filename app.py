@@ -21,7 +21,7 @@ def main():
         key_sort = [item for item in sort_title if request.form['sort'] == item][0]
         sorting_order = 'asc' if key_sort[-1] == up else 'desc'
         questions_list = sort_by_column('question', key_sort[:-1], sorting_order) # get all columns sorted by column(key_sort returns
-    return render_template("list.html", questions_list=questions_list, # for exapmple id and arrow up or down
+    return render_template("list.html", questions_list=questions_list, # for exapmple id and arrow up or down as string
                            sort_titles = sort_title,
                            sorto = key_sort)
 
@@ -34,8 +34,8 @@ def list():
 @app.route('/question/<int:question_id>', methods=['GET', 'POST'])
 def display_question(question_id):
     change_view_count(question_id, file_q, "up")
-    answers_data = get_all(question_id)
-    comment_data = get_columns('comment')
+    answers_data = sorted(get_all(question_id), key=lambda z: z['id'])
+    comment_data = sorted(get_columns('comment'), key=lambda z: z['id'])
     time = get_columns_with_condition('submission_time', 'question', 'id', question_id)
     if request.method == "POST":
         change = 1 if request.form['send'] == '+' else -1
@@ -84,7 +84,7 @@ def add_question():
         message = request.form['message']
         new_question = [
             new_id,
-            convert_time_from_csv(time),
+            time,
             view,
             vote,
             title,
@@ -146,5 +146,27 @@ def add_comment_to_answer(question_id, answer_id):
     return render_template('comment.html', question_id=question_id, answer_id=answer_id)
 
 
+
+@app.route('/question/<int:question_id>/edit_comment/<int:comment_id>', methods=['GET', 'POST'])
+def edit_question_coment(question_id , comment_id):
+    message = get_columns_with_condition('message', 'comment', 'id', comment_id)
+    if request.method == 'POST':
+        updated_message = request.form['message']
+        edit_comments(updated_message, comment_id)
+        return redirect(url_for('display_question', question_id=question_id))
+    return render_template('edit.html', message=message, comment_id=comment_id,
+                           question_id=question_id)
+
+
+
+@app.route('/question/<int:question_id>/edit/<int:answer_id>', methods=['GET','POST'])
+def edit_answers(question_id, answer_id):
+    message = get_columns_with_condition('message', 'answer', 'id', answer_id)
+    if request.method == 'POST':
+        updated_message = request.form['message']
+        edit_answer(updated_message, answer_id)
+        return redirect(url_for('display_question', question_id=question_id))
+    return render_template('edit_answer.html', message=message, question_id=question_id,
+                           answer_id=answer_id)
 if __name__ == '__main__':
     app.run()
