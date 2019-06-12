@@ -161,4 +161,9 @@ select{
     border-style: solid;
     border-color: white;
 }
-
+img{
+    float: left;
+    height: 8%;
+    width: 8%;
+    border-radius: 50%;
+}
