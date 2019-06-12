@@ -181,3 +181,8 @@ def get_comments(cursor):
     return result
 
 
+def add_tags(tags_list, question_id):
+    headers = ['question_id', 'tag_id']
+    for tag in tags_list:
+        values = [question_id, tag]
+        add_data('question_tag', headers, values)

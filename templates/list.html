@@ -24,7 +24,19 @@
             </tr>
             {% for question in questions_list%}
             <tr>
-                <td>{{question["title"]}}</td>
+                <td>{{question["title"]}}
+                    <br>
+                    {% for qtags in tags_questions %}
+                        {% if qtags['question_id'] == question['id'] %}
+                            {% for tags in tags_names %}
+                                {% if tags['id'] == qtags['tag_id'] %}
+                                <button type="button" class="button">{{ tags['name'] }}</button>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                    {% endfor %}
+                </td>
                 <td><button type="button" class="button"><a href="/question/{{ question['id'] }}">Show more</a></button></td>
             </tr>
             {% endfor %}
