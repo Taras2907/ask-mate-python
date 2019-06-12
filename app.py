@@ -155,7 +155,7 @@ def add_comment_to_answer(question_id, answer_id):
 
 
 @app.route('/question/<int:question_id>/edit_comment/<int:comment_id>', methods=['GET', 'POST'])
-def edit_question_coment(question_id , comment_id):
+def edit_question_comment(question_id , comment_id):
     message = get_columns_with_condition('message', 'comment', 'id', comment_id)
     if request.method == 'POST':
         updated_message = request.form['message']
@@ -173,7 +173,7 @@ def edit_answers(question_id, answer_id):
         updated_message = request.form['message']
         edit_answer(updated_message, answer_id)
         return redirect(url_for('display_question', question_id=question_id))
-    return render_template('edit_answer.html', message=message, question_id=question_id,
+    return render_template('edit.html', message=message, question_id=question_id,
                            answer_id=answer_id)
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
 def new_tag(question_id):
@@ -201,6 +201,17 @@ def new_tag(question_id):
 
     return render_template('new_tag.html', question_id=question_id, tag_names=tag_names, tag_question=tag_question)
 
+
+
+@app.route('/question/<int:question_id>/answer/<int:answer_id>/edit_comment/<int:comment_id>', methods=['GET', 'POST'])
+def edit_answer_coment(question_id , answer_id, comment_id):
+    message = get_columns_with_condition('message', 'comment', 'id', comment_id)
+    if request.method == 'POST':
+        updated_message = request.form['message']
+        edit_comments(updated_message, comment_id)
+        return redirect(url_for('display_question', question_id=question_id))
+    return render_template('edit.html', message=message, comment_id=comment_id,
+                           answer_id=answer_id, question_id=question_id)
 
 if __name__ == '__main__':
     app.run()

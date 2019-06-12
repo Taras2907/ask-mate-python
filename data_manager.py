@@ -160,8 +160,8 @@ def edit_comments(cursor, message, condition):
                                "edited_count = %s"
                                " where id =%s").format(
     )
-    edited_count = get_columns_with_condition('edited_count', 'comment', 'answer_id', 1)
-    edited_count = 0 if edited_count == None else edited_count + 1
+    edited_count = get_columns_with_condition('edited_count', 'comment', 'id', condition)
+    edited_count = 1 if edited_count == None else edited_count + 1
     time = get_real_time()
     cursor.execute(sql_update_title, [time, message, edited_count, condition])
 
