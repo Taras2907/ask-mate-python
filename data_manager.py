@@ -52,7 +52,7 @@ def get_columns(cursor, table):
 
 
 @database_common.connection_handler
-def get_columns_with_condition(cursor, column, table, condition_column, condition_value):
+def get_columns_with_condition(cursor,column, table, condition_column, condition_value):
     sql_all_quuery = sql.SQL("select {} from {}  where {} = %s").format(
         sql.Identifier(column),
         sql.Identifier(table),
@@ -119,9 +119,11 @@ def get_all_columns_with_condition(cursor, table, condition_column, condition_va
         sql.Identifier(table),
         sql.Identifier(condition_column)
     )
+
     cursor.execute(sql_all_quuery, [condition_value])
     all_columns = cursor.fetchall()
     return [] if all_columns ==[] else all_columns[0] # return a list with one dict
+
 
 
 @database_common.connection_handler
@@ -139,7 +141,7 @@ def get_last_id(cursor, table):
     )
     cursor.execute(sql_all_quuery)
     all_columns = cursor.fetchall()
-    return all_columns[0]['max'] # return a list with one dict{max:value}
+    return all_columns[0]['max'] #returns values
 
 
 @database_common.connection_handler
@@ -150,7 +152,6 @@ def add_data(cursor, table, column_headers, list_of_values):
         sql.SQL(', ').join(sql.Placeholder() * len(column_headers))
     )
     cursor.execute(sql_insert_query, list_of_values)
-
 
 @database_common.connection_handler
 def sort_by_column(cursor, table, column, desc_or_asc_order):
@@ -168,17 +169,26 @@ def sort_by_column(cursor, table, column, desc_or_asc_order):
     sorte_coll = cursor.fetchall()
     return  sorte_coll
 
+@database_common.connection_handler
+def edit_comments(cursor, message, condition):
+    sql_update_title = sql.SQL("update comment set "
+                               "submission_time = %s,"
+                               "message = %s, "
+                               "edited_count = %s"
+                               " where id =%s").format(
+    )
+    edited_count = get_columns_with_condition('edited_count', 'comment', 'answer_id', 1)
+    edited_count = 0 if edited_count == None else edited_count + 1
+    time = get_real_time()
+    cursor.execute(sql_update_title, [time, message, edited_count, condition])
+
 
 @database_common.connection_handler
-def get_comments(cursor):
-
-    cursor.execute('''
-                        SELECT * FROM comment 
-                        
-                        ''')
-
-    result = cursor.fetchall()
-    return result
+def edit_answer(cursor, updated_message, condition):
+    sql_update_query = sql.SQL("update answer set submission_time = %s,message = %s where id = %s").format(
+    )
+    time = get_real_time()
+    cursor.execute(sql_update_query, [time, updated_message, condition])
 
 
 def add_tags(tags_list, question_id):
