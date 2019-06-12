@@ -139,7 +139,7 @@ def get_last_id(cursor, table):
     )
     cursor.execute(sql_all_quuery)
     all_columns = cursor.fetchall()
-    return all_columns[0]['max'] # return a list with one dict{max:value}
+    return all_columns[0]['max'] #returns values
 
 
 @database_common.connection_handler
@@ -177,16 +177,13 @@ def edit_comments(cursor, message, condition):
     )
     edited_count = get_columns_with_condition('edited_count', 'comment', 'answer_id', 1)
     edited_count = 0 if edited_count == None else edited_count + 1
-    time = convert_time_from_csv(get_real_time())
+    time = get_real_time()
     cursor.execute(sql_update_title, [time, message, edited_count, condition])
 
 
-
 @database_common.connection_handler
-def edit_answer(cursor, message, condition):
-    sql_update_title = sql.SQL("update answer set submission_time = %s,"
-                               "message = %s where id =%s").format(
+def edit_answer(cursor, updated_message, condition):
+    sql_update_query = sql.SQL("update answer set submission_time = %s,message = %s where id = %s").format(
     )
-    time = convert_time_from_csv(get_real_time())
-    cursor.execute(sql_update_title, [time, message, condition ])
-
+    time = get_real_time()
+    cursor.execute(sql_update_query, [time, updated_message, condition])
