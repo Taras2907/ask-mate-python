@@ -38,11 +38,11 @@
             <div class="comment-block">
                 <br>
                 <li>{{ dicts['message'] }}
-                <button type="button" class="button"><a href="/question/{{ question_id }}/edit_comment/{{ dicts['id'] }}">Edit question</a></button>
-
-                        <br>
-                        {{ dicts['submission_time'] }}
-                    <br>
+                <button type="button" class="button"><a href="/question/{{ question_id }}/edit_comment/{{ dicts['id'] }}">Edit comment</a></button>
+                <br>
+                    {{ dicts['submission_time'] }}
+                <br>
+                    <p>Edited count is: {{ dicts['edited_count'] }}</p>
 
             </div>
             {% endif %}
@@ -69,10 +69,11 @@
                             <div class="comment-block">
                                 <li>
                                     {{ data['message'] }}
-
-                                        <br>
-                                        {{ data['submission_time'] }}
+                                    <button type="button" class="button"><a href="/question/{{ question_id }}/answer/{{ dict['id'] }}/edit_comment/{{ data['id'] }}">Edit comment</a></button>
                                     <br>
+                                    {{ data['submission_time'] }}
+                                    <br>
+                                     <p>Edited count is: {{ data['edited_count'] }}</p>
                             </div>
                         {% endif %}
                 {% endfor %}
