@@ -48,7 +48,7 @@ def display_question(question_id):
 
     question_data = get_all_columns_with_condition('question', 'id', question_id)
     if question_data['image'] is None:
-        img = '/static/images/default.jpg'
+        img = 'https://i.pinimg.com/236x/24/23/93/242393e70e9f431d3d10ebaa48d76806--bukowski-facebook-profile.jpg'
     else:
         img = question_data['image']
 
@@ -96,8 +96,8 @@ def add_question():
         time = get_real_time()
         view = 0
         vote = 0
-        image = ''
         title = request.form['title']
+        image = None
         message = request.form['message']
         new_question = [
             new_id,
