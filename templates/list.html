@@ -1,54 +1,61 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="table-div">
-    <div id="sorter">
-        <form action="/" method="POST" name="sorting">
-            <span>sort by:</span>
-            <select name="sort">
-                {% for sort_title in sort_titles %}
-                    {% if sorto == sort_title %}
-                        <option selected="selected">{{ sort_title }}</option>
-                    {% else %}
-                        <option>{{ sort_title }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-            <br>
-        <p><input  type="submit" name="select" value="sort" class="button"></p>
-        </form>
-        <form action="/search" method="POST" name="search">
-            <select name="search">
-                <input type="text" name="search"/>
-                <input  type="submit" name="search" value="search" class="button">
-            </select>
-        </form>
+        <div id="sorter">
+            <form action="/" method="POST" name="sorting">
+                <span>sort by:</span>
+                <select name="sort">
+                    {% for sort_title in sort_titles %}
+                        {% if sorto == sort_title %}
+                            <option selected="selected">{{ sort_title }}</option>
+                        {% else %}
+                            <option>{{ sort_title }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <br>
+                <p><input type="submit" name="select" value="sort" class="button"></p>
+            </form>
         </div>
-            <table>
+        <div>
+            <form action="/search" method="POST" name="search" id="search-bar">
+                <select name="search">
+                    <input type="text" name="search"/>
+                    <input type="submit" name="search" value="search" class="button">
+                </select>
+            </form>
+        </div>
+
+
+        <table>
             <tr>
                 <th>Question</th>
                 <th>More</th>
             </tr>
-            {% for question in questions_list%}
-            <tr>
-                <td>{{question["title"]}}
-                    <br>
-                    {% for qtags in tags_questions %}
-                        {% if qtags['question_id'] == question['id'] %}
-                            {% for tags in tags_names %}
-                                {% if tags['id'] == qtags['tag_id'] %}
-                                <button type="button" class="button">{{ tags['name'] }}</button>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
+            {% for question in questions_list %}
+                <tr>
+                    <td>{{ question["title"] }}
+                        <br>
+                        {% for qtags in tags_questions %}
+                            {% if qtags['question_id'] == question['id'] %}
+                                {% for tags in tags_names %}
+                                    {% if tags['id'] == qtags['tag_id'] %}
+                                        <button type="button" class="button">{{ tags['name'] }}</button>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
 
-                    {% endfor %}
-                </td>
-                <td><button type="button" class="button"><a href="/question/{{ question['id'] }}">Show more</a></button></td>
-            </tr>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <button type="button" class="button"><a href="/question/{{ question['id'] }}">Show more</a>
+                        </button>
+                    </td>
+                </tr>
             {% endfor %}
-            </table>
+        </table>
 
-            <button type="button" class="button"><a href="/add-question">Add question</a></button>
+        <button type="button" class="button"><a href="/add-question">Add question</a></button>
     </div>
 
 

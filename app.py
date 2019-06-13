@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for
+
 from data_manager import *
 
 app = Flask(__name__)
 file_q = 'sample_data/question.csv'
 file_a = 'sample_data/answer.csv'
 FIELDS_Q = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message','image']
+FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 FIELDS_C_Q = ['id', 'question_id', 'message', 'submission_time']
 FIELDS_C_A = ['id', 'answer_id', 'message', 'submission_time']
 
@@ -17,15 +18,17 @@ def main():
     print(questions_list)
     up = '\u21A5'
     down = '\u21A7'
-    sort_title = ['id' + up, 'id' + down, 'vote_number' + up, 'vote_number' + down,  'view_number'+ up, 'view_number' + down ]
+    sort_title = ['id' + up, 'id' + down, 'vote_number' + up, 'vote_number' + down, 'view_number' + up,
+                  'view_number' + down]
     tags_names = get_columns('tag')
     tags_questions = get_columns('question_tag')
     if request.method == "POST":
         key_sort = [item for item in sort_title if request.form['sort'] == item][0]
         sorting_order = 'asc' if key_sort[-1] == up else 'desc'
-        questions_list = sort_by_column('question', key_sort[:-1], sorting_order) # get all columns sorted by column(key_sort returns
-    return render_template("list.html", questions_list=questions_list, # for exapmple id and arrow up or down as string
-                           sort_titles = sort_title,
+        questions_list = sort_by_column('question', key_sort[:-1],
+                                        sorting_order)  # get all columns sorted by column(key_sort returns
+    return render_template("list.html", questions_list=questions_list,  # for exapmple id and arrow up or down as string
+                           sort_titles=sort_title,
                            sorto=key_sort,
                            tags_names=tags_names, tags_questions=tags_questions)
 
@@ -58,23 +61,23 @@ def display_question(question_id):
 def answer_question(question_id):
     if request.method == "POST":
         time = get_real_time()
-        answer_list = [get_last_id('answer') + 1,   # unique key?
+        answer_list = [get_last_id('answer') + 1,  # unique key?
                        time,
                        "0",
                        question_id,
                        request.form["answer"],
                        ""]
         add_data('answer', FIELDS_A, answer_list)
-        return redirect(url_for('.display_question', question_id = question_id))
-    return render_template('answer.html', question_id = question_id)
+        return redirect(url_for('.display_question', question_id=question_id))
+    return render_template('answer.html', question_id=question_id)
 
 
 @app.route("/search", methods=["POST", "GET"])
 def search():
     if request.method == "POST":
         search_phrase = request.form['search']
-        print (search_phrase)
-        return redirect(url_for('search_query', search_phrase = search_phrase))
+        print(search_phrase)
+        return redirect(url_for('search_query', search_phrase=search_phrase))
 
 
 @app.route("/search?q=<search_phrase>")
@@ -121,10 +124,9 @@ def del_question(question_id):
     return redirect("/")
 
 
-@app.route("/question/<question_id>/delete_comment/<answer_id>")
-def del_comment(answer_id, question_id):
-    del_data('comment', "answer_id", answer_id)
-    del_data('answer', 'id', answer_id)
+@app.route("/question/<question_id>/delete_comment/<comment_id>")
+def del_comment(question_id, comment_id):
+    del_data('comment', "id", comment_id)
     return redirect(url_for('display_question', question_id=question_id))
 
 
@@ -141,7 +143,7 @@ def add_comment_to_question(question_id):
             time
         ]
         add_data('comment', FIELDS_C_Q, values)
-        return redirect(url_for('.display_question', question_id = question_id))
+        return redirect(url_for('.display_question', question_id=question_id))
     return render_template('comment.html', question_id=question_id)
 
 
@@ -162,9 +164,8 @@ def add_comment_to_answer(question_id, answer_id):
     return render_template('comment.html', question_id=question_id, answer_id=answer_id)
 
 
-
 @app.route('/question/<int:question_id>/edit_comment/<int:comment_id>', methods=['GET', 'POST'])
-def edit_question_comment(question_id , comment_id):
+def edit_question_comment(question_id, comment_id):
     message = get_columns_with_condition('message', 'comment', 'id', comment_id)
     if request.method == 'POST':
         updated_message = request.form['message']
@@ -174,8 +175,7 @@ def edit_question_comment(question_id , comment_id):
                            question_id=question_id)
 
 
-
-@app.route('/question/<int:question_id>/edit/<int:answer_id>', methods=['GET','POST'])
+@app.route('/question/<int:question_id>/edit/<int:answer_id>', methods=['GET', 'POST'])
 def edit_answers(question_id, answer_id):
     message = get_columns_with_condition('message', 'answer', 'id', answer_id)
     if request.method == 'POST':
@@ -184,6 +184,8 @@ def edit_answers(question_id, answer_id):
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('edit.html', message=message, question_id=question_id,
                            answer_id=answer_id)
+
+
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
 def new_tag(question_id):
     tag_names = get_columns('tag')
@@ -211,9 +213,8 @@ def new_tag(question_id):
     return render_template('new_tag.html', question_id=question_id, tag_names=tag_names, tag_question=tag_question)
 
 
-
 @app.route('/question/<int:question_id>/answer/<int:answer_id>/edit_comment/<int:comment_id>', methods=['GET', 'POST'])
-def edit_answer_coment(question_id , answer_id, comment_id):
+def edit_answer_coment(question_id, answer_id, comment_id):
     message = get_columns_with_condition('message', 'comment', 'id', comment_id)
     if request.method == 'POST':
         updated_message = request.form['message']
@@ -221,6 +222,13 @@ def edit_answer_coment(question_id , answer_id, comment_id):
         return redirect(url_for('display_question', question_id=question_id))
     return render_template('edit.html', message=message, comment_id=comment_id,
                            answer_id=answer_id, question_id=question_id)
+
+
+@app.route('/question/<question_id>/delete-tag/<tag_id>')
+def delete_tag_from_question(question_id, tag_id):
+    delete_tag(question_id, tag_id)
+    return redirect(url_for('display_question', question_id=question_id))
+
 
 if __name__ == '__main__':
     app.run()

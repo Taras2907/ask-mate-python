@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="form-center">
-    <form name="ask" action="/add-question" method="POST">
+    <div class="form-center">
+        <form name="ask" action="/add-question" method="POST">
 
-        <h4>Title:</h4>
-        <input type="text" name="title" placeholder="Put title of your question here" required class="text-input">
+            <h4>Title:</h4>
+            <input type="text" name="title" placeholder="Put title of your question here" required class="text-input">
 
 
-        <h4>Message:</h4>
-        <textarea name="message" required class="text-input"></textarea>
-        <br>
-        {% for i in range(tag_names|length) %}
-            <label><input type="checkbox" value={{ i + 1 }} name="box">{{ tag_names[i]['name'] }}</label>
+            <h4>Message:</h4>
+            <textarea name="message" required class="text-input"></textarea>
             <br>
-        {% endfor %}
-        <br>
-        <input type="submit" value="send" formmethod="post" class="button">
-    </form>
-</div>
+            {% for i in range(tag_names|length) %}
+                <label><input type="checkbox" value={{ i + 1 }} name="box">{{ tag_names[i]['name'] }}</label>
+                <br>
+            {% endfor %}
+            <br>
+            <input type="submit" value="send" formmethod="post" class="button">
+        </form>
+    </div>
 
 {% endblock %}

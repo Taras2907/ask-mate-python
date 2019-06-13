@@ -1,20 +1,20 @@
 <!doctype html>
-<link rel="stylesheet", type="text/css", href="{{ url_for('static', filename='main.css') }}">
+<link rel="stylesheet" , type="text/css" , href="{{ url_for('static', filename='main.css') }}">
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>AskMate</title>
-    </head>
-    <body>
-        <div id="side-bar"></div>
+<head>
+    <meta charset="utf-8">
+    <title>AskMate</title>
+</head>
+<body>
+<div id="side-bar"></div>
 
-        <div id="left-side">
-            <header> <h1><a href="/">AskMate</a></h1></header>
-                <div id="content-box">
-                    {% block content %}
+<div id="left-side">
+    <header><h1><a href="/">AskMate</a></h1></header>
+    <div id="content-box">
+        {% block content %}
 
-                    {% endblock %}
-                </div>
-        </div>
-    </body>
+        {% endblock %}
+    </div>
+</div>
+</body>
 </html>

@@ -1,48 +1,55 @@
-body{
+body {
     background-color: #EAE7DC;
 }
-div{
+
+div {
     width: 100%;
 }
-table{
+
+table {
     table-layout: inherit;
     border-radius: 10px;
     width: 90%;
     border: 3px solid #E85A4F;
     margin: 5%;
 }
-th{
+
+th {
     border-radius: 10px;
     background-color: #E98074;
     font-size: 20px;
 }
-td{
+
+td {
     border-radius: 10px;
     background-color: #EAE7DC;
-    border:solid white;
+    border: solid white;
     font-size: 15px;
 }
-li{
-    display:inline-block;
+
+li {
+    display: inline-block;
     margin: 10px
 }
 
-.button{
+.button {
     align-self: center;
     padding: 5px;
     margin: 5px;
     border-radius: 10px;
     background-color: #E98074;
 }
-button:hover{
+
+button:hover {
     background-color: #EAE7DC;
 }
 
-a{
+a {
     text-decoration: none;
     color: black;
 }
-header{
+
+header {
     border-radius: 10px;
     top: 0;
     left: 0;
@@ -52,27 +59,34 @@ header{
     background: #d8c3a5;
     z-index: 10;
 }
-h1{
+
+h1 {
     text-align: center;
     color: #E85A4F;
 }
-h4{
+
+h4 {
     text-align: center;
 }
-ul{
+
+ul {
     list-style: none;
 }
-li{
+
+li {
     list-style: none;
 }
-select{
+
+select {
     border: none;
 }
-#left-side{
+
+#left-side {
     width: 90%;
     float: left;
 }
-#side-bar{
+
+#side-bar {
     top: 0;
     right: 0;
     position: fixed;
@@ -82,14 +96,16 @@ select{
     background: #d8c3a5;
     z-index: 10;
 }
-#content-box{
+
+#content-box {
     position: relative;
     display: flex;
     flex-flow: row wrap;
     margin-top: 80px;
 
 }
-#data-block{
+
+#data-block {
     text-align: right;
     float: right;
     padding: auto;
@@ -97,14 +113,16 @@ select{
     right: 0;
 
 }
-#message-block{
+
+#message-block {
     background-color: #E98074;
     border-radius: 10px;
     padding: 20px;
     border-style: solid;
     border-color: white;
 }
-#ansewr-block{
+
+#ansewr-block {
     width: 90%;
     background-color: #E98074;
     border-radius: 10px;
@@ -114,26 +132,29 @@ select{
     border-style: solid;
     border-color: white;
 }
-#sorter{
+
+#sorter {
     width: 20%;
     position: relative;
     float: right;
     right: 0;
 
 }
-#comment_button{
+
+#comment_button {
     display: inline-block;
     right: 10px;
 
 }
 
-.table-div{
+.table-div {
     position: relative;
     z-index: 1;
     width: 90%;
 
 }
-.form-center{
+
+.form-center {
     width: 100%;
     background-color: #E98074;
     border-radius: 10px;
@@ -142,15 +163,18 @@ select{
     border-style: solid;
     border-color: white;
 }
-.input-center{
+
+.input-center {
     display: flex;
     justify-content: center;
 
 }
-.text-input{
+
+.text-input {
     width: 100%;
 }
-.comment-block{
+
+.comment-block {
     display: block;
     width: 70%;
     background-color: #e99654;
@@ -161,9 +185,16 @@ select{
     border-style: solid;
     border-color: white;
 }
-img{
+
+img {
     float: left;
     height: 8%;
     width: 8%;
     border-radius: 50%;
+}
+
+#search-bar {
+    display: flex;
+    float: left;
+    height: 20px;
 }

@@ -1,12 +1,12 @@
-import csv
 from datetime import datetime
-import database_common
+
 from psycopg2 import sql
-import psycopg2
+
+import database_common
 
 LAST_ELEMENT = -1
 FIELDS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message','image']
+FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 file_q = 'sample_data/question.csv'
 file_a = 'sample_data/answer.csv'
 
@@ -17,7 +17,7 @@ def convert_time_from_csv(timestamp):
 
 def get_real_time():
     now = datetime.now()
-    return now
+    return now.replace(microsecond=0)
 
 
 @database_common.connection_handler
@@ -38,7 +38,7 @@ def change_view_count(cursor, question_id, change):
                     WHERE id = %(question_id)s
                     ''',
                    {'temp': temp,
-                       'question_id': question_id})
+                    'question_id': question_id})
 
 
 @database_common.connection_handler
@@ -52,7 +52,7 @@ def get_columns(cursor, table):
 
 
 @database_common.connection_handler
-def get_columns_with_condition(cursor,column, table, condition_column, condition_value):
+def get_columns_with_condition(cursor, column, table, condition_column, condition_value):
     sql_all_quuery = sql.SQL("select {} from {}  where {} = %s").format(
         sql.Identifier(column),
         sql.Identifier(table),
@@ -61,7 +61,7 @@ def get_columns_with_condition(cursor,column, table, condition_column, condition
     cursor.execute(sql_all_quuery, [condition_value])
     all_columns = cursor.fetchall()
 
-    result = [] if all_columns ==[] else all_columns[0][column]
+    result = [] if all_columns == [] else all_columns[0][column]
     return result
 
 
@@ -84,6 +84,7 @@ def del_data(cursor, table, condition_column, data_id):
         sql.Identifier(condition_column))
     cursor.execute(sql_query_to_delete, [data_id])
 
+
 @database_common.connection_handler
 def search_db(cursor, key):
     key = "%" + key.lower() + "%"
@@ -97,7 +98,6 @@ def search_db(cursor, key):
     return rows + rows2
 
 
-
 @database_common.connection_handler
 def get_all_columns_with_condition(cursor, table, condition_column, condition_value):
     sql_all_quuery = sql.SQL("select * from {}  where {} = %s").format(
@@ -107,8 +107,7 @@ def get_all_columns_with_condition(cursor, table, condition_column, condition_va
 
     cursor.execute(sql_all_quuery, [condition_value])
     all_columns = cursor.fetchall()
-    return [] if all_columns ==[] else all_columns[0] # return a list with one dict
-
+    return [] if all_columns == [] else all_columns[0]  # return a list with one dict
 
 
 @database_common.connection_handler
@@ -126,7 +125,7 @@ def get_last_id(cursor, table):
     )
     cursor.execute(sql_all_quuery)
     all_columns = cursor.fetchall()
-    return all_columns[0]['max'] #returns values
+    return all_columns[0]['max']  # returns values
 
 
 @database_common.connection_handler
@@ -138,12 +137,13 @@ def add_data(cursor, table, column_headers, list_of_values):
     )
     cursor.execute(sql_insert_query, list_of_values)
 
+
 @database_common.connection_handler
 def sort_by_column(cursor, table, column, desc_or_asc_order):
     if desc_or_asc_order == 'desc':
         sql_sort_query = sql.SQL("select * from {} order by {} DESC").format(
-        sql.Identifier(table),
-        sql.Identifier(column)
+            sql.Identifier(table),
+            sql.Identifier(column)
         )
     else:
         sql_sort_query = sql.SQL("select * from {} order by {} ASC").format(
@@ -152,7 +152,8 @@ def sort_by_column(cursor, table, column, desc_or_asc_order):
         )
     cursor.execute(sql_sort_query)
     sorte_coll = cursor.fetchall()
-    return  sorte_coll
+    return sorte_coll
+
 
 @database_common.connection_handler
 def edit_comments(cursor, message, condition):
@@ -181,3 +182,13 @@ def add_tags(tags_list, question_id):
     for tag in tags_list:
         values = [question_id, tag]
         add_data('question_tag', headers, values)
+
+
+@database_common.connection_handler
+def delete_tag(cursor, question_id, tag_id):
+    cursor.execute('''
+                    DELETE FROM question_tag 
+                    WHERE question_id = %(question_id)s AND tag_id = %(tag_id)s
+                    ''',
+                   {'question_id': question_id,
+                    'tag_id': tag_id})

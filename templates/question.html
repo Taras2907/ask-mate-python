@@ -5,35 +5,40 @@
 
     <img src="{{ image }}" alt="profile-pic">
     <div>
-           <h4>{{ question_data['title']}}</h4><br>
-       </div>
+        <h4>{{ question_data['title'] }}</h4><br>
+    </div>
     <div id="message-block">
-            Message: <br>{{ question_data['message']}}
+        Message: <br>{{ question_data['message'] }}
 
     </div>
 
     <div id="data-block">
         <ul>
             <li>Time: <br>{{ time }}</li>
-            <li>Views: {{ question_data['view_number']}}</li>
-            <li>Votes: {{ question_data['vote_number']}}</li>
-            <form  name='vote' action = '/question/{{ question_id }}' method = "POST">
+            <li>Views: {{ question_data['view_number'] }}</li>
+            <li>Votes: {{ question_data['vote_number'] }}</li>
+            <form name='vote' action='/question/{{ question_id }}' method="POST">
                 <p>
-                    <input type = 'submit' name="send" value = '-' class="button"/>
-                    <input type ='submit' name="send" value = '+' class="button"/>
+                    <input type='submit' name="send" value='-' class="button"/>
+                    <input type='submit' name="send" value='+' class="button"/>
                 </p>
             </form>
             <p>
                 {% for qtags in tags_questions %}
-                        {% if qtags['question_id'] == question_data['id'] %}
-                            {% for tags in tags_names %}
-                                {% if tags['id'] == qtags['tag_id'] %}
-                                <button type="button" class="button">{{ tags['name'] }}</button>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
+                    {% if qtags['question_id'] == question_data['id'] %}
+                        {% for tags in tags_names %}
+                            {% if tags['id'] == qtags['tag_id'] %}
+                                <button type="button" class="button">
+                                    {{ tags['name'] }}
+                                    <a href="/question/{{ question_id }}/delete-tag/{{ tags['id'] }}">x</a>
 
-                    {% endfor %}
+                                </button>
+                                {#                                    <button type="button" class="button"><a href="/question/{{ question_id }}/delete-tag/{{ tags['id'] }}" >x</a></button>#}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                {% endfor %}
                 <button type="button" class="button"><a href="/question/{{ question_id }}/new-tag">Add tag</a></button>
             </p>
         </ul>
@@ -41,56 +46,70 @@
 
     </div>
     <div>
-            <button type="button" class="button"><a href="/question/{{question_id}}/new-answer">Add answer</a></button>
-            <button type="button" class="button"><a href="/question/{{ question_id }}/new-comment">Add comment</a></button>
-            <button type="button" class="button"><a href="/question/{{ question_id }}/delete">Delete question</a></button>
+        <button type="button" class="button"><a href="/question/{{ question_id }}/new-answer">Add answer</a></button>
+        <button type="button" class="button"><a href="/question/{{ question_id }}/new-comment">Add comment</a></button>
+        <button type="button" class="button"><a href="/question/{{ question_id }}/delete">Delete question</a></button>
     </div>
-                {% for dicts in comment_data %}
-            {% if dicts['question_id'] == question_data['id'] %}
+    {% for dicts in comment_data %}
+        {% if dicts['question_id'] == question_data['id'] %}
             <div class="comment-block">
                 <br>
                 <li>{{ dicts['message'] }}
-                <button type="button" class="button"><a href="/question/{{ question_id }}/edit_comment/{{ dicts['id'] }}">Edit comment</a></button>
-                <br>
-                    {{ dicts['submission_time'] }}
-                <br>
-                    <p>Edited count is: {{ dicts['edited_count'] }}</p>
-
-            </div>
-            {% endif %}
-    {% endfor %}
-    <div>
-    <h4>Answers:</h4>
-        <ul>
-        {% if answers ==[] %}
-            <p>There are no answers yet.</p>
-        {% else %}
-            {% for dict in answers %}
-                <div id="ansewr-block">
-                <li>{{ dict['message'] }}
 
                     <br>
-                    {{ dict['submission_time'] }}
-                <br>
-                <button type="button" class="button" id="comment_button"><a href="/question/{{ question_id }}/new-comment/{{ dict['id'] }}">Add comment</a></button>
-                <button type="button" class="button" id="edit_button"><a href="/question/{{ question_id }}/edit/{{ dict['id'] }}">Edit answer</a></button>
-                <button type="button" class="button"><a href="/question/{{ question_id }}/delete_comment/{{ dict['id'] }}">Delete answer</a></button>
-                </div>
-                {% for data in comment_data %}
+                    {{ dicts['submission_time'] }}
+                    <br>
+                    <p>Edited count is: {{ dicts['edited_count'] }}</p>
+                    <button type="button" class="button"><a
+                            href="/question/{{ question_id }}/edit_comment/{{ dicts['id'] }}">Edit comment</a></button>
+                    <button type="button" class="button"><a
+                            href="/question/{{ question_id }}/delete_comment/{{ dicts['id'] }}">Delete Comment</a>
+                    </button>
+
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div>
+        <h4>Answers:</h4>
+        <ul>
+            {% if answers ==[] %}
+                <p>There are no answers yet.</p>
+            {% else %}
+                {% for dict in answers %}
+                    <div id="ansewr-block">
+                        <li>{{ dict['message'] }}
+
+                            <br>
+                            {{ dict['submission_time'] }}
+                            <br>
+                            <button type="button" class="button" id="comment_button"><a
+                                    href="/question/{{ question_id }}/new-comment/{{ dict['id'] }}">Add comment</a>
+                            </button>
+                            <button type="button" class="button" id="edit_button"><a
+                                    href="/question/{{ question_id }}/edit/{{ dict['id'] }}">Edit answer</a></button>
+                            {#                <button type="button" class="button"><a href="/question/{{ question_id }}/delete_comment/{{ dict['id'] }}">Delete answer</a></button>#}
+                    </div>
+                    {% for data in comment_data %}
                         {% if data['answer_id'] == dict['id'] %}
                             <div class="comment-block">
                                 <li>
                                     {{ data['message'] }}
-                                    <button type="button" class="button"><a href="/question/{{ question_id }}/answer/{{ dict['id'] }}/edit_comment/{{ data['id'] }}">Edit comment</a></button>
+
                                     <br>
                                     {{ data['submission_time'] }}
                                     <br>
-                                     <p>Edited count is: {{ data['edited_count'] }}</p>
+                                    <p>Edited count is: {{ data['edited_count'] }}</p>
+                                    <button type="button" class="button"><a
+                                            href="/question/{{ question_id }}/answer/{{ dict['id'] }}/edit_comment/{{ data['id'] }}">Edit
+                                        comment</a></button>
+                                    <button type="button" class="button"><a
+                                            href="/question/{{ question_id }}/delete_comment/{{ data['id'] }}">Delete
+                                        Comment</a></button>
                             </div>
                         {% endif %}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-        {% endif %}
+            {% endif %}
         </ul>
     </div>
 {% endblock %}
