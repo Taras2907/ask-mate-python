@@ -103,10 +103,10 @@ def search():
 
 @app.route("/search?q=<search_phrase>")
 def search_query(search_phrase):
-    print(search_phrase)
+
     data = search_db(search_phrase)
-    print(data)
-    return render_template('search.html', question_list=data)
+
+    return render_template('search.html', question_list=data, phrase=search_phrase)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
