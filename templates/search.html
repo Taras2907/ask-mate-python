@@ -2,11 +2,13 @@
 {% block content %}
     <div class="table-div">
     </div>
+    {% if question_list != [] %}
     <table>
         <tr>
             <th>Question</th>
             <th>More</th>
         </tr>
+
         {% for question in question_list %}
             <tr>
                 <td>{{ question["message"] }}</td>
@@ -15,7 +17,13 @@
                 </td>
             </tr>
         {% endfor %}
+
+
     </table>
+    {% else %}
+        <h2>Couldn't find {{ phrase }}</h2>
+        <br>
+    {% endif %}
 
     <button type="button" class="button"><a href="/add-question">Add question</a></button>
     </div>
