@@ -33,6 +33,7 @@ def main():
                            tags_names=tags_names, tags_questions=tags_questions)
 
 
+
 @app.route('/question/<int:question_id>', methods=['GET', 'POST'])
 def display_question(question_id):
     change_view_count(question_id, "up")
@@ -127,6 +128,12 @@ def del_question(question_id):
 @app.route("/question/<question_id>/delete_comment/<comment_id>")
 def del_comment(question_id, comment_id):
     del_data('comment', "id", comment_id)
+    return redirect(url_for('display_question', question_id=question_id))
+
+
+@app.route("/question/<question_id>/delete_answer/<answer_id>")
+def del_answer(question_id, answer_id):
+    del_data('answer', "id", answer_id)
     return redirect(url_for('display_question', question_id=question_id))
 
 
