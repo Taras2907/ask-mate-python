@@ -217,11 +217,11 @@ def edit_answers(question_id, answer_id):
 def new_tag(question_id):
     tag_names = get_columns('tag')
     tag_question = get_columns('question_tag')
+    tag_question = get_all_columns_with_condition('question_tag', 'question_id', question_id)
+    list_of_tag_ids = [dic['tag_id'] for dic in tag_question]
     for dicts in tag_question:
         if dicts['question_id'] == int(question_id):
             delete_tag(question_id, dicts['tag_id'])
-    tag_question = get_all_columns_with_condition('question_tag', 'question_id', question_id)
-    list_of_tag_ids = [dic['tag_id'] for dic in tag_question]
     if request.method == 'POST':
         tags = request.form.getlist('box')
 
