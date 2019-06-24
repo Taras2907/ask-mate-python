@@ -107,7 +107,7 @@ def get_all_columns_with_condition(cursor, table, condition_column, condition_va
 
     cursor.execute(sql_all_quuery, [condition_value])
     all_columns = cursor.fetchall()
-    return [] if all_columns == [] else all_columns[0]  # return a list with one dict
+    return [] if all_columns == [] else all_columns  # return a list with one dict
 
 
 @database_common.connection_handler
@@ -192,3 +192,5 @@ def delete_tag(cursor, question_id, tag_id):
                     ''',
                    {'question_id': question_id,
                     'tag_id': tag_id})
+
+

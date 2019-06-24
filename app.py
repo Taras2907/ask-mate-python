@@ -15,7 +15,6 @@ FIELDS_C_A = ['id', 'answer_id', 'message', 'submission_time']
 def main():
     key_sort = 0
     questions_list = get_columns('question')
-    print(questions_list)
     up = '\u21A5'
     down = '\u21A7'
     sort_title = ['id' + up, 'id' + down, 'vote_number' + up, 'vote_number' + down, 'view_number' + up,
@@ -46,7 +45,7 @@ def display_question(question_id):
         change_view_count(question_id, 'down')
         update_vote('question', change, question_id)
 
-    question_data = get_all_columns_with_condition('question', 'id', question_id)
+    question_data = get_all_columns_with_condition('question', 'id', question_id)[0]
     if question_data['image'] is None:
         img = 'https://i.pinimg.com/236x/24/23/93/242393e70e9f431d3d10ebaa48d76806--bukowski-facebook-profile.jpg'
     else:
@@ -189,7 +188,8 @@ def edit_answers(question_id, answer_id):
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
 def new_tag(question_id):
     tag_names = get_columns('tag')
-    tag_question = get_columns('question_tag')
+    tag_question = get_all_columns_with_condition('question_tag', 'question_id', question_id)
+    list_of_tag_ids = [dic['tag_id'] for dic in tag_question]
     if request.method == 'POST':
         tags = request.form.getlist('box')
 
@@ -210,7 +210,7 @@ def new_tag(question_id):
             add_tags(tags, question_id)
             return redirect(url_for('display_question', question_id=question_id))
 
-    return render_template('new_tag.html', question_id=question_id, tag_names=tag_names, tag_question=tag_question)
+    return render_template('new_tag.html', question_id=question_id, tag_names=tag_names, list_of_tag_ids=list_of_tag_ids)
 
 
 @app.route('/question/<int:question_id>/answer/<int:answer_id>/edit_comment/<int:comment_id>', methods=['GET', 'POST'])
