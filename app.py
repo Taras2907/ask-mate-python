@@ -15,7 +15,6 @@ FIELDS_C_A = ['id', 'answer_id', 'message', 'submission_time']
 def main():
     key_sort = 0
     questions_list = get_columns('question')
-    print(questions_list)
     up = '\u21A5'
     down = '\u21A7'
     sort_title = ['id' + up, 'id' + down, 'vote_number' + up, 'vote_number' + down, 'view_number' + up,
@@ -27,7 +26,8 @@ def main():
         sorting_order = 'asc' if key_sort[-1] == up else 'desc'
         questions_list = sort_by_column('question', key_sort[:-1],
                                         sorting_order)  # get all columns sorted by column(key_sort returns
-    return render_template("list.html", questions_list=questions_list,  # for exapmple id and arrow up or down as string
+    shortened_list = questions_list[0:5]
+    return render_template("list.html", questions_list=shortened_list,  # for exapmple id and arrow up or down as string
                            sort_titles=sort_title,
                            sorto=key_sort,
                            tags_names=tags_names, tags_questions=tags_questions)
@@ -82,10 +82,10 @@ def search():
 
 @app.route("/search?q=<search_phrase>")
 def search_query(search_phrase):
-    print(search_phrase)
+
     data = search_db(search_phrase)
-    print(data)
-    return render_template('search.html', question_list=data)
+
+    return render_template('search.html', question_list=data, phrase=search_phrase)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
