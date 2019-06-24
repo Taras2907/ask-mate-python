@@ -7,8 +7,25 @@
             <h4>TAGS:</h4>
             <br>
             {% for i in range(tag_names|length) %}
+                {% if question_id in tag_question %}
+                    {% for dicts in tag_question %}
 
-                <label><input type="checkbox" value={{ i + 1 }} name="box">{{ tag_names[i]['name'] }}</label>
+                        {% if dicts['question_id'] == question_id|int and dicts['tag_id'] == tag_names[i]['id'] %}
+
+
+                            <label><input type="checkbox" value={{ i + 1 }} name="box"
+                                          checked>{{ tag_names[i]['name'] }}
+                            </label>
+                        {% endif %}
+                    {% endfor %}
+
+                {% else %}
+                    <label><input type="checkbox" value={{ i + 1 }} name="box">{{ tag_names[i]['name'] }}</label>
+
+
+                {% endif %}
+
+
             {% endfor %}
             <br>
             <input type="text" placeholder="your tag" name="new_tag_add" value="">

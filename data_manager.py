@@ -125,7 +125,7 @@ def get_last_id(cursor, table):
     )
     cursor.execute(sql_all_quuery)
     all_columns = cursor.fetchall()
-    return all_columns[0]['max']  # returns values
+    return 0 if all_columns[0]['max'] is None else all_columns[0]['max']  # returns values
 
 
 @database_common.connection_handler
