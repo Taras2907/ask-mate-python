@@ -43,7 +43,7 @@ def change_view_count(cursor, question_id, change):
 
 @database_common.connection_handler
 def get_columns(cursor, table):
-    sql_all_quuery = sql.SQL("select * from {} ").format(
+    sql_all_quuery = sql.SQL("SELECT * FROM {} ").format(
         sql.Identifier(table)
     )
     cursor.execute(sql_all_quuery)
@@ -53,7 +53,7 @@ def get_columns(cursor, table):
 
 @database_common.connection_handler
 def get_columns_with_condition(cursor, column, table, condition_column, condition_value):
-    sql_all_quuery = sql.SQL("select {} from {}  where {} = %s").format(
+    sql_all_quuery = sql.SQL("SELECT {} FROM {}  WHERE {} = %s").format(
         sql.Identifier(column),
         sql.Identifier(table),
         sql.Identifier(condition_column)
@@ -68,7 +68,7 @@ def get_columns_with_condition(cursor, column, table, condition_column, conditio
 @database_common.connection_handler
 def update_vote(cursor, table, change, condition):
     current_vote = get_columns_with_condition('vote_number', 'question', 'id', condition) + change
-    sql_query_to_update = sql.SQL("update {} set {} =%s where {} =%s").format(
+    sql_query_to_update = sql.SQL("UPDATE {} SET {} =%s WHERE {} =%s").format(
         sql.Identifier(table),
         sql.Identifier('vote_number'),
         sql.Identifier('id'),
@@ -88,7 +88,7 @@ def del_data(cursor, table, condition_column, data_id):
 @database_common.connection_handler
 def search_db(cursor, key):
     key = "%" + key.lower() + "%"
-    search1 = sql.SQL('select * from answer WHERE LOWER(message) LIKE %s')
+    search1 = sql.SQL('SELECT * FROM answer WHERE LOWER(message) LIKE %s')
     cursor.execute(search1, [key])
     rows = cursor.fetchall()
     search2 = sql.SQL('SELECT * FROM question WHERE LOWER(message) LIKE %s or LOWER(title) LIKE %s')
@@ -100,7 +100,7 @@ def search_db(cursor, key):
 
 @database_common.connection_handler
 def get_all_columns_with_condition(cursor, table, condition_column, condition_value):
-    sql_all_quuery = sql.SQL("select * from {}  where {} = %s").format(
+    sql_all_quuery = sql.SQL("SELECT * FROM {}  WHERE {} = %s").format(
         sql.Identifier(table),
         sql.Identifier(condition_column)
     )
@@ -112,14 +112,14 @@ def get_all_columns_with_condition(cursor, table, condition_column, condition_va
 
 @database_common.connection_handler
 def get_all(cursor, id_):
-    cursor.execute("select * from answer where question_id = %s", [id_])
+    cursor.execute("SELECT * FROM answer WHERE question_id = %s", [id_])
     all_columns = cursor.fetchall()
     return all_columns
 
 
 @database_common.connection_handler
 def get_last_id(cursor, table):
-    sql_all_quuery = sql.SQL("select MAX({}) from {}").format(
+    sql_all_quuery = sql.SQL("SELECT MAX({}) FROM {}").format(
         sql.Identifier('id'),
         sql.Identifier(table)
     )
@@ -130,7 +130,7 @@ def get_last_id(cursor, table):
 
 @database_common.connection_handler
 def add_data(cursor, table, column_headers, list_of_values):
-    sql_insert_query = sql.SQL("insert into {} ({}) values ({})").format(
+    sql_insert_query = sql.SQL("INSERT INTO {} ({}) VALUES ({})").format(
         sql.Identifier(table),
         sql.SQL(', ').join(map(sql.Identifier, column_headers)),
         sql.SQL(', ').join(sql.Placeholder() * len(column_headers))
@@ -141,12 +141,12 @@ def add_data(cursor, table, column_headers, list_of_values):
 @database_common.connection_handler
 def sort_by_column(cursor, table, column, desc_or_asc_order):
     if desc_or_asc_order == 'desc':
-        sql_sort_query = sql.SQL("select * from {} order by {} DESC").format(
+        sql_sort_query = sql.SQL("SELECT * FROM {} ORDER BY {} DESC").format(
             sql.Identifier(table),
             sql.Identifier(column)
         )
     else:
-        sql_sort_query = sql.SQL("select * from {} order by {} ASC").format(
+        sql_sort_query = sql.SQL("SELECT * FROM {} ORDER BY {} ASC").format(
             sql.Identifier(table),
             sql.Identifier(column)
         )
@@ -171,7 +171,7 @@ def edit_comments(cursor, message, condition):
 
 @database_common.connection_handler
 def edit_answer(cursor, updated_message, condition):
-    sql_update_query = sql.SQL("update answer set submission_time = %s,message = %s where id = %s").format(
+    sql_update_query = sql.SQL("UPDATE answer SET submission_time = %s,message = %s WHERE id = %s").format(
     )
     time = get_real_time()
     cursor.execute(sql_update_query, [time, updated_message, condition])
