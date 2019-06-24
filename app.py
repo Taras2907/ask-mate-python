@@ -33,6 +33,26 @@ def main():
                            tags_names=tags_names, tags_questions=tags_questions)
 
 
+@app.route('/all_questions', methods=['GET', 'POST'])
+def all_questions():
+    key_sort = 0
+    questions_list = get_columns('question')
+    up = '\u21A5'
+    down = '\u21A7'
+    sort_title = ['id' + up, 'id' + down, 'vote_number' + up, 'vote_number' + down, 'view_number' + up,
+                  'view_number' + down]
+    tags_names = get_columns('tag')
+    tags_questions = get_columns('question_tag')
+    if request.method == "POST":
+        key_sort = [item for item in sort_title if request.form['sort'] == item][0]
+        sorting_order = 'asc' if key_sort[-1] == up else 'desc'
+        questions_list = sort_by_column('question', key_sort[:-1],
+                                        sorting_order)  # get all columns sorted by column(key_sort returns
+    return render_template("list.html", questions_list=questions_list,  # for exapmple id and arrow up or down as string
+                           sort_titles=sort_title,
+                           sorto=key_sort,
+                           tags_names=tags_names, tags_questions=tags_questions)
+
 
 @app.route('/question/<int:question_id>', methods=['GET', 'POST'])
 def display_question(question_id):
