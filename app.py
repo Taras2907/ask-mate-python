@@ -67,6 +67,7 @@ def display_question(question_id):
         change_view_count(question_id, 'down')
         update_vote('question', change, question_id)
 
+
     question_data = get_all_columns_with_condition('question', 'id', question_id)[0]
     if question_data['image'] is None:
         img = 'https://i.pinimg.com/236x/24/23/93/242393e70e9f431d3d10ebaa48d76806--bukowski-facebook-profile.jpg'
@@ -76,6 +77,15 @@ def display_question(question_id):
     return render_template('question.html', question_data=question_data, time=time,
                            answers=answers_data, question_id=question_id, comment_data=comment_data, image=img,
                            tags_names=tags_names, tags_questions=tags_questions)
+
+
+@app.route('/question/<int:question_id>/<int:answer_id>', methods=["GEt", "POST"])
+def update_answer_vote(answer_id, question_id):
+    if request.method == "POST":
+        change = 1 if request.form['send-a'] == '+' else -1
+        change_view_count(question_id, 'down')
+        update_vote('answer', change, answer_id)
+    return redirect(url_for('.display_question', question_id=question_id))
 
 
 @app.route('/question/<int:question_id>/new-answer', methods=["GET", "POST"])
