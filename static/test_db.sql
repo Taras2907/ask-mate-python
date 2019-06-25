@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10.9 (Ubuntu 10.9-0ubuntu0.18.04.1)
--- Dumped by pg_dump version 10.9 (Ubuntu 10.9-0ubuntu0.18.04.1)
+-- Dumped from database version 10.8 (Ubuntu 10.8-0ubuntu0.18.10.1)
+-- Dumped by pg_dump version 10.8 (Ubuntu 10.8-0ubuntu0.18.10.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -35,26 +35,26 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: answer; Type: TABLE; Schema: public; Owner: jck
+-- Name: applicants; Type: TABLE; Schema: public; Owner: dmk
 --
 
-CREATE TABLE public.answer (
+CREATE TABLE public.applicants (
     id integer NOT NULL,
-    submission_time timestamp without time zone,
-    vote_number integer,
-    question_id integer,
-    message text,
-    image text
+    first_name character varying(255) NOT NULL,
+    last_name character varying(255) NOT NULL,
+    phone_number character varying(100) NOT NULL,
+    email character varying(255) NOT NULL,
+    application_code integer NOT NULL
 );
 
 
-ALTER TABLE public.answer OWNER TO jck;
+ALTER TABLE public.applicants OWNER TO dmk;
 
 --
--- Name: answer_id_seq; Type: SEQUENCE; Schema: public; Owner: jck
+-- Name: applicants_id_seq; Type: SEQUENCE; Schema: public; Owner: dmk
 --
 
-CREATE SEQUENCE public.answer_id_seq
+CREATE SEQUENCE public.applicants_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -63,36 +63,38 @@ CREATE SEQUENCE public.answer_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.answer_id_seq OWNER TO jck;
+ALTER TABLE public.applicants_id_seq OWNER TO dmk;
 
 --
--- Name: answer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jck
+-- Name: applicants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dmk
 --
 
-ALTER SEQUENCE public.answer_id_seq OWNED BY public.answer.id;
+ALTER SEQUENCE public.applicants_id_seq OWNED BY public.applicants.id;
 
 
 --
--- Name: comment; Type: TABLE; Schema: public; Owner: jck
+-- Name: mentors; Type: TABLE; Schema: public; Owner: dmk
 --
 
-CREATE TABLE public.comment (
+CREATE TABLE public.mentors (
     id integer NOT NULL,
-    question_id integer,
-    answer_id integer,
-    message text,
-    submission_time timestamp without time zone,
-    edited_count integer
+    first_name character varying(255) NOT NULL,
+    last_name character varying(255) NOT NULL,
+    nick_name character varying(255),
+    phone_number character varying(100) NOT NULL,
+    email character varying(255) NOT NULL,
+    city character varying(255) NOT NULL,
+    favourite_number integer
 );
 
 
-ALTER TABLE public.comment OWNER TO jck;
+ALTER TABLE public.mentors OWNER TO dmk;
 
 --
--- Name: comment_id_seq; Type: SEQUENCE; Schema: public; Owner: jck
+-- Name: mentors_id_seq; Type: SEQUENCE; Schema: public; Owner: dmk
 --
 
-CREATE SEQUENCE public.comment_id_seq
+CREATE SEQUENCE public.mentors_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -101,37 +103,33 @@ CREATE SEQUENCE public.comment_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.comment_id_seq OWNER TO jck;
+ALTER TABLE public.mentors_id_seq OWNER TO dmk;
 
 --
--- Name: comment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jck
+-- Name: mentors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dmk
 --
 
-ALTER SEQUENCE public.comment_id_seq OWNED BY public.comment.id;
+ALTER SEQUENCE public.mentors_id_seq OWNED BY public.mentors.id;
 
 
 --
--- Name: question; Type: TABLE; Schema: public; Owner: jck
+-- Name: test; Type: TABLE; Schema: public; Owner: dmk
 --
 
-CREATE TABLE public.question (
+CREATE TABLE public.test (
     id integer NOT NULL,
-    submission_time timestamp without time zone,
-    view_number integer,
-    vote_number integer,
-    title text,
-    message text,
-    image text
+    num integer,
+    data character varying
 );
 
 
-ALTER TABLE public.question OWNER TO jck;
+ALTER TABLE public.test OWNER TO dmk;
 
 --
--- Name: question_id_seq; Type: SEQUENCE; Schema: public; Owner: jck
+-- Name: test_id_seq; Type: SEQUENCE; Schema: public; Owner: dmk
 --
 
-CREATE SEQUENCE public.question_id_seq
+CREATE SEQUENCE public.test_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -140,268 +138,146 @@ CREATE SEQUENCE public.question_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.question_id_seq OWNER TO jck;
+ALTER TABLE public.test_id_seq OWNER TO dmk;
 
 --
--- Name: question_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jck
+-- Name: test_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dmk
 --
 
-ALTER SEQUENCE public.question_id_seq OWNED BY public.question.id;
-
-
---
--- Name: question_tag; Type: TABLE; Schema: public; Owner: jck
---
-
-CREATE TABLE public.question_tag (
-    question_id integer NOT NULL,
-    tag_id integer NOT NULL
-);
-
-
-ALTER TABLE public.question_tag OWNER TO jck;
-
---
--- Name: tag; Type: TABLE; Schema: public; Owner: jck
---
-
-CREATE TABLE public.tag (
-    id integer NOT NULL,
-    name text
-);
-
-
-ALTER TABLE public.tag OWNER TO jck;
-
---
--- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: jck
---
-
-CREATE SEQUENCE public.tag_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tag_id_seq OWNER TO jck;
-
---
--- Name: tag_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jck
---
-
-ALTER SEQUENCE public.tag_id_seq OWNED BY public.tag.id;
+ALTER SEQUENCE public.test_id_seq OWNED BY public.test.id;
 
 
 --
--- Name: answer id; Type: DEFAULT; Schema: public; Owner: jck
+-- Name: applicants id; Type: DEFAULT; Schema: public; Owner: dmk
 --
 
-ALTER TABLE ONLY public.answer ALTER COLUMN id SET DEFAULT nextval('public.answer_id_seq'::regclass);
-
-
---
--- Name: comment id; Type: DEFAULT; Schema: public; Owner: jck
---
-
-ALTER TABLE ONLY public.comment ALTER COLUMN id SET DEFAULT nextval('public.comment_id_seq'::regclass);
+ALTER TABLE ONLY public.applicants ALTER COLUMN id SET DEFAULT nextval('public.applicants_id_seq'::regclass);
 
 
 --
--- Name: question id; Type: DEFAULT; Schema: public; Owner: jck
+-- Name: mentors id; Type: DEFAULT; Schema: public; Owner: dmk
 --
 
-ALTER TABLE ONLY public.question ALTER COLUMN id SET DEFAULT nextval('public.question_id_seq'::regclass);
-
-
---
--- Name: tag id; Type: DEFAULT; Schema: public; Owner: jck
---
-
-ALTER TABLE ONLY public.tag ALTER COLUMN id SET DEFAULT nextval('public.tag_id_seq'::regclass);
+ALTER TABLE ONLY public.mentors ALTER COLUMN id SET DEFAULT nextval('public.mentors_id_seq'::regclass);
 
 
 --
--- Data for Name: answer; Type: TABLE DATA; Schema: public; Owner: jck
+-- Name: test id; Type: DEFAULT; Schema: public; Owner: dmk
 --
 
-COPY public.answer (id, submission_time, vote_number, question_id, message, image) FROM stdin;
-1	2019-06-24 11:24:26	0	1	 WAFEEW FWA FWAE FWA  FAW FEW F	
-2	2019-06-24 11:24:57	0	2	DFSFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF	
+ALTER TABLE ONLY public.test ALTER COLUMN id SET DEFAULT nextval('public.test_id_seq'::regclass);
+
+
+--
+-- Data for Name: applicants; Type: TABLE DATA; Schema: public; Owner: dmk
+--
+
+COPY public.applicants (id, first_name, last_name, phone_number, email, application_code) FROM stdin;
+1	Dominique	Williams	003630/734-4926	dolor@laoreet.co.uk	61823
+2	Jemima	Foreman	003620/834-6898	magna@etultrices.net	58324
+3	Zeph	Massey	003630/216-5351	a.feugiat.tellus@montesnasceturridiculus.co.uk	61349
+4	Joseph	Crawford	003670/923-2669	lacinia.mattis@arcu.co.uk	12916
+5	Ifeoma	Bird	003630/465-8994	diam.duis.mi@orcitinciduntadipiscing.com	65603
+6	Arsenio	Matthews	003620/804-1652	semper.pretium.neque@mauriseu.net	39220
+7	Jemima	Cantu	003620/423-4261	et.risus.quisque@mollis.co.uk	10384
+8	Carol	Arnold	003630/179-1827	dapibus.rutrum@litoratorquent.com	70730
+9	Jane	Forbes	003670/653-5392	janiebaby@adipiscingenimmi.edu	56882
+10	Ursa	William	003620/496-7064	malesuada@mauriseu.net	91220
 \.
 
 
 --
--- Data for Name: comment; Type: TABLE DATA; Schema: public; Owner: jck
+-- Data for Name: mentors; Type: TABLE DATA; Schema: public; Owner: dmk
 --
 
-COPY public.comment (id, question_id, answer_id, message, submission_time, edited_count) FROM stdin;
-1	1	\N	F SAF WAFEWA FWA FA GFWAF AWFW EAF	2019-06-24 11:24:22	\N
-2	\N	1	 EWAF WAFWAF GRAG WAEGTF 23WEGA A	2019-06-24 11:24:31	\N
-3	2	\N	HYUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUJJJJJJJJJJJJJJJJJJJJ	2019-06-24 11:24:50	\N
-4	\N	2	ESG ERGSERSG RGE RG3W4 T23 23	2019-06-24 11:25:03	\N
+COPY public.mentors (id, first_name, last_name, nick_name, phone_number, email, city, favourite_number) FROM stdin;
+2	Pál	Monoczki	Pali	003630/327-2663	pal.monoczki@codecool.com	Miskolc	\N
+3	Sándor	Szodoray	Szodi	003620/519-9152	sandor.szodoray@codecool.com	Miskolc	7
+4	Dániel	Salamon	Dani	003620/508-0706	daniel.salamon@codecool.com	Budapest	4
+5	Miklós	Beöthy	Miki	003630/256-8118	miklos.beothy@codecool.com	Budapest	42
+6	Tamás	Tompa	Tomi	003630/370-0748	tamas.tompa@codecool.com	Budapest	42
+7	Mateusz	Ostafil	Mateusz	003648/518-664-923	mateusz.ostafil@codecool.com	Krakow	13
+8	Anikó	Fenyvesi	Anikó	003670/111-2222	aniko.fenyvesi@codecool.com	Budapest	11
+9	Immánuel	Fodor	Immi	003620/123-6234	immanuel.fodor@codecool.com	Budapest	3
+10	László	Molnár	Laci	003620/222-5566	laszlo.molnar@codecool.com	Budapest	5
+11	Mátyás	Forián Szabó	Matyi	003630/111-5532	matyas.forian.szabo@codecool.com	Budapest	90
+12	Zoltán	Sallay	Zozi	003670/898-3122	zoltan.sallay@codecool.com	Budapest	5
+13	Szilveszter	Erdős	Sly	003620/444-5555	szilveszter.erdos@codecool.com	Budapest	13
+14	László	Terray	Laci	003670/402-2435	laszlo.terray@codecool.com	Budapest	8
+15	Árpád	Törzsök	Árpád	003630/222-1221	arpad.torzsok@codecool.com	Budapest	9
+16	Imre	Lindi	Imi	003670/222-1233	imre.lindi@codecool.com	Miskolc	3
+17	Róbert	Kohányi	Robi	003630/123-5553	robert.kohanyi@codecool.com	Miskolc	\N
+18	Przemysław	Ciąćka	Przemek	003670/222-4554	przemyslaw.ciacka@codecool.com	Krakow	55
+19	Marcin	Izworski	Marcin	003670/999-2323	marcin.izworski@codecool.com	Krakow	55
+20	Rafał	Stępień	Rafal	003630/323-5343	rafal.stepien@codecool.com	Krakow	3
+21	Agnieszka	Koszany	Agi	003630/111-5343	agnieszka.koszany@codecool.com	Krakow	77
+22	Mateusz	Steliga	Mateusz	003630/123-5343	mateusz.steliga@codecool.com	Krakow	5
+23	Bence	Fábián	Benec	003620/123-7654	bence.fabian@codecool.com	Budapest	\N
+1	Attila	Molnár	Atesz	003670/630-0539	attila.molnar@codecool.com	Budapest	23
 \.
 
 
 --
--- Data for Name: question; Type: TABLE DATA; Schema: public; Owner: jck
+-- Data for Name: test; Type: TABLE DATA; Schema: public; Owner: dmk
 --
 
-COPY public.question (id, submission_time, view_number, vote_number, title, message, image) FROM stdin;
-2	2019-06-24 11:24:42	8	0	DFSASFWAEFR WAEFW235 236TTDZX	V == 435N43 YGESDZ T3W453QAER TQ34VTE AW	\N
-1	2019-06-24 11:24:16	14	0	A FEWAEFW FEWAFEWA FWA	 FWAFE WAFWAFAW EFEWA AWEREWA AW RA REWERWEFR	\N
-3	2019-06-24 13:54:23	1	0	33232 2	f af aewfawfe ew faew fre rasfsfwa	\N
-4	2019-06-24 13:54:32	0	0	wqew  ewqea rw 	3r2q3 r13 r1 43t13 t3 2 	\N
-5	2019-06-24 13:54:39	0	0	242 142 412 421 34 1324 324 4	2134 214 12423 42 4214 124 24	\N
-6	2019-06-24 13:54:46	0	0	faffaasfsefewaffe ae fergdas	fdqas fwae fwaesrf aef ergfewa f	\N
-7	2019-06-24 13:54:56	0	0	sd fsa f saf waesfesa fwaer	 asefasf wse<rfwasfw sfe	\N
+COPY public.test (id, num, data) FROM stdin;
+1	100	First row
+2	100	Second row
 \.
 
 
 --
--- Data for Name: question_tag; Type: TABLE DATA; Schema: public; Owner: jck
+-- Name: applicants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dmk
 --
 
-COPY public.question_tag (question_id, tag_id) FROM stdin;
-2	8
-2	9
-2	1
-2	5
-2	6
-2	7
-1	8
-\.
+SELECT pg_catalog.setval('public.applicants_id_seq', 10, true);
 
 
 --
--- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: jck
+-- Name: mentors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dmk
 --
 
-COPY public.tag (id, name) FROM stdin;
-1	python
-2	sql
-3	css
-4	html
-5	c++
-6	java
-7	javascript
-8	ruby
-9	pycharm
-10	whatever
-11	david
-12	food
-13	.NET
-\.
+SELECT pg_catalog.setval('public.mentors_id_seq', 22, true);
 
 
 --
--- Name: answer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jck
+-- Name: test_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dmk
 --
 
-SELECT pg_catalog.setval('public.answer_id_seq', 2, true);
-
-
---
--- Name: comment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jck
---
-
-SELECT pg_catalog.setval('public.comment_id_seq', 2, true);
+SELECT pg_catalog.setval('public.test_id_seq', 2, true);
 
 
 --
--- Name: question_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jck
+-- Name: applicants applicants_application_code_key; Type: CONSTRAINT; Schema: public; Owner: dmk
 --
 
-SELECT pg_catalog.setval('public.question_id_seq', 2, true);
-
-
---
--- Name: tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jck
---
-
-SELECT pg_catalog.setval('public.tag_id_seq', 5, true);
+ALTER TABLE ONLY public.applicants
+    ADD CONSTRAINT applicants_application_code_key UNIQUE (application_code);
 
 
 --
--- Name: answer pk_answer_id; Type: CONSTRAINT; Schema: public; Owner: jck
+-- Name: applicants applicants_pkey; Type: CONSTRAINT; Schema: public; Owner: dmk
 --
 
-ALTER TABLE ONLY public.answer
-    ADD CONSTRAINT pk_answer_id PRIMARY KEY (id);
-
-
---
--- Name: comment pk_comment_id; Type: CONSTRAINT; Schema: public; Owner: jck
---
-
-ALTER TABLE ONLY public.comment
-    ADD CONSTRAINT pk_comment_id PRIMARY KEY (id);
+ALTER TABLE ONLY public.applicants
+    ADD CONSTRAINT applicants_pkey PRIMARY KEY (id);
 
 
 --
--- Name: question pk_question_id; Type: CONSTRAINT; Schema: public; Owner: jck
+-- Name: mentors mentors_pkey; Type: CONSTRAINT; Schema: public; Owner: dmk
 --
 
-ALTER TABLE ONLY public.question
-    ADD CONSTRAINT pk_question_id PRIMARY KEY (id);
-
-
---
--- Name: question_tag pk_question_tag_id; Type: CONSTRAINT; Schema: public; Owner: jck
---
-
-ALTER TABLE ONLY public.question_tag
-    ADD CONSTRAINT pk_question_tag_id PRIMARY KEY (question_id, tag_id);
+ALTER TABLE ONLY public.mentors
+    ADD CONSTRAINT mentors_pkey PRIMARY KEY (id);
 
 
 --
--- Name: tag pk_tag_id; Type: CONSTRAINT; Schema: public; Owner: jck
+-- Name: test test_pkey; Type: CONSTRAINT; Schema: public; Owner: dmk
 --
 
-ALTER TABLE ONLY public.tag
-    ADD CONSTRAINT pk_tag_id PRIMARY KEY (id);
-
-
---
--- Name: comment fk_answer_id; Type: FK CONSTRAINT; Schema: public; Owner: jck
---
-
-ALTER TABLE ONLY public.comment
-    ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES public.answer(id) ON DELETE CASCADE;
-
-
---
--- Name: answer fk_question_id; Type: FK CONSTRAINT; Schema: public; Owner: jck
---
-
-ALTER TABLE ONLY public.answer
-    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES public.question(id);
-
-
---
--- Name: question_tag fk_question_id; Type: FK CONSTRAINT; Schema: public; Owner: jck
---
-
-ALTER TABLE ONLY public.question_tag
-    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES public.question(id);
-
-
---
--- Name: comment fk_question_id; Type: FK CONSTRAINT; Schema: public; Owner: jck
---
-
-ALTER TABLE ONLY public.comment
-    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES public.question(id) ON DELETE CASCADE;
-
-
---
--- Name: question_tag fk_tag_id; Type: FK CONSTRAINT; Schema: public; Owner: jck
---
-
-ALTER TABLE ONLY public.question_tag
-    ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES public.tag(id);
+ALTER TABLE ONLY public.test
+    ADD CONSTRAINT test_pkey PRIMARY KEY (id);
 
 
 --
