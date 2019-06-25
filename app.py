@@ -292,7 +292,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         data = get_columns_with_condition('password', 'users', 'username', username)
-        if verify_password(password, data[password]):
+        if verify_password(password, data):
             session['username'] = username
             session['password'] = password
         return redirect(url_for('.main'))
