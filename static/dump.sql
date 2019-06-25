@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10.9 (Ubuntu 10.9-0ubuntu0.18.04.1)
--- Dumped by pg_dump version 10.9 (Ubuntu 10.9-0ubuntu0.18.04.1)
+-- Dumped from database version 10.8 (Ubuntu 10.8-0ubuntu0.18.10.1)
+-- Dumped by pg_dump version 10.8 (Ubuntu 10.8-0ubuntu0.18.10.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -35,7 +35,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: answer; Type: TABLE; Schema: public; Owner: jck
+-- Name: answer; Type: TABLE; Schema: public; Owner: dmk
 --
 
 CREATE TABLE public.answer (
@@ -48,10 +48,10 @@ CREATE TABLE public.answer (
 );
 
 
-ALTER TABLE public.answer OWNER TO jck;
+ALTER TABLE public.answer OWNER TO dmk;
 
 --
--- Name: answer_id_seq; Type: SEQUENCE; Schema: public; Owner: jck
+-- Name: answer_id_seq; Type: SEQUENCE; Schema: public; Owner: dmk
 --
 
 CREATE SEQUENCE public.answer_id_seq
@@ -63,17 +63,17 @@ CREATE SEQUENCE public.answer_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.answer_id_seq OWNER TO jck;
+ALTER TABLE public.answer_id_seq OWNER TO dmk;
 
 --
--- Name: answer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jck
+-- Name: answer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dmk
 --
 
 ALTER SEQUENCE public.answer_id_seq OWNED BY public.answer.id;
 
 
 --
--- Name: comment; Type: TABLE; Schema: public; Owner: jck
+-- Name: comment; Type: TABLE; Schema: public; Owner: dmk
 --
 
 CREATE TABLE public.comment (
@@ -86,10 +86,10 @@ CREATE TABLE public.comment (
 );
 
 
-ALTER TABLE public.comment OWNER TO jck;
+ALTER TABLE public.comment OWNER TO dmk;
 
 --
--- Name: comment_id_seq; Type: SEQUENCE; Schema: public; Owner: jck
+-- Name: comment_id_seq; Type: SEQUENCE; Schema: public; Owner: dmk
 --
 
 CREATE SEQUENCE public.comment_id_seq
@@ -101,17 +101,17 @@ CREATE SEQUENCE public.comment_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.comment_id_seq OWNER TO jck;
+ALTER TABLE public.comment_id_seq OWNER TO dmk;
 
 --
--- Name: comment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jck
+-- Name: comment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dmk
 --
 
 ALTER SEQUENCE public.comment_id_seq OWNED BY public.comment.id;
 
 
 --
--- Name: question; Type: TABLE; Schema: public; Owner: jck
+-- Name: question; Type: TABLE; Schema: public; Owner: dmk
 --
 
 CREATE TABLE public.question (
@@ -125,10 +125,10 @@ CREATE TABLE public.question (
 );
 
 
-ALTER TABLE public.question OWNER TO jck;
+ALTER TABLE public.question OWNER TO dmk;
 
 --
--- Name: question_id_seq; Type: SEQUENCE; Schema: public; Owner: jck
+-- Name: question_id_seq; Type: SEQUENCE; Schema: public; Owner: dmk
 --
 
 CREATE SEQUENCE public.question_id_seq
@@ -140,17 +140,17 @@ CREATE SEQUENCE public.question_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.question_id_seq OWNER TO jck;
+ALTER TABLE public.question_id_seq OWNER TO dmk;
 
 --
--- Name: question_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jck
+-- Name: question_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dmk
 --
 
 ALTER SEQUENCE public.question_id_seq OWNED BY public.question.id;
 
 
 --
--- Name: question_tag; Type: TABLE; Schema: public; Owner: jck
+-- Name: question_tag; Type: TABLE; Schema: public; Owner: dmk
 --
 
 CREATE TABLE public.question_tag (
@@ -159,10 +159,10 @@ CREATE TABLE public.question_tag (
 );
 
 
-ALTER TABLE public.question_tag OWNER TO jck;
+ALTER TABLE public.question_tag OWNER TO dmk;
 
 --
--- Name: tag; Type: TABLE; Schema: public; Owner: jck
+-- Name: tag; Type: TABLE; Schema: public; Owner: dmk
 --
 
 CREATE TABLE public.tag (
@@ -171,10 +171,10 @@ CREATE TABLE public.tag (
 );
 
 
-ALTER TABLE public.tag OWNER TO jck;
+ALTER TABLE public.tag OWNER TO dmk;
 
 --
--- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: jck
+-- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: dmk
 --
 
 CREATE SEQUENCE public.tag_id_seq
@@ -186,97 +186,100 @@ CREATE SEQUENCE public.tag_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.tag_id_seq OWNER TO jck;
+ALTER TABLE public.tag_id_seq OWNER TO dmk;
 
 --
--- Name: tag_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jck
+-- Name: tag_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dmk
 --
 
 ALTER SEQUENCE public.tag_id_seq OWNED BY public.tag.id;
 
 
 --
--- Name: answer id; Type: DEFAULT; Schema: public; Owner: jck
+-- Name: users; Type: TABLE; Schema: public; Owner: dmk
+--
+
+CREATE TABLE public.users (
+    username text,
+    password text,
+    reputation integer,
+    "timestamp" timestamp with time zone DEFAULT now()
+);
+
+
+ALTER TABLE public.users OWNER TO dmk;
+
+--
+-- Name: answer id; Type: DEFAULT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.answer ALTER COLUMN id SET DEFAULT nextval('public.answer_id_seq'::regclass);
 
 
 --
--- Name: comment id; Type: DEFAULT; Schema: public; Owner: jck
+-- Name: comment id; Type: DEFAULT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.comment ALTER COLUMN id SET DEFAULT nextval('public.comment_id_seq'::regclass);
 
 
 --
--- Name: question id; Type: DEFAULT; Schema: public; Owner: jck
+-- Name: question id; Type: DEFAULT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.question ALTER COLUMN id SET DEFAULT nextval('public.question_id_seq'::regclass);
 
 
 --
--- Name: tag id; Type: DEFAULT; Schema: public; Owner: jck
+-- Name: tag id; Type: DEFAULT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.tag ALTER COLUMN id SET DEFAULT nextval('public.tag_id_seq'::regclass);
 
 
 --
--- Data for Name: answer; Type: TABLE DATA; Schema: public; Owner: jck
+-- Data for Name: answer; Type: TABLE DATA; Schema: public; Owner: dmk
 --
 
 COPY public.answer (id, submission_time, vote_number, question_id, message, image) FROM stdin;
 1	2019-06-24 11:24:26	0	1	 WAFEEW FWA FWAE FWA  FAW FEW F	
-2	2019-06-24 11:24:57	0	2	DFSFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF	
 \.
 
 
 --
--- Data for Name: comment; Type: TABLE DATA; Schema: public; Owner: jck
+-- Data for Name: comment; Type: TABLE DATA; Schema: public; Owner: dmk
 --
 
 COPY public.comment (id, question_id, answer_id, message, submission_time, edited_count) FROM stdin;
 1	1	\N	F SAF WAFEWA FWA FA GFWAF AWFW EAF	2019-06-24 11:24:22	\N
 2	\N	1	 EWAF WAFWAF GRAG WAEGTF 23WEGA A	2019-06-24 11:24:31	\N
-3	2	\N	HYUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUJJJJJJJJJJJJJJJJJJJJ	2019-06-24 11:24:50	\N
-4	\N	2	ESG ERGSERSG RGE RG3W4 T23 23	2019-06-24 11:25:03	\N
 \.
 
 
 --
--- Data for Name: question; Type: TABLE DATA; Schema: public; Owner: jck
+-- Data for Name: question; Type: TABLE DATA; Schema: public; Owner: dmk
 --
 
 COPY public.question (id, submission_time, view_number, vote_number, title, message, image) FROM stdin;
-2	2019-06-24 11:24:42	8	0	DFSASFWAEFR WAEFW235 236TTDZX	V == 435N43 YGESDZ T3W453QAER TQ34VTE AW	\N
-1	2019-06-24 11:24:16	14	0	A FEWAEFW FEWAFEWA FWA	 FWAFE WAFWAFAW EFEWA AWEREWA AW RA REWERWEFR	\N
-3	2019-06-24 13:54:23	1	0	33232 2	f af aewfawfe ew faew fre rasfsfwa	\N
 4	2019-06-24 13:54:32	0	0	wqew  ewqea rw 	3r2q3 r13 r1 43t13 t3 2 	\N
 5	2019-06-24 13:54:39	0	0	242 142 412 421 34 1324 324 4	2134 214 12423 42 4214 124 24	\N
 6	2019-06-24 13:54:46	0	0	faffaasfsefewaffe ae fergdas	fdqas fwae fwaesrf aef ergfewa f	\N
 7	2019-06-24 13:54:56	0	0	sd fsa f saf waesfesa fwaer	 asefasf wse<rfwasfw sfe	\N
+1	2019-06-24 11:24:16	15	0	A FEWAEFW FEWAFEWA FWA	 FWAFE WAFWAFAW EFEWA AWEREWA AW RA REWERWEFR	\N
 \.
 
 
 --
--- Data for Name: question_tag; Type: TABLE DATA; Schema: public; Owner: jck
+-- Data for Name: question_tag; Type: TABLE DATA; Schema: public; Owner: dmk
 --
 
 COPY public.question_tag (question_id, tag_id) FROM stdin;
-2	8
-2	9
-2	1
-2	5
-2	6
-2	7
 1	8
 \.
 
 
 --
--- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: jck
+-- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: dmk
 --
 
 COPY public.tag (id, name) FROM stdin;
@@ -297,35 +300,44 @@ COPY public.tag (id, name) FROM stdin;
 
 
 --
--- Name: answer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jck
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: dmk
+--
+
+COPY public.users (username, password, reputation, "timestamp") FROM stdin;
+rafal	asdasdadasd	15	2019-06-25 11:24:15.204552+02
+\.
+
+
+--
+-- Name: answer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dmk
 --
 
 SELECT pg_catalog.setval('public.answer_id_seq', 2, true);
 
 
 --
--- Name: comment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jck
+-- Name: comment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dmk
 --
 
 SELECT pg_catalog.setval('public.comment_id_seq', 2, true);
 
 
 --
--- Name: question_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jck
+-- Name: question_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dmk
 --
 
 SELECT pg_catalog.setval('public.question_id_seq', 2, true);
 
 
 --
--- Name: tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jck
+-- Name: tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dmk
 --
 
 SELECT pg_catalog.setval('public.tag_id_seq', 5, true);
 
 
 --
--- Name: answer pk_answer_id; Type: CONSTRAINT; Schema: public; Owner: jck
+-- Name: answer pk_answer_id; Type: CONSTRAINT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.answer
@@ -333,7 +345,7 @@ ALTER TABLE ONLY public.answer
 
 
 --
--- Name: comment pk_comment_id; Type: CONSTRAINT; Schema: public; Owner: jck
+-- Name: comment pk_comment_id; Type: CONSTRAINT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.comment
@@ -341,7 +353,7 @@ ALTER TABLE ONLY public.comment
 
 
 --
--- Name: question pk_question_id; Type: CONSTRAINT; Schema: public; Owner: jck
+-- Name: question pk_question_id; Type: CONSTRAINT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.question
@@ -349,7 +361,7 @@ ALTER TABLE ONLY public.question
 
 
 --
--- Name: question_tag pk_question_tag_id; Type: CONSTRAINT; Schema: public; Owner: jck
+-- Name: question_tag pk_question_tag_id; Type: CONSTRAINT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.question_tag
@@ -357,7 +369,7 @@ ALTER TABLE ONLY public.question_tag
 
 
 --
--- Name: tag pk_tag_id; Type: CONSTRAINT; Schema: public; Owner: jck
+-- Name: tag pk_tag_id; Type: CONSTRAINT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.tag
@@ -365,7 +377,7 @@ ALTER TABLE ONLY public.tag
 
 
 --
--- Name: comment fk_answer_id; Type: FK CONSTRAINT; Schema: public; Owner: jck
+-- Name: comment fk_answer_id; Type: FK CONSTRAINT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.comment
@@ -373,7 +385,7 @@ ALTER TABLE ONLY public.comment
 
 
 --
--- Name: answer fk_question_id; Type: FK CONSTRAINT; Schema: public; Owner: jck
+-- Name: answer fk_question_id; Type: FK CONSTRAINT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.answer
@@ -381,7 +393,7 @@ ALTER TABLE ONLY public.answer
 
 
 --
--- Name: question_tag fk_question_id; Type: FK CONSTRAINT; Schema: public; Owner: jck
+-- Name: question_tag fk_question_id; Type: FK CONSTRAINT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.question_tag
@@ -389,7 +401,7 @@ ALTER TABLE ONLY public.question_tag
 
 
 --
--- Name: comment fk_question_id; Type: FK CONSTRAINT; Schema: public; Owner: jck
+-- Name: comment fk_question_id; Type: FK CONSTRAINT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.comment
@@ -397,7 +409,7 @@ ALTER TABLE ONLY public.comment
 
 
 --
--- Name: question_tag fk_tag_id; Type: FK CONSTRAINT; Schema: public; Owner: jck
+-- Name: question_tag fk_tag_id; Type: FK CONSTRAINT; Schema: public; Owner: dmk
 --
 
 ALTER TABLE ONLY public.question_tag

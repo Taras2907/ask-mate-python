@@ -1,15 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, session, escape
+from flask import Flask, render_template, request, redirect, url_for, session
 
 from data_manager import *
 
 app = Flask(__name__)
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 file_q = 'sample_data/question.csv'
 file_a = 'sample_data/answer.csv'
 FIELDS_Q = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 FIELDS_C_Q = ['id', 'question_id', 'message', 'submission_time']
 FIELDS_C_A = ['id', 'answer_id', 'message', 'submission_time']
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 
@@ -102,6 +102,7 @@ def update_answer_vote(answer_id, question_id):
 @app.route('/question/<int:question_id>/new-answer', methods=["GET", "POST"])
 def answer_question(question_id):
     if request.method == "POST":
+        # username = session['username']
         time = get_real_time()
         answer_list = [get_last_id('answer') + 1,  # unique key?
                        time,
@@ -124,7 +125,6 @@ def search():
 
 @app.route("/search?q=<search_phrase>")
 def search_query(search_phrase):
-
     data = search_db(search_phrase)
 
     return render_template('search.html', question_list=data, phrase=search_phrase)
@@ -132,6 +132,7 @@ def search_query(search_phrase):
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
+    # username = session['username']
     tag_names = get_columns('tag')
     if request.method == 'POST':
         new_id = get_last_id('question') + 1
@@ -180,6 +181,7 @@ def del_answer(question_id, answer_id):
 
 @app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
 def add_comment_to_question(question_id):
+    # username = session['username']
     if request.method == 'POST':
         time = get_real_time()
         message = request.form['comment']
@@ -197,6 +199,7 @@ def add_comment_to_question(question_id):
 
 @app.route('/question/<question_id>/new-comment/<answer_id>', methods=['GET', 'POST'])
 def add_comment_to_answer(question_id, answer_id):
+    # username = session['username']
     if request.method == 'POST':
         time = get_real_time()
         message = request.form['comment']
@@ -262,7 +265,8 @@ def new_tag(question_id):
             add_tags(tags, question_id)
             return redirect(url_for('display_question', question_id=question_id))
 
-    return render_template('new_tag.html', question_id=question_id, tag_names=tag_names, list_of_tag_ids=list_of_tag_ids)
+    return render_template('new_tag.html', question_id=question_id, tag_names=tag_names,
+                           list_of_tag_ids=list_of_tag_ids)
 
 
 @app.route('/question/<int:question_id>/answer/<int:answer_id>/edit_comment/<int:comment_id>', methods=['GET', 'POST'])
@@ -282,9 +286,20 @@ def delete_tag_from_question(question_id, tag_id):
     return redirect(url_for('display_question', question_id=question_id))
 
 
-
-
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        data = get_columns_with_condition('password', 'users', 'user', username)
+        if verify_password(password, data[password]):
+            session['username'] = username
+            session['password'] = password
+        return redirect(url_for('.main'))
+    return render_template('login.html')
 
 
 if __name__ == '__main__':
     app.run()
+
+
