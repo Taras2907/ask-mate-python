@@ -297,11 +297,23 @@ def login():
         username = request.form['username']
         password = request.form['password']
         data = get_columns_with_condition('password', 'users', 'username', username)
-        if verify_password(password, data):
-            session['username'] = username
-            session['password'] = password
-        return redirect(url_for('.main'))
+        if not data:
+            message = 'wrong login data'
+            return render_template('login.html', message=message)
+        else:
+            if verify_password(password, data):
+                session['username'] = username
+                session['password'] = password
+            return redirect(url_for('.main'))
+
     return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    session.pop('password', None)
+    return redirect(url_for('.main'))
 
 
 if __name__ == '__main__':
