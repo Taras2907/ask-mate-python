@@ -16,10 +16,11 @@ FIELDS_C_A = ['id', 'answer_id', 'message', 'submission_time']
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        password = request.form['password']
-        user_login = request.form['username']
+        users_data = [hash_password(request.form[item]) if item == 'password' else request.form[item] for item in ['username', 'password']]
+        add_data('users',['username', 'password'], users_data)
         return redirect(url_for('main'))
-    return render_template('login.html')
+    return render_template('register.html')
+
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
