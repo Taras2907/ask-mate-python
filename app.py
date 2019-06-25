@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 
 from data_manager import *
 
@@ -101,6 +101,7 @@ def update_answer_vote(answer_id, question_id):
 @app.route('/question/<int:question_id>/new-answer', methods=["GET", "POST"])
 def answer_question(question_id):
     if request.method == "POST":
+        # username = session['username']
         time = get_real_time()
         answer_list = [get_last_id('answer') + 1,  # unique key?
                        time,
@@ -130,6 +131,7 @@ def search_query(search_phrase):
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
+    # username = session['username']
     tag_names = get_columns('tag')
     if request.method == 'POST':
         new_id = get_last_id('question') + 1
@@ -178,6 +180,7 @@ def del_answer(question_id, answer_id):
 
 @app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
 def add_comment_to_question(question_id):
+    # username = session['username']
     if request.method == 'POST':
         time = get_real_time()
         message = request.form['comment']
@@ -195,6 +198,7 @@ def add_comment_to_question(question_id):
 
 @app.route('/question/<question_id>/new-comment/<answer_id>', methods=['GET', 'POST'])
 def add_comment_to_answer(question_id, answer_id):
+    # username = session['username']
     if request.method == 'POST':
         time = get_real_time()
         message = request.form['comment']
@@ -281,23 +285,20 @@ def delete_tag_from_question(question_id, tag_id):
     return redirect(url_for('display_question', question_id=question_id))
 
 
-
-
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        data = get_columns_with_condition('password', 'users', 'user', username)
+        if verify_password(password, data[password]):
+            session['username'] = username
+            session['password'] = password
+        return redirect(url_for('.main'))
+    return render_template('login.html')
 
 
 if __name__ == '__main__':
     app.run()
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        # if username in db
-        password = request.form['password']
-            # hashed_password = hashing password function
-            # if hashed_password == db[username][password]:
-        session['username'] = username
-        session['password'] = password
-        return redirect(url_for('.main'))
-    return render_template('login.html')
