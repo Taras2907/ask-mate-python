@@ -16,10 +16,11 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        password = request.form['password']
-        user_login = request.form['username']
-        return redirect(url_for('main'))
-    return render_template('login.html')
+        users_data = [hash_password(request.form[item]) if item == 'password' else request.form[item] for item in ['username', 'password']]
+        add_data('users',['username', 'password'], users_data)
+        return redirect(url_for('login'))
+    return render_template('register.html')
+
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
