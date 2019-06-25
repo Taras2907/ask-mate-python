@@ -5,8 +5,8 @@ from data_manager import *
 app = Flask(__name__)
 file_q = 'sample_data/question.csv'
 file_a = 'sample_data/answer.csv'
-FIELDS_Q = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+FIELDS_Q = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image', 'username']
+FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image', 'username']
 FIELDS_C_Q = ['id', 'question_id', 'message', 'submission_time']
 FIELDS_C_A = ['id', 'answer_id', 'message', 'submission_time']
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -70,6 +70,8 @@ def display_question(question_id):
     change_view_count(question_id, "up")
     answers_data = sorted(get_all(question_id), key=lambda z: z['id'])
     comment_data = sorted(get_columns('comment'), key=lambda z: z['id'])
+    question_user = get_columns_with_condition('username', 'question', 'id', question_id)
+
     time = get_columns_with_condition('submission_time', 'question', 'id', question_id)
     tags_names = get_columns('tag')
     tags_questions = get_columns('question_tag')
@@ -77,7 +79,7 @@ def display_question(question_id):
         change = 1 if request.form['send'] == '+' else -1
         change_view_count(question_id, 'down')
         update_vote('question', change, question_id)
-        update_reputation(10, session['username'])
+        update_reputation(10, question_user)
 
 
     question_data = get_all_columns_with_condition('question', 'id', question_id)[0]
@@ -142,6 +144,7 @@ def add_question():
         vote = 0
         title = request.form['title']
         image = None
+        username = session['username']
         message = request.form['message']
         new_question = [
             new_id,
@@ -150,7 +153,8 @@ def add_question():
             vote,
             title,
             message,
-            image
+            image,
+            username
         ]
         tags = request.form.getlist('box')
         add_data('question', FIELDS_Q, new_question)
