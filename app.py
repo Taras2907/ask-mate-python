@@ -18,7 +18,7 @@ def register():
     if request.method == 'POST':
         users_data = [hash_password(request.form[item]) if item == 'password' else request.form[item] for item in ['username', 'password']]
         add_data('users',['username', 'password'], users_data)
-        return redirect(url_for('main'))
+        return redirect(url_for('login'))
     return render_template('register.html')
 
 
@@ -291,7 +291,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        data = get_columns_with_condition('password', 'users', 'user', username)
+        data = get_columns_with_condition('password', 'users', 'username', username)
         if verify_password(password, data[password]):
             session['username'] = username
             session['password'] = password
