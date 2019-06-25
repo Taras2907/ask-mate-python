@@ -76,6 +76,7 @@ def display_question(question_id):
         change = 1 if request.form['send'] == '+' else -1
         change_view_count(question_id, 'down')
         update_vote('question', change, question_id)
+        update_reputation(10, session['username'])
 
 
     question_data = get_all_columns_with_condition('question', 'id', question_id)[0]

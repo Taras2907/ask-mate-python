@@ -206,13 +206,18 @@ def verify_password(plain_text_password, hashed_password):
 
 
 @database_common.connection_handler
+def get_reputation_db(cursor, username):
+    cursor.execute('''
+                       SELECT reputation FROM users
+                       WHERE username = %s;
+                      ''', [username])
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def update_reputation(cursor, number_of_points, user):
     "Number of points is an integer positive or negative which you want to add or subtract from current users reputation)"
-    cursor.execute('''
-                    SELECT reputation FROM users
-                    WHERE username = %s;
-                   ''', [user])
-    current_points = cursor.fetchall()
+    current_points = get_reputation_db(user)
     points = current_points[0]['reputation'] + number_of_points
     cursor.execute('''
                     UPDATE users
