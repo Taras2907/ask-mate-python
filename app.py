@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, escape
 
 from data_manager import *
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 file_q = 'sample_data/question.csv'
 file_a = 'sample_data/answer.csv'
 FIELDS_Q = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -10,6 +11,15 @@ FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'i
 FIELDS_C_Q = ['id', 'question_id', 'message', 'submission_time']
 FIELDS_C_A = ['id', 'answer_id', 'message', 'submission_time']
 
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        password = request.form['password']
+        user_login = request.form['username']
+        return redirect(url_for('main'))
+    return render_template('login.html')
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
@@ -216,7 +226,6 @@ def edit_answers(question_id, answer_id):
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
 def new_tag(question_id):
     tag_names = get_columns('tag')
-    tag_question = get_columns('question_tag')
     tag_question = get_all_columns_with_condition('question_tag', 'question_id', question_id)
     list_of_tag_ids = [dic['tag_id'] for dic in tag_question]
     for dicts in tag_question:
@@ -260,6 +269,10 @@ def edit_answer_coment(question_id, answer_id, comment_id):
 def delete_tag_from_question(question_id, tag_id):
     delete_tag(question_id, tag_id)
     return redirect(url_for('display_question', question_id=question_id))
+
+
+
+
 
 
 if __name__ == '__main__':
