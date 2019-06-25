@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html'%}
+
+{% block content %}
+    <div class="register">
+        <form action="{{ url_for('register') }}" method="post">
+            <label><input type="text" name="username" placeholder="Login"></label>
+            <label><input type="text" name="password" placeholder="Password"></label>
+            <label><input type="submit" value="Register"></label>
+
+        </form>
+    </div>
+{% endblock %}>
