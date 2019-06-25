@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from psycopg2 import sql
-
+import bcrypt
 import database_common
 
 LAST_ELEMENT = -1
@@ -67,7 +67,7 @@ def get_columns_with_condition(cursor, column, table, condition_column, conditio
 
 @database_common.connection_handler
 def update_vote(cursor, table, change, condition):
-    current_vote = get_columns_with_condition('vote_number', 'question', 'id', condition) + change
+    current_vote = get_columns_with_condition('vote_number', table, 'id', condition) + change
     sql_query_to_update = sql.SQL("UPDATE {} SET {} =%s WHERE {} =%s").format(
         sql.Identifier(table),
         sql.Identifier('vote_number'),
@@ -193,4 +193,14 @@ def delete_tag(cursor, question_id, tag_id):
                    {'question_id': question_id,
                     'tag_id': tag_id})
 
+
+def hash_password(plain_text_password):
+    # By using bcrypt, the salt is saved into the hash itself
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+
+def verify_password(plain_text_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
 
