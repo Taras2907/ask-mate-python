@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 
 from data_manager import *
 
@@ -9,6 +9,7 @@ FIELDS_Q = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'mes
 FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 FIELDS_C_Q = ['id', 'question_id', 'message', 'submission_time']
 FIELDS_C_A = ['id', 'answer_id', 'message', 'submission_time']
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -277,4 +278,13 @@ if __name__ == '__main__':
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    pass
+    if request.method == 'POST':
+        username = request.form['username']
+        # if username in db
+        password = request.form['password']
+            # hashed_password = hashing password function
+            # if hashed_password == db[username][password]:
+        session['username'] = username
+        session['password'] = password
+        return redirect(url_for('.main'))
+    return render_template('login.html')
