@@ -203,3 +203,20 @@ def hash_password(plain_text_password):
 def verify_password(plain_text_password, hashed_password):
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
+
+
+@database_common.connection_handler
+def update_reputation(cursor, number_of_points, user):
+    "Number of points is an integer positive or negative which you want to add or subtract from current users reputation)"
+    cursor.execute('''
+                    SELECT reputation FROM users
+                    WHERE username = %s;
+                   ''', [user])
+    current_points = cursor.fetchall()
+    points = current_points[0]['reputation'] + number_of_points
+    cursor.execute('''
+                    UPDATE users
+                    SET reputation = %s
+                    WHERE username = %s;
+                   ''', [points, user])
+
