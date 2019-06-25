@@ -15,11 +15,18 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    user_name_already_exists = False
+    all_user_names = [each['username'] for each in get_all_user_logins()]
     if request.method == 'POST':
-        users_data = [hash_password(request.form[item]) if item == 'password' else request.form[item] for item in ['username', 'password']]
-        add_data('users',['username', 'password'], users_data)
-        return redirect(url_for('login'))
-    return render_template('register.html')
+        if request.form['username'] in all_user_names:
+            user_name_already_exists = True
+            return redirect(url_for('register', user_name_already_exists=user_name_already_exists))
+        else:
+            users_data = [hash_password(request.form[item]) if item == 'password' else request.form[item] for item in ['username', 'password']]
+            add_data('users',['username', 'password'], users_data)
+            return redirect(url_for('login'))
+    return render_template('register.html', all_users_names=all_user_names,
+                           user_name_already_exists=user_name_already_exists)
 
 
 @app.route('/', methods=['GET', 'POST'])
