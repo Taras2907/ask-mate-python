@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
+    <script>
+    function wrongPassword(message, loginPage) {
+        if (message === {{ message }}) {
+            if (confirm ('Sorry, Incorrect login Data')) {
+                window.location.href = loginPage;
+            }
+        }
+
+    }
+    </script>
     <div class="form-center">
     <br>
     <form action="{{ url_for('login') }}" method="post">
@@ -7,9 +17,11 @@
         <br>
         <input type="text" name="password" placeholder="password" required class="text-input">
         <br>
-        <input type="submit" class="button">
+        <input type="submit" class="button"  onclick=wrongPassword({{ message }},'/login')>
+
     </form>
 
+        <button class="button"><a href="/register" >Register new Account</a></button>
     </div>
 
 {% endblock %}
