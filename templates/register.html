@@ -2,9 +2,18 @@
 
 {% block content %}
     <div class="form-center">
-        <form action="{{ url_for('register') }}" method="post">
-            <label><input type="text" name="username" placeholder="Login"></label>
-            <label><input type="text" name="password" placeholder="Password"></label>
+        <script>
+        function validateForm(exists) {
+          if (exists) {
+            alert("This user name is already used!");
+            return false;
+            }
+        }
+        </script>
+        <form action="{{ url_for('register') }}" method="post" name="register"
+              onsubmit="validateForm({{ user_name_already_exists }})">
+            <label><input type="text" name="username" placeholder="Login" required></label>
+            <label><input type="text" name="password" placeholder="Password" required></label>
             <label><input type="submit" value="Register"></label>
 
         </form>
