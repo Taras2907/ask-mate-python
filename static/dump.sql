@@ -44,7 +44,8 @@ CREATE TABLE public.answer (
     vote_number integer,
     question_id integer,
     message text,
-    image text
+    image text,
+    username text
 );
 
 
@@ -82,7 +83,8 @@ CREATE TABLE public.comment (
     answer_id integer,
     message text,
     submission_time timestamp without time zone,
-    edited_count integer
+    edited_count integer,
+    username text
 );
 
 
@@ -121,7 +123,8 @@ CREATE TABLE public.question (
     vote_number integer,
     title text,
     message text,
-    image text
+    image text,
+    username text
 );
 
 
@@ -202,7 +205,7 @@ ALTER SEQUENCE public.tag_id_seq OWNED BY public.tag.id;
 CREATE TABLE public.users (
     username text,
     password text,
-    reputation integer,
+    reputation integer DEFAULT 0,
     "timestamp" timestamp with time zone DEFAULT now()
 );
 
@@ -241,8 +244,8 @@ ALTER TABLE ONLY public.tag ALTER COLUMN id SET DEFAULT nextval('public.tag_id_s
 -- Data for Name: answer; Type: TABLE DATA; Schema: public; Owner: dmk
 --
 
-COPY public.answer (id, submission_time, vote_number, question_id, message, image) FROM stdin;
-1	2019-06-24 11:24:26	0	1	 WAFEEW FWA FWAE FWA  FAW FEW F	
+COPY public.answer (id, submission_time, vote_number, question_id, message, image, username) FROM stdin;
+1	2019-06-24 11:24:26	0	1	 WAFEEW FWA FWAE FWA  FAW FEW F		\N
 \.
 
 
@@ -250,9 +253,9 @@ COPY public.answer (id, submission_time, vote_number, question_id, message, imag
 -- Data for Name: comment; Type: TABLE DATA; Schema: public; Owner: dmk
 --
 
-COPY public.comment (id, question_id, answer_id, message, submission_time, edited_count) FROM stdin;
-1	1	\N	F SAF WAFEWA FWA FA GFWAF AWFW EAF	2019-06-24 11:24:22	\N
-2	\N	1	 EWAF WAFWAF GRAG WAEGTF 23WEGA A	2019-06-24 11:24:31	\N
+COPY public.comment (id, question_id, answer_id, message, submission_time, edited_count, username) FROM stdin;
+1	1	\N	F SAF WAFEWA FWA FA GFWAF AWFW EAF	2019-06-24 11:24:22	\N	\N
+2	\N	1	 EWAF WAFWAF GRAG WAEGTF 23WEGA A	2019-06-24 11:24:31	\N	\N
 \.
 
 
@@ -260,12 +263,12 @@ COPY public.comment (id, question_id, answer_id, message, submission_time, edite
 -- Data for Name: question; Type: TABLE DATA; Schema: public; Owner: dmk
 --
 
-COPY public.question (id, submission_time, view_number, vote_number, title, message, image) FROM stdin;
-4	2019-06-24 13:54:32	0	0	wqew  ewqea rw 	3r2q3 r13 r1 43t13 t3 2 	\N
-5	2019-06-24 13:54:39	0	0	242 142 412 421 34 1324 324 4	2134 214 12423 42 4214 124 24	\N
-6	2019-06-24 13:54:46	0	0	faffaasfsefewaffe ae fergdas	fdqas fwae fwaesrf aef ergfewa f	\N
-7	2019-06-24 13:54:56	0	0	sd fsa f saf waesfesa fwaer	 asefasf wse<rfwasfw sfe	\N
-1	2019-06-24 11:24:16	15	0	A FEWAEFW FEWAFEWA FWA	 FWAFE WAFWAFAW EFEWA AWEREWA AW RA REWERWEFR	\N
+COPY public.question (id, submission_time, view_number, vote_number, title, message, image, username) FROM stdin;
+4	2019-06-24 13:54:32	0	0	wqew  ewqea rw 	3r2q3 r13 r1 43t13 t3 2 	\N	\N
+5	2019-06-24 13:54:39	0	0	242 142 412 421 34 1324 324 4	2134 214 12423 42 4214 124 24	\N	\N
+6	2019-06-24 13:54:46	0	0	faffaasfsefewaffe ae fergdas	fdqas fwae fwaesrf aef ergfewa f	\N	\N
+7	2019-06-24 13:54:56	0	0	sd fsa f saf waesfesa fwaer	 asefasf wse<rfwasfw sfe	\N	\N
+1	2019-06-24 11:24:16	15	0	A FEWAEFW FEWAFEWA FWA	 FWAFE WAFWAFAW EFEWA AWEREWA AW RA REWERWEFR	\N	\N
 \.
 
 
@@ -304,7 +307,7 @@ COPY public.tag (id, name) FROM stdin;
 --
 
 COPY public.users (username, password, reputation, "timestamp") FROM stdin;
-rafal	asdasdadasd	15	2019-06-25 11:24:15.204552+02
+rafal	asdasdadasd	705	2019-06-25 11:24:15.204552+02
 \.
 
 
