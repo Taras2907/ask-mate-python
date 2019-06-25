@@ -67,7 +67,7 @@ def get_columns_with_condition(cursor, column, table, condition_column, conditio
 
 @database_common.connection_handler
 def update_vote(cursor, table, change, condition):
-    current_vote = get_columns_with_condition('vote_number', 'question', 'id', condition) + change
+    current_vote = get_columns_with_condition('vote_number', table, 'id', condition) + change
     sql_query_to_update = sql.SQL("UPDATE {} SET {} =%s WHERE {} =%s").format(
         sql.Identifier(table),
         sql.Identifier('vote_number'),

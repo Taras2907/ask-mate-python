@@ -48,15 +48,16 @@
     <div>
         <button type="button" class="button"><a href="/question/{{ question_id }}/new-answer">Add answer</a></button>
         <button type="button" class="button"><a href="/question/{{ question_id }}/new-comment">Add comment</a></button>
-        <button type="button" class="button"><a href="/question/{{ question_id }}/delete">Delete question</a></button>
-        <button type="button" onclick=deleteData("question","/question/{{ question_id }}/delete") class="button">Delete Questions</button>
-                        <script>
-                            function deleteData(nameOfData, deletePage) {
-                                if (confirm("Are you sure you want to delete this " + nameOfData + "?")) {
-                                    window.location.href = deletePage;
-                                }
-                            }
-                        </script>
+        <button type="button" onclick=deleteData("question","/question/{{ question_id }}/delete") class="button">Delete
+            Questions
+        </button>
+        <script>
+            function deleteData(nameOfData, deletePage) {
+                if (confirm("Are you sure you want to delete this " + nameOfData + "?")) {
+                    window.location.href = deletePage;
+                }
+            }
+        </script>
     </div>
     {% for dicts in comment_data %}
         {% if dicts['question_id'] == question_data['id'] %}
@@ -70,7 +71,10 @@
                     <p>Edited count is: {{ dicts['edited_count'] }}</p>
                     <button type="button" class="button"><a
                             href="/question/{{ question_id }}/edit_comment/{{ dicts['id'] }}">Edit comment</a></button>
-                    <button type="button" onclick=deleteData("question","/question/{{ question_id }}/delete_comment/{{ dicts['id'] }}") class="button">Delete Comment</button>
+                    <button type="button"
+                            onclick=deleteData("question","/question/{{ question_id }}/delete_comment/{{ dicts['id'] }}")
+                            class="button">Delete Comment
+                    </button>
 
             </div>
         {% endif %}
@@ -88,14 +92,22 @@
                             <br>
                             {{ dict['submission_time'] }}
                             <br>
+                            <p>Votes: {{ dict['vote_number'] }}</p>
+                            <br>
                             <button type="button" class="button" id="comment_button"><a
                                     href="/question/{{ question_id }}/new-comment/{{ dict['id'] }}">Add comment</a>
                             </button>
                             <button type="button" class="button" id="edit_button"><a
                                     href="/question/{{ question_id }}/edit/{{ dict['id'] }}">Edit answer</a></button>
-                            <button type="button" onclick=deleteData("question","/question/{{ question_id }}/delete_answer/{{ dict['id'] }}") class="button">Delete answer</button>
+                            <button type="button"
+                                    onclick=deleteData("question","/question/{{ question_id }}/delete_answer/{{ dict['id'] }}")
+                                    class="button">Delete answer
+                            </button>
+                            <form name='vote-a' action='/question/{{ question_id }}/{{ dict['id'] }}' method="POST">
+                                <input type='submit' name="send-a" value='-' class="button"/>
+                                <input type='submit' name="send-a" value='+' class="button"/>
+                            </form>
 
-                            {#                <button type="button" class="button"><a href="/question/{{ question_id }}/delete_comment/{{ dict['id'] }}">Delete answer</a></button>#}
                     </div>
                     {% for data in comment_data %}
                         {% if data['answer_id'] == dict['id'] %}
@@ -110,7 +122,10 @@
                                     <button type="button" class="button"><a
                                             href="/question/{{ question_id }}/answer/{{ dict['id'] }}/edit_comment/{{ data['id'] }}">Edit
                                         comment</a></button>
-                                    <button type="button" onclick=deleteData("question","/question/{{ question_id }}/delete_comment/{{ data['id'] }}") class="button">Delete Comment</button>
+                                    <button type="button"
+                                            onclick=deleteData("question","/question/{{ question_id }}/delete_comment/{{ data['id'] }}")
+                                            class="button">Delete Comment
+                                    </button>
 
                             </div>
                         {% endif %}
