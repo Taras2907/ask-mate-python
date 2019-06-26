@@ -12,21 +12,20 @@ FIELDS_C_A = ['id', 'answer_id', 'message', 'submission_time']
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    user_name_already_exists = False
     all_user_names = [each['username'] for each in get_all_user_logins()]
     if request.method == 'POST':
         if request.form['username'] in all_user_names:
-            user_name_already_exists = True
-            return redirect(url_for('register', user_name_already_exists=user_name_already_exists))
+            user_exists = True
+            return redirect(url_for('register', user_exists=user_exists))
         else:
             users_data = [hash_password(request.form[item]) if item == 'password' else request.form[item] for item in ['username', 'password']]
             add_data('users',['username', 'password'], users_data)
             return redirect(url_for('login'))
+    user_exists = False
     return render_template('register.html', all_users_names=all_user_names,
-                           user_name_already_exists=user_name_already_exists)
+                           user_exists=user_exists)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -84,8 +83,6 @@ def display_question(question_id):
         change = 1 if request.form['send'] == '+' else -1
         change_view_count(question_id, 'down')
         update_vote('question', change, question_id)
-
-
     question_data = get_all_columns_with_condition('question', 'id', question_id)[0]
     if question_data['image'] is None:
         img = 'https://i.pinimg.com/236x/24/23/93/242393e70e9f431d3d10ebaa48d76806--bukowski-facebook-profile.jpg'
@@ -299,12 +296,32 @@ def login():
         username = request.form['username']
         password = request.form['password']
         data = get_columns_with_condition('password', 'users', 'username', username)
-        if verify_password(password, data):
-            session['username'] = username
-            session['password'] = password
-        return redirect(url_for('.main'))
+        if not data:
+            message = 'wrong login data'
+            return render_template('login.html', message=message)
+        else:
+            if verify_password(password, data):
+                session['username'] = username
+                session['password'] = password
+            return redirect(url_for('.main'))
+
     return render_template('login.html')
 
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    session.pop('password', None)
+    return redirect(url_for('.main'))
+
+
+@app.route('/user/<string:users_name>', methods=['GET', 'POST'])
+def user_cabinet(users_name):
+    user_questions = get_all_columns_with_condition('question','username', users_name)
+    user_answers = get_all_columns_with_condition('answer', 'username', users_name)
+    user_comments = get_all_columns_with_condition('comment', 'username', users_name)
+    return render_template('user.html', user_questions=user_questions,
+                           user_answers=user_answers, user_comments=user_comments)
 
 if __name__ == '__main__':
     app.run()
