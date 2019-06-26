@@ -307,7 +307,6 @@ def delete_tag_from_question(question_id, tag_id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-
         username = request.form['username']
         password = request.form['password']
         data = get_columns_with_condition('password', 'users', 'username', username)
