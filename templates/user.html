@@ -1,24 +1,60 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<h1>Questions</h1>
+<table>
+<tr>
 
-    <table>
+    <th>Title</th>
+    <th>Message</th>
+    <th>Time</th>
+    <th>Vote number</th>
+    <th>View nubmer</th>
+    </tr>
+{% for question in user_questions %}
+<tr>
+    <td><a href="/question/{{ question['id'] }}">{{ question['title']}}</a></td>
+    <td>{{ question['message']}}</td>
+    <td>{{ question['submission_time']}}</td>
+    <td>{{ question['vote_number']}}</td>
+    <td>{{ question['view_number']}}</td>
+</tr>
+{% endfor %}
+</table>
+<h1>Answers</h1>
+<table>
     <tr>
-    {% for question in user_questions[0].keys() %}
-        {% if question in ['title', 'message', 'submission_time'] %}
-            <th> {{ question }}</th>
-        {% endif %}
-        {% endfor %}
-        </tr>
-    {% for question in user_questions %}
+        <th>Title</th>
+        <th>Message</th>
+        <th>Vote number</th>
+    </tr>
+    {% for answer in user_answers %}
     <tr>
-        {% for header, value in question.items() %}
-            {% if header in ['title', 'message', 'submission_time'] %}
-                <th>{{ value}}</th>
-            {% endif %}
-        {% endfor %}
+        <td><a href="/question/{{ answer['question_id'] }}">{{ answer['message']}}</a></td>
+        <td>{{ answer['submission_time']}}</td>
+        <td>{{ answer['vote_number']}}</td>
     </tr>
     {% endfor %}
-    </table>
-
+</table>
+<h1>Comments</h1>
+<table>
+    <tr>
+        <th>Message</th>
+        <th>Time</th>
+    </tr>
+    {% for comment in user_comments %}
+    <tr>
+    {% if comment['question_id'] == None %}
+        {% for answer in user_answers %}
+            {% if answer['id'] == comment['answer_id'] %}
+                <td><a href="/question/{{ answer['question_id']}}">{{ comment['message'] }}</a></td>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <td><a href="/question/{{ comment['question_id'] }}">{{ comment['message']}}</a></td>
+        {% endif %}
+        <td>{{ comment['submission_time']}}</td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

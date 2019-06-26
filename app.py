@@ -17,8 +17,8 @@ def register():
     all_user_names = [each['username'] for each in get_all_user_logins()]
     if request.method == 'POST':
         if request.form['username'] in all_user_names:
-            user_exists = True
-            return redirect(url_for('register', user_exists=user_exists))
+            user_exists = 'User name already exists'
+            return render_template('register.html', user_exists=user_exists)
         else:
             users_data = [hash_password(request.form[item]) if item == 'password' else request.form[item] for item in ['username', 'password']]
             add_data('users',['username', 'password'], users_data)
