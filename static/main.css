@@ -122,9 +122,19 @@ select {
     border-color: white;
 }
 
-#ansewr-block {
+#answer-block {
     width: 90%;
     background-color: #E98074;
+    border-radius: 10px;
+    padding: 20px;
+    margin: auto;
+    margin-top: 10px;
+    border-style: solid;
+    border-color: white;
+}
+#answer-block-2{
+    width: 90%;
+    background-color: #e9d614;
     border-radius: 10px;
     padding: 20px;
     margin: auto;

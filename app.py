@@ -5,10 +5,10 @@ from data_manager import *
 app = Flask(__name__)
 file_q = 'sample_data/question.csv'
 file_a = 'sample_data/answer.csv'
-FIELDS_Q = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
-FIELDS_C_Q = ['id', 'question_id', 'message', 'submission_time']
-FIELDS_C_A = ['id', 'answer_id', 'message', 'submission_time']
+FIELDS_Q = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image', 'username']
+FIELDS_A = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image', 'username']
+FIELDS_C_Q = ['id', 'question_id', 'message', 'submission_time', 'username']
+FIELDS_C_A = ['id', 'answer_id', 'message', 'submission_time', 'username']
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
@@ -104,14 +104,18 @@ def update_answer_vote(answer_id, question_id):
 @app.route('/question/<int:question_id>/new-answer', methods=["GET", "POST"])
 def answer_question(question_id):
     if request.method == "POST":
-        # username = session['username']
+        if session.get('logged_in'):
+            username = session['username']
+        else:
+            username = None
         time = get_real_time()
         answer_list = [get_last_id('answer') + 1,  # unique key?
                        time,
                        "0",
                        question_id,
                        request.form["answer"],
-                       ""]
+                       None,
+                       username]
         add_data('answer', FIELDS_A, answer_list)
         return redirect(url_for('.display_question', question_id=question_id))
     return render_template('answer.html', question_id=question_id)
@@ -134,7 +138,10 @@ def search_query(search_phrase):
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
-    # username = session['username']
+    if session.get('logged_in'):
+        username = session['username']
+    else:
+        username = None
     tag_names = get_columns('tag')
     if request.method == 'POST':
         new_id = get_last_id('question') + 1
@@ -151,7 +158,8 @@ def add_question():
             vote,
             title,
             message,
-            image
+            image,
+            username
         ]
         tags = request.form.getlist('box')
         add_data('question', FIELDS_Q, new_question)
@@ -183,7 +191,10 @@ def del_answer(question_id, answer_id):
 
 @app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
 def add_comment_to_question(question_id):
-    # username = session['username']
+    if session.get('logged_in'):
+        username = session['username']
+    else:
+        username = None
     if request.method == 'POST':
         time = get_real_time()
         message = request.form['comment']
@@ -192,7 +203,8 @@ def add_comment_to_question(question_id):
             new_id,
             question_id,
             message,
-            time
+            time,
+            username
         ]
         add_data('comment', FIELDS_C_Q, values)
         return redirect(url_for('.display_question', question_id=question_id))
@@ -201,7 +213,10 @@ def add_comment_to_question(question_id):
 
 @app.route('/question/<question_id>/new-comment/<answer_id>', methods=['GET', 'POST'])
 def add_comment_to_answer(question_id, answer_id):
-    # username = session['username']
+    if session.get('logged_in'):
+        username = session['username']
+    else:
+        username = None
     if request.method == 'POST':
         time = get_real_time()
         message = request.form['comment']
@@ -210,7 +225,8 @@ def add_comment_to_answer(question_id, answer_id):
             new_id,
             answer_id,
             message,
-            time
+            time,
+            username
         ]
         add_data('comment', FIELDS_C_A, values)
         return redirect(url_for('.display_question', question_id=question_id))
@@ -291,6 +307,7 @@ def delete_tag_from_question(question_id, tag_id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+
         username = request.form['username']
         password = request.form['password']
         data = get_columns_with_condition('password', 'users', 'username', username)
@@ -301,6 +318,7 @@ def login():
             if verify_password(password, data):
                 session['username'] = username
                 session['password'] = password
+                session['logged_in'] = True
                 return redirect(url_for('.main'))
             else:
                 wrong_data = 'Invalid username or password'
@@ -313,6 +331,7 @@ def login():
 def logout():
     session.pop('username', None)
     session.pop('password', None)
+    session.pop('logged_in', None)
     return redirect(url_for('.main'))
 
 
@@ -324,6 +343,22 @@ def user_cabinet(users_name):
     user_comments = get_all_columns_with_condition('comment', 'username', users_name)
     return render_template('user.html', user_questions=user_questions,
                            user_answers=user_answers, user_comments=user_comments)
+
+
+@app.route('/accept/<answer_id>/<question_id>')
+def accept_answer(answer_id, question_id):
+    update_accept(answer_id)
+    return redirect(url_for('.display_question', question_id=question_id))
+
+
+@app.context_processor
+def pass_user_to_template():
+    if session.get('logged_in'):
+        user = session['username']
+    else:
+        user = 'Stranger'
+    return dict(user=user)
+
 
 if __name__ == '__main__':
     app.run()
