@@ -220,3 +220,9 @@ def update_reputation(cursor, number_of_points, user):
                     WHERE username = %s;
                    ''', [points, user])
 
+@database_common.connection_handler
+def get_all_user_logins(cursor):
+    sql_select = sql.SQL("SELECT username FROM users")
+    cursor.execute(sql_select)
+    all_logins = cursor.fetchall()
+    return all_logins
