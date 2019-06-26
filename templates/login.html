@@ -2,22 +2,23 @@
 {% block content %}
     <script>
     function wrongPassword(message, loginPage) {
-        if (message === {{ message }}) {
-            if (confirm ('Sorry, Incorrect login Data')) {
+        if (message) {
+            if (confirm('dsnaonf newaa')){
                 window.location.href = loginPage;
-            }
+                            }
+        }
         }
 
-    }
+
     </script>
     <div class="form-center">
     <br>
-    <form action="{{ url_for('login') }}" method="post">
+    <form action="{{ url_for('login') }}" method="post" onsubmit=wrongPassword({{ message }},'/login')>
         <input type="text" name="username" placeholder="username" required class="text-input">
         <br>
         <input type="text" name="password" placeholder="password" required class="text-input">
         <br>
-        <input type="submit" class="button"  onclick=wrongPassword({{ message }},'/login')>
+        <input type="submit" class="button">
 
     </form>
 
