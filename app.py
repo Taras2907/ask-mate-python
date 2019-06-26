@@ -315,6 +315,13 @@ def logout():
     return redirect(url_for('.main'))
 
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    session.pop('password', None)
+    return redirect(url_for('.main'))
+
+
 @app.route('/user/<string:users_name>', methods=['GET', 'POST'])
 def user_cabinet(users_name):
     user_questions = get_all_columns_with_condition('question','username', users_name)
