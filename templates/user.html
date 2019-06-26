@@ -1,35 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
+
+
     <table>
     <tr>
     {% for question in user_questions[0].keys() %}
+        {% if question in ['title', 'message', 'submission_time'] %}
             <th> {{ question }}</th>
+        {% endif %}
         {% endfor %}
         </tr>
     {% for question in user_questions %}
     <tr>
-        {% for question_property in question.values() %}
-            <th>{{ question_propertie }}</th>
+        {% for header, value in question.items() %}
+            {% if header in ['title', 'message', 'submission_time'] %}
+                <th>{{ value}}</th>
+            {% endif %}
         {% endfor %}
     </tr>
     {% endfor %}
-
-    </table>
-     <table>
-    <tr>
-    {% for answer_header in user_answers[0].keys() %}
-            <th> {{ answer_header }}</th>
-        {% endfor %}
-        </tr>
-    {% for answer in user_questions %}
-    <tr>
-        {% for answer_property in question.values() %}
-            <th>{{ question_propertie }}</th>
-        {% endfor %}
-    </tr>
-    {% endfor %}
-
     </table>
 
-    <p>{{ user_comments }}</p>
 {% endblock %}
