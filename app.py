@@ -23,9 +23,7 @@ def register():
             users_data = [hash_password(request.form[item]) if item == 'password' else request.form[item] for item in ['username', 'password']]
             add_data('users',['username', 'password'], users_data)
             return redirect(url_for('login'))
-    user_exists = False
-    return render_template('register.html', all_users_names=all_user_names,
-                           user_exists=user_exists)
+    return render_template('register.html', all_users_names=all_user_names)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -314,12 +312,6 @@ def logout():
     session.pop('password', None)
     return redirect(url_for('.main'))
 
-
-@app.route('/logout')
-def logout():
-    session.pop('username', None)
-    session.pop('password', None)
-    return redirect(url_for('.main'))
 
 
 @app.route('/user/<string:users_name>', methods=['GET', 'POST'])
