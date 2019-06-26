@@ -242,3 +242,12 @@ def update_accept(cursor, answer_id):
                         UPDATE answer SET accept = TRUE WHERE id=%(answer_id)s
                         ''',
                        {'answer_id': answer_id})
+        cursor.execute('''
+                        SELECT username FROM answer
+                        WHERE id=%(answer_id)s
+                        ''',
+                       {'answer_id': answer_id})
+        user_data = cursor.fetchall()
+        if user_data[0]['username']:
+            user = user_data[0]['username']
+            update_reputation(15, user)

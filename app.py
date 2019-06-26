@@ -136,7 +136,10 @@ def search_query(search_phrase):
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
-    # username = session['username']
+    if session.get('logged_in'):
+        username = session['username']
+    else:
+        username = None
     tag_names = get_columns('tag')
     if request.method == 'POST':
         new_id = get_last_id('question') + 1
