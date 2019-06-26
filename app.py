@@ -293,6 +293,7 @@ def delete_tag_from_question(question_id, tag_id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+
         username = request.form['username']
         password = request.form['password']
         data = get_columns_with_condition('password', 'users', 'username', username)
@@ -303,6 +304,7 @@ def login():
             if verify_password(password, data):
                 session['username'] = username
                 session['password'] = password
+                session['logged_in'] = True
                 return redirect(url_for('.main'))
             else:
                 wrong_data = 'Invalid username or password'
@@ -315,6 +317,7 @@ def login():
 def logout():
     session.pop('username', None)
     session.pop('password', None)
+    session.pop('logged_in', None)
     return redirect(url_for('.main'))
 
 
@@ -325,6 +328,22 @@ def user_cabinet(users_name):
     user_comments = get_all_columns_with_condition('comment', 'username', users_name)
     return render_template('user.html', user_questions=user_questions,
                            user_answers=user_answers, user_comments=user_comments)
+
+
+@app.route('/accept/<answer_id>/<question_id>')
+def accept_answer(answer_id, question_id):
+    update_accept(answer_id)
+    return redirect(url_for('.display_question', question_id=question_id))
+
+
+@app.context_processor
+def pass_user_to_template():
+    if session.get('logged_in'):
+        user = session['username']
+    else:
+        user = 'Stranger'
+    return dict(user=user)
+
 
 if __name__ == '__main__':
     app.run()
