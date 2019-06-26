@@ -295,13 +295,16 @@ def login():
         password = request.form['password']
         data = get_columns_with_condition('password', 'users', 'username', username)
         if not data:
-            message = 'wrong login data'
-            return render_template('login.html', message=message)
+            wrong_data = 'Invalid username or password'
+            return render_template('login.html', wrong_data=wrong_data)
         else:
             if verify_password(password, data):
                 session['username'] = username
                 session['password'] = password
-            return redirect(url_for('.main'))
+                return redirect(url_for('.main'))
+            else:
+                wrong_data = 'Invalid username or password'
+                return render_template('login.html', wrong_data=wrong_data)
 
     return render_template('login.html')
 

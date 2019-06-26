@@ -198,3 +198,11 @@ img {
     float: left;
     height: 20px;
 }
+
+.error{
+    align-self: center;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+    background-color: #E98074;
+}
