@@ -225,3 +225,34 @@ def update_reputation(cursor, number_of_points, user):
                     WHERE username = %s;
                    ''', [points, user])
 
+
+@database_common.connection_handler
+def get_all_user_logins(cursor):
+    sql_select = sql.SQL("SELECT username FROM users")
+    cursor.execute(sql_select)
+    all_logins = cursor.fetchall()
+    return all_logins
+
+
+@database_common.connection_handler
+def update_accept(cursor, answer_id):
+    cursor.execute('''
+                    SELECT accept FROM answer
+                    WHERE id=%(answer_id)s
+                    ''',
+                   {'answer_id': answer_id})
+    accept_state = cursor.fetchall()
+    if not accept_state[0]['accept']:
+        cursor.execute('''
+                        UPDATE answer SET accept = TRUE WHERE id=%(answer_id)s
+                        ''',
+                       {'answer_id': answer_id})
+        cursor.execute('''
+                        SELECT username FROM answer
+                        WHERE id=%(answer_id)s
+                        ''',
+                       {'answer_id': answer_id})
+        user_data = cursor.fetchall()
+        if user_data[0]['username']:
+            user = user_data[0]['username']
+            update_reputation(15, user)

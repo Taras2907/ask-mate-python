@@ -122,9 +122,19 @@ select {
     border-color: white;
 }
 
-#ansewr-block {
+#answer-block {
     width: 90%;
     background-color: #E98074;
+    border-radius: 10px;
+    padding: 20px;
+    margin: auto;
+    margin-top: 10px;
+    border-style: solid;
+    border-color: white;
+}
+#answer-block-2{
+    width: 90%;
+    background-color: #e9d614;
     border-radius: 10px;
     padding: 20px;
     margin: auto;
@@ -197,4 +207,12 @@ img {
     display: flex;
     float: left;
     height: 20px;
+}
+
+.error{
+    align-self: center;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+    background-color: #E98074;
 }

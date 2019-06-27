@@ -2,11 +2,14 @@
 
 {% block content %}
     <div class="form-center">
-        <form action="{{ url_for('register') }}" method="post">
-            <label><input type="text" name="username" placeholder="Login"></label>
-            <label><input type="text" name="password" placeholder="Password"></label>
-            <label><input type="submit" value="Register" class="button"></label>
 
+        <form action="{{ url_for('register') }}" method="post" name="register">
+            <label><input type="text" name="username" placeholder="Login" required></label>
+            <label><input type="text" name="password" placeholder="Password" required></label>
+            <label><input type="submit" value="Register"></label>
         </form>
+    {% if user_exists %}
+        <p class="error"><strong>Error:</strong>User name already exists</p>
+    {% endif %}
     </div>
 {% endblock %}>

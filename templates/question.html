@@ -86,7 +86,11 @@
                 <p>There are no answers yet.</p>
             {% else %}
                 {% for dict in answers %}
-                    <div id="ansewr-block">
+                    {% if not dict['accept'] %}
+                    <div id="answer-block">
+                    {% else %}
+                        <div id="answer-block-2">
+                    {% endif %}
                         <li>{{ dict['message'] }}
 
                             <br>
@@ -107,7 +111,9 @@
                                 <input type='submit' name="send-a" value='-' class="button"/>
                                 <input type='submit' name="send-a" value='+' class="button"/>
                             </form>
-
+                            {% if not dict['accept'] %}
+                            <button class="button"><a href="/accept/{{ dict['id'] }}/{{ question_id }}">Accept Answer</a></button>
+                            {% endif %}
                     </div>
                     {% for data in comment_data %}
                         {% if data['answer_id'] == dict['id'] %}
