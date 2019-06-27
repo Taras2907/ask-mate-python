@@ -83,7 +83,10 @@ def display_question(question_id):
         change = 1 if request.form['send'] == '+' else -1
         change_view_count(question_id, 'down')
         update_vote('question', change, question_id)
-        update_reputation(10, question_user)
+        if change == 1:
+            update_reputation(5, question_user)
+        elif change == -1:
+            update_reputation(-2, question_user)
 
 
 
@@ -104,6 +107,11 @@ def update_answer_vote(answer_id, question_id):
         change = 1 if request.form['send-a'] == '+' else -1
         change_view_count(question_id, 'down')
         update_vote('answer', change, answer_id)
+        answer_user = get_columns_with_condition('username', 'answer', 'id', answer_id)
+        if change == 1:
+            update_reputation(10, answer_user)
+        elif change == -1:
+            update_reputation(-2, answer_user)
     return redirect(url_for('.display_question', question_id=question_id))
 
 
@@ -356,7 +364,7 @@ def user_cabinet(users_name):
 @app.route('/accept/<answer_id>/<question_id>')
 def accept_answer(answer_id, question_id):
     update_accept(answer_id)
-    question_user = get_columns_with_condition('username', 'question', 'id', question_id)
+    question_user = get_columns_with_condition('username', 'answer', 'id', answer_id)
     update_reputation(10, question_user)
     return redirect(url_for('.display_question', question_id=question_id))
 
