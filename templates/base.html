@@ -16,7 +16,11 @@
             <button class="button"><a href="/login">Login</a>
             </button>
             <button class="button"><a href="/logout">Logout</a> </button>
-            <a href="/user/{{ user }}">Hello {{ user }}!</a>
+            {% if user == 'Stranger' %}
+                <a href="/login">Hello {{ user }}!</a>
+            {% else %}
+                <a href="/user/{{ user }}">Hello {{ user }}!</a>
+            {% endif %}
         </h1>
 
     </header>
