@@ -251,3 +251,28 @@ def update_accept(cursor, answer_id):
         if user_data[0]['username']:
             user = user_data[0]['username']
             update_reputation(15, user)
+
+
+@database_common.connection_handler
+def count_tags(cursor):
+    cursor.execute("""
+                    SELECT name, tag.id, COUNT(tag_id) 
+                    FROM tag JOIN question_tag qt on tag.id = qt.tag_id
+                    GROUP BY name, id
+                    ORDER BY id
+                    """)
+    tags = cursor.fetchall()
+    return tags
+
+
+@database_common.connection_handler
+def get_question_with_tag(cursor, tag_id):
+    cursor.execute("""
+                    SELECT question.title, tag.name, question.id
+                    FROM question JOIN question_tag qt on question.id = qt.question_id 
+                    JOIN tag on qt.tag_id = tag.id
+                    WHERE question.id = qt.question_id AND tag_id = %(tag_id)s
+                    """,
+                   {'tag_id': tag_id})
+    questions = cursor.fetchall()
+    return questions

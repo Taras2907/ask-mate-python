@@ -334,7 +334,6 @@ def logout():
     return redirect(url_for('.main'))
 
 
-
 @app.route('/user/<string:users_name>', methods=['GET', 'POST'])
 def user_cabinet(users_name):
     user_questions = get_all_columns_with_condition('question','username', users_name)
@@ -357,6 +356,18 @@ def pass_user_to_template():
     else:
         user = 'Stranger'
     return dict(user=user)
+
+
+@app.route('/tags')
+def show_all_tags():
+    counted_tags = count_tags()
+    return render_template('all_tags.html', counted_taqs=counted_tags)
+
+
+@app.route('/tags/<tag_id>')
+def show_questions_with_tag(tag_id):
+    questions_with_tag = get_question_with_tag(tag_id)
+    return render_template('specific_tag.html', questions=questions_with_tag)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <br>
+
+{% for question in questions %}
+    <br>
+
+    <div id="answer-block">
+        <button class="button"><a href="/tags">{{ questions[0]['name'] }}</a></button>
+    <a href="/question/{{ question['id'] }}">{{ question['title'] }}</a>
+    </div>
+
+
+{% endfor %}
+
+
+{% endblock %}
