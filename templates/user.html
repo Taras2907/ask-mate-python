@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<div style="text-align:left"><h1>Your reputation: {{ user_reputation }}</h1></div>
 <h1>Questions</h1>
 <table>
 <tr>
@@ -9,7 +9,7 @@
     <th>Message</th>
     <th>Time</th>
     <th>Vote number</th>
-    <th>View nubmer</th>
+    <th>View number</th>
     </tr>
 {% for question in user_questions %}
 <tr>

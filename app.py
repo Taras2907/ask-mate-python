@@ -86,6 +86,7 @@ def display_question(question_id):
         update_reputation(10, question_user)
 
 
+
     question_data = get_all_columns_with_condition('question', 'id', question_id)[0]
     if question_data['image'] is None:
         img = 'https://i.pinimg.com/236x/24/23/93/242393e70e9f431d3d10ebaa48d76806--bukowski-facebook-profile.jpg'
@@ -342,16 +343,21 @@ def logout():
 
 @app.route('/user/<string:users_name>', methods=['GET', 'POST'])
 def user_cabinet(users_name):
+
     user_questions = get_all_columns_with_condition('question','username', users_name)
     user_answers = get_all_columns_with_condition('answer', 'username', users_name)
     user_comments = get_all_columns_with_condition('comment', 'username', users_name)
+    user_reputation = get_all_columns_with_condition('users', 'username', users_name)[0]["reputation"]
     return render_template('user.html', user_questions=user_questions,
-                           user_answers=user_answers, user_comments=user_comments)
+                           user_answers=user_answers, user_comments=user_comments,
+                           user_reputation=user_reputation)
 
 
 @app.route('/accept/<answer_id>/<question_id>')
 def accept_answer(answer_id, question_id):
     update_accept(answer_id)
+    question_user = get_columns_with_condition('username', 'question', 'id', question_id)
+    update_reputation(10, question_user)
     return redirect(url_for('.display_question', question_id=question_id))
 
 
