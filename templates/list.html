@@ -2,7 +2,7 @@
 {% block content %}
     <div class="table-div">
         <div id="sorter">
-            <form action="/" method="POST" name="sorting">
+            <form action="/all_questions" method="POST" name="sorting">
                 <span>sort by:</span>
                 <select name="sort">
                     {% for sort_title in sort_titles %}
