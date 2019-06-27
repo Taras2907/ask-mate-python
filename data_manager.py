@@ -228,7 +228,6 @@ def get_all_user_logins(cursor):
     all_logins = cursor.fetchall()
     return all_logins
 
-
 @database_common.connection_handler
 def update_accept(cursor, answer_id):
     cursor.execute('''
@@ -251,3 +250,11 @@ def update_accept(cursor, answer_id):
         if user_data[0]['username']:
             user = user_data[0]['username']
             update_reputation(15, user)
+
+
+@database_common.connection_handler
+def get_users_name_reputation(cursor):
+    sql_select = sql.SQL("SELECT username, reputation FROM users")
+    cursor.execute(sql_select)
+    users_name_reputation = cursor.fetchall()
+    return users_name_reputation

@@ -360,6 +360,13 @@ def pass_user_to_template():
     return dict(user=user)
 
 
+@app.route('/all_users')
+def all_users():
+    users_name_reputation = get_users_name_reputation()
+    users_name_reputation = sorted(users_name_reputation, key=lambda z: z['reputation'], reverse=True)
+    return render_template('all_users_properties.html', users_name_reputation=users_name_reputation)
+
+
 if __name__ == '__main__':
     app.run()
 
