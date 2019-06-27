@@ -74,6 +74,8 @@ def display_question(question_id):
     change_view_count(question_id, "up")
     answers_data = sorted(get_all(question_id), key=lambda z: z['id'])
     comment_data = sorted(get_columns('comment'), key=lambda z: z['id'])
+    question_user = get_columns_with_condition('username', 'question', 'id', question_id)
+
     time = get_columns_with_condition('submission_time', 'question', 'id', question_id)
     tags_names = get_columns('tag')
     tags_questions = get_columns('question_tag')
@@ -81,6 +83,9 @@ def display_question(question_id):
         change = 1 if request.form['send'] == '+' else -1
         change_view_count(question_id, 'down')
         update_vote('question', change, question_id)
+        update_reputation(10, question_user)
+
+
     question_data = get_all_columns_with_condition('question', 'id', question_id)[0]
     if question_data['image'] is None:
         img = 'https://i.pinimg.com/236x/24/23/93/242393e70e9f431d3d10ebaa48d76806--bukowski-facebook-profile.jpg'
@@ -150,6 +155,7 @@ def add_question():
         vote = 0
         title = request.form['title']
         image = None
+        username = session['username']
         message = request.form['message']
         new_question = [
             new_id,
