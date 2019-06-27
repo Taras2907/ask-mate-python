@@ -164,7 +164,6 @@ def add_question():
         vote = 0
         title = request.form['title']
         image = None
-        username = session['username']
         message = request.form['message']
         new_question = [
             new_id,
