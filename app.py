@@ -349,9 +349,9 @@ def logout():
     return redirect(url_for('.main'))
 
 
+
 @app.route('/user/<string:users_name>', methods=['GET', 'POST'])
 def user_cabinet(users_name):
-
     user_questions = get_all_columns_with_condition('question','username', users_name)
     user_answers = get_all_columns_with_condition('answer', 'username', users_name)
     user_comments = get_all_columns_with_condition('comment', 'username', users_name)
@@ -388,6 +388,13 @@ def show_all_tags():
 def show_questions_with_tag(tag_id):
     questions_with_tag = get_question_with_tag(tag_id)
     return render_template('specific_tag.html', questions=questions_with_tag)
+
+
+@app.route('/all_users')
+def all_users():
+    users_name_reputation = get_users_name_reputation()
+    users_name_reputation = sorted(users_name_reputation, key=lambda z: z['reputation'], reverse=True)
+    return render_template('all_users_properties.html', users_name_reputation=users_name_reputation)
 
 
 if __name__ == '__main__':

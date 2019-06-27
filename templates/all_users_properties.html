@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="users_name">
+    <h1>User data</h1>
+    <table>
+    <th>User name</th>
+    <th>Reputation</th>
+        {% for user in users_name_reputation %}
+    <tr>
+        <td>{{ user['username'] }}</td>
+        <td>{{ user['reputation'] }}</td>
+    </tr>
+    {% endfor %}
+
+    </table>
+    </div>
+
+
+
+{% endblock %}
