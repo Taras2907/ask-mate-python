@@ -74,6 +74,8 @@ def display_question(question_id):
     change_view_count(question_id, "up")
     answers_data = sorted(get_all(question_id), key=lambda z: z['id'])
     comment_data = sorted(get_columns('comment'), key=lambda z: z['id'])
+    question_user = get_columns_with_condition('username', 'question', 'id', question_id)
+
     time = get_columns_with_condition('submission_time', 'question', 'id', question_id)
     tags_names = get_columns('tag')
     tags_questions = get_columns('question_tag')
@@ -81,6 +83,10 @@ def display_question(question_id):
         change = 1 if request.form['send'] == '+' else -1
         change_view_count(question_id, 'down')
         update_vote('question', change, question_id)
+        update_reputation(10, question_user)
+
+
+
     question_data = get_all_columns_with_condition('question', 'id', question_id)[0]
     if question_data['image'] is None:
         img = 'https://i.pinimg.com/236x/24/23/93/242393e70e9f431d3d10ebaa48d76806--bukowski-facebook-profile.jpg'
@@ -150,6 +156,7 @@ def add_question():
         vote = 0
         title = request.form['title']
         image = None
+        username = session['username']
         message = request.form['message']
         new_question = [
             new_id,
@@ -307,7 +314,6 @@ def delete_tag_from_question(question_id, tag_id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-
         username = request.form['username']
         password = request.form['password']
         data = get_columns_with_condition('password', 'users', 'username', username)
@@ -341,13 +347,17 @@ def user_cabinet(users_name):
     user_questions = get_all_columns_with_condition('question','username', users_name)
     user_answers = get_all_columns_with_condition('answer', 'username', users_name)
     user_comments = get_all_columns_with_condition('comment', 'username', users_name)
+    user_reputation = get_all_columns_with_condition('users', 'username', users_name)[0]["reputation"]
     return render_template('user.html', user_questions=user_questions,
-                           user_answers=user_answers, user_comments=user_comments)
+                           user_answers=user_answers, user_comments=user_comments,
+                           user_reputation=user_reputation)
 
 
 @app.route('/accept/<answer_id>/<question_id>')
 def accept_answer(answer_id, question_id):
     update_accept(answer_id)
+    question_user = get_columns_with_condition('username', 'question', 'id', question_id)
+    update_reputation(10, question_user)
     return redirect(url_for('.display_question', question_id=question_id))
 
 
@@ -358,6 +368,18 @@ def pass_user_to_template():
     else:
         user = 'Stranger'
     return dict(user=user)
+
+
+@app.route('/tags')
+def show_all_tags():
+    counted_tags = count_tags()
+    return render_template('all_tags.html', counted_taqs=counted_tags)
+
+
+@app.route('/tags/<tag_id>')
+def show_questions_with_tag(tag_id):
+    questions_with_tag = get_question_with_tag(tag_id)
+    return render_template('specific_tag.html', questions=questions_with_tag)
 
 
 @app.route('/all_users')

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+    <ul>
+    {% for tags in counted_taqs %}
+        <li>
+        <button class="button"><a href="tags/{{ tags['id'] }}">{{ tags['name'] }}</a></button>
+        </li>
+        <li>
+            <h3>There is {{ tags['count'] }} questions with this tag.</h3>
+        </li>
+        <br>
+    {% endfor %}
+    </ul>
+{% endblock %}

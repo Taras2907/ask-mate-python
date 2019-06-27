@@ -206,13 +206,18 @@ def verify_password(plain_text_password, hashed_password):
 
 
 @database_common.connection_handler
+def get_reputation_db(cursor, username):
+    cursor.execute('''
+                       SELECT reputation FROM users
+                       WHERE username = %s;
+                      ''', [username])
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def update_reputation(cursor, number_of_points, user):
     "Number of points is an integer positive or negative which you want to add or subtract from current users reputation)"
-    cursor.execute('''
-                    SELECT reputation FROM users
-                    WHERE username = %s;
-                   ''', [user])
-    current_points = cursor.fetchall()
+    current_points = get_reputation_db(user)
     points = current_points[0]['reputation'] + number_of_points
     cursor.execute('''
                     UPDATE users
@@ -258,3 +263,28 @@ def get_users_name_reputation(cursor):
     cursor.execute(sql_select)
     users_name_reputation = cursor.fetchall()
     return users_name_reputation
+
+
+@database_common.connection_handler
+def count_tags(cursor):
+    cursor.execute("""
+                    SELECT name, tag.id, COUNT(tag_id) 
+                    FROM tag JOIN question_tag qt on tag.id = qt.tag_id
+                    GROUP BY name, id
+                    ORDER BY id
+                    """)
+    tags = cursor.fetchall()
+    return tags
+
+
+@database_common.connection_handler
+def get_question_with_tag(cursor, tag_id):
+    cursor.execute("""
+                    SELECT question.title, tag.name, question.id
+                    FROM question JOIN question_tag qt on question.id = qt.question_id 
+                    JOIN tag on qt.tag_id = tag.id
+                    WHERE question.id = qt.question_id AND tag_id = %(tag_id)s
+                    """,
+                   {'tag_id': tag_id})
+    questions = cursor.fetchall()
+    return questions

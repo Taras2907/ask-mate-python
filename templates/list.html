@@ -19,6 +19,7 @@
         </div>
         <div>
             <button type="button" class="button"><a href="/all_questions">Show all questions</a></button>
+            <button class="button"><a href="/tags">Show all tags</a></button>
         </div>
         <div>
             <form action="/search" method="POST" name="search" id="search-bar">
@@ -43,7 +44,7 @@
                             {% if qtags['question_id'] == question['id'] %}
                                 {% for tags in tags_names %}
                                     {% if tags['id'] == qtags['tag_id'] %}
-                                        <button type="button" class="button">{{ tags['name'] }}</button>
+                                        <button type="button" class="button"><a href="/tags/{{ tags['id'] }}">{{ tags['name'] }}</a> </button>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
